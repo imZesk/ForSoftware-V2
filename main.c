@@ -24,3 +24,35 @@
     4.2 atras
 5. salir
 */
+
+#include <sqlite3.h>
+#include <stdio.h>
+
+int main(){
+
+    sqlite3 *DB;
+
+    //Abrimos la bd
+    int existe = sqlite3_open("./ruta.db", &DB);
+
+    //Confirmamos que se abre correctamente
+    if (existe != SQLITE_OK) {
+        printf("Error");
+        //logger con el error
+        return 1;
+    }
+
+    //avisamos por consola que la base de datos se ha abierto correctamente
+    printf("Conexión exitosa a la base de datos");
+
+    //creamos la tabla
+    string sql = "CREATE TABLE IF NOT EXISTS PREGUNTA(
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                PREGUNTA TEXT NOT NULL
+                )"; // resto de parametros de pregunta
+
+    
+
+    sqlite3_close(DB);
+    return 0;
+}
