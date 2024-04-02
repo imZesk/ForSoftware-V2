@@ -1,0 +1,9 @@
+Create table IF NOT EXISTS pregunta(
+ID INTEGER PRIMARY KEY AUTOINCREMENT,
+ PREGUNTA TEXT NOT NULL,
+ RESPUESTA TEXT NOT NULL);
+ 
+ 
+INSERT INTO pregunta (PREGUNTA, RESPUESTA) VALUES ('Cuanto es 1+1?', '2');
+
+select * from pregunta

@@ -25,15 +25,16 @@
 5. salir
 */
 
-#include <sqlite3.h>
 #include <stdio.h>
+#include <sqlite3.h>
 
 int main(){
 
     sqlite3 *DB;
+    char *errMsg = 0;
 
     //Abrimos la bd
-    int existe = sqlite3_open("./ruta.db", &DB);
+    int existe = sqlite3_open("./Preguntas.db", &DB);
 
     //Confirmamos que se abre correctamente
     if (existe != SQLITE_OK) {
@@ -45,14 +46,17 @@ int main(){
     //avisamos por consola que la base de datos se ha abierto correctamente
     printf("Conexión exitosa a la base de datos");
 
-    //creamos la tabla
-    string sql = "CREATE TABLE IF NOT EXISTS PREGUNTA(
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                PREGUNTA TEXT NOT NULL
-                )"; // resto de parametros de pregunta
+    // Ejecuta la consulta
+    char *sql = "SELECT pregunta, respuesta FROM pregunta;";
 
+    rc = sqlite3_exec(db, sql, callback, 0, &errMsg);
     
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+        sqlite3_free(errMsg);
+    }
 
+    //cerrar la base de datos
     sqlite3_close(DB);
     return 0;
 }
