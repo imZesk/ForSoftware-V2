@@ -1,30 +1,3 @@
-/*
-1. crear test
-    1.1 tipo pregunta: (T o F), (a,b,c,d), (a,b,c,d *2T), pregunta corta(limite de x caracteres), pregunta abierta
-    1.2 continuar
-    1.3 finalizar
-2. hacer test
-    tests:
-        1. test1
-        2. test2...
-    2.1 hacer test x
-
-    2.2 atras
-3. visualizar nota
-    tests:
-        test1 3/5
-        test2 8/10
-        ...
-
-4. eliminar test
-    tests...
-    4.1 elimanr test x
-        4.1.1 confirmar test x?
-        4.1.2 cancelar
-    4.2 atras
-5. salir
-*/
-
 #include <stdio.h>
 #include <sqlite3.h>
 
@@ -59,4 +32,30 @@ int main(){
     //cerrar la base de datos
     sqlite3_close(DB);
     return 0;
+
+
+    //Menu:
+    char opcion;
+    	do{
+		opcion = menuPrincipal();
+		switch(opcion){
+			case '1': //crearTest();
+				      break;
+
+			case '2': printf("La potencia media es: %.2f\n", obtenerPotenciaMedia(lt));
+					  break;
+
+			case '3': //visualizarNota();
+				      break;
+            
+            case '4': //t = pedirTest();
+			          //eliminarTestAFichero(t);
+				      break;
+
+			case '0': printf("Fin del programa\n");
+			          break;
+
+			default: printf("ERROR, introduce de nuevo\n");
+		}
+	}while(opcion!='0');
 }
