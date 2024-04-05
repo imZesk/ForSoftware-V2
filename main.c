@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Sqlite3/sqlite3.h"
+#include "GrupoPreguntas.h"
 
 
 static int callback(void *data, int argc, char **argv, char **azColName) {
@@ -13,35 +14,35 @@ static int callback(void *data, int argc, char **argv, char **azColName) {
 
 int main(){
 
-    sqlite3 *DB;
-    char *errMsg = 0;
+    // sqlite3 *DB;
+    // char *errMsg = 0;
 
-    //Abrimos la bd
-    int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+    // //Abrimos la bd
+    // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
-    //Confirmamos que se abre correctamente
-    if (existe != SQLITE_OK) {
-        printf("Error");
-        //logger con el error
-        return 1;
-    }
+    // //Confirmamos que se abre correctamente
+    // if (existe != SQLITE_OK) {
+    //     printf("Error");
+    //     //logger con el error
+    //     return 1;
+    // }
 
-    //avisamos por consola que la base de datos se ha abierto correctamente
-    printf("Conexión exitosa a la base de datos");
+    // //avisamos por consola que la base de datos se ha abierto correctamente
+    // printf("Conexión exitosa a la base de datos");
 
-    // Ejecuta la consulta
-    char *sql = "SELECT pregunta, respuesta FROM pregunta;";
+    // // Ejecuta la consulta
+    // char *sql = "SELECT pregunta, respuesta FROM pregunta;";
 
-    existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+    // existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
     
-    if (existe != SQLITE_OK) {
-        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
-        sqlite3_free(errMsg);
-    }
+    // if (existe != SQLITE_OK) {
+    //     fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+    //     sqlite3_free(errMsg);
+    // }
 
-    //cerrar la base de datos
-    sqlite3_close(DB);
-    return 0;
+    // //cerrar la base de datos
+    // sqlite3_close(DB);
+    // return 0;
 
 
     //Menu:
@@ -69,4 +70,12 @@ int main(){
 		}
 	}while(opcion!='0');
     */
+    int tam = 3;
+    GrupoPreguntas grupoTest = reservarMemoria(tam);
+
+    addPregunta(&grupoTest);
+    mostarPreguntas(grupoTest);
+    
+    return 0;
+
 }

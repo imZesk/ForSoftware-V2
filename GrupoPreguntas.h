@@ -10,6 +10,7 @@ typedef struct grupoPreguntas{
 
 GrupoPreguntas reservarMemoria(int tam);
 
-void addPregunta(GrupoPreguntas * grupo, Pregunta pregunta);
+void addPregunta(GrupoPreguntas *grupo);
+void mostarPreguntas(GrupoPreguntas grupo);
 
 #endif // GRUPO_PREGUNTAS_H

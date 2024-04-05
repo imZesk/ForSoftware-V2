@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "stdio.h": "c",
-    "grupopreguntas.h": "c"
+    "grupopreguntas.h": "c",
+    "pregunta.h": "c"
   }
 }
