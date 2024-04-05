@@ -1,5 +1,15 @@
 #include <stdio.h>
-#include <sqlite3.h>
+#include "Sqlite3/sqlite3.h"
+
+
+static int callback(void *data, int argc, char **argv, char **azColName) {
+    for (int i = 0; i < argc; i++) {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    printf("\n");
+    return 0;
+}
+
 
 int main(){
 
@@ -22,9 +32,9 @@ int main(){
     // Ejecuta la consulta
     char *sql = "SELECT pregunta, respuesta FROM pregunta;";
 
-    rc = sqlite3_exec(db, sql, callback, 0, &errMsg);
+    existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
     
-    if (rc != SQLITE_OK) {
+    if (existe != SQLITE_OK) {
         fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
         sqlite3_free(errMsg);
     }
@@ -35,7 +45,7 @@ int main(){
 
 
     //Menu:
-    char opcion;
+/*    char opcion;
     	do{
 		opcion = menuPrincipal();
 		switch(opcion){
@@ -58,4 +68,5 @@ int main(){
 			default: printf("ERROR, introduce de nuevo\n");
 		}
 	}while(opcion!='0');
+    */
 }
