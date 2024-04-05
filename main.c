@@ -17,11 +17,36 @@ int main(){
     // sqlite3 *DB;
     // char *errMsg = 0;
 
+
     printf("Este es el main");
 
     //Abrimos la bd
     
     //int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+    // //Abrimos la bd
+    // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+
+    // //Confirmamos que se abre correctamente
+    // if (existe != SQLITE_OK) {
+    //     printf("Error");
+    //     //logger con el error
+    //     return 1;
+    // }
+
+    // //avisamos por consola que la base de datos se ha abierto correctamente
+    // printf("Conexión exitosa a la base de datos");
+
+    // // Ejecuta la consulta
+    // char *sql = "SELECT pregunta, respuesta FROM pregunta;";
+
+    // existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+    
+    // if (existe != SQLITE_OK) {
+    //     fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+    //     sqlite3_free(errMsg);
+    // }
+
+
     // //Abrimos la bd
     // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
