@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include "Sqlite3/sqlite3.h"
-#include "Datos.h"
+
+
+static int callback(void *data, int argc, char **argv, char **azColName) {
+    for (int i = 0; i < argc; i++) {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    printf("\n");
+    return 0;
+}
 
 
 int main(){
@@ -26,13 +34,12 @@ int main(){
     // Ejecuta la consulta
     char *sql = "SELECT pregunta, respuesta FROM pregunta;";
 
-/*    existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+    existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
     
     if (existe != SQLITE_OK) {
         fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
         sqlite3_free(errMsg);
     }
-    */
 
     //cerrar la base de datos
     sqlite3_close(DB);
