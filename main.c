@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "menus.h"
 #include "Sqlite3/sqlite3.h"
 #include "GrupoPreguntas.h"
 
@@ -46,14 +47,19 @@ int main(){
 
 
     //Menu:
-/*    char opcion;
+    int tam = 3;
+    GrupoPreguntas grupoTest = reservarMemoria(tam);
+    char opcion;
     	do{
 		opcion = menuPrincipal();
 		switch(opcion){
 			case '1': //crearTest();
-				      break;
+				        
+                        addPregunta(&grupoTest);
+                        //mostarPreguntas(grupoTest);
+                      break;
 
-			case '2': printf("La potencia media es: %.2f\n", obtenerPotenciaMedia(lt));
+			case '2': //printf("La potencia media es: %.2f\n", obtenerPotenciaMedia(lt));
 					  break;
 
 			case '3': //visualizarNota();
@@ -61,6 +67,7 @@ int main(){
             
             case '4': //t = pedirTest();
 			          //eliminarTestAFichero(t);
+                      printf("prueba\n");
 				      break;
 
 			case '0': printf("Fin del programa\n");
@@ -69,13 +76,5 @@ int main(){
 			default: printf("ERROR, introduce de nuevo\n");
 		}
 	}while(opcion!='0');
-    */
-    int tam = 3;
-    GrupoPreguntas grupoTest = reservarMemoria(tam);
-
-    addPregunta(&grupoTest);
-    mostarPreguntas(grupoTest);
-    
-    return 0;
 
 }

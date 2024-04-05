@@ -26,6 +26,8 @@
     4.2 atras
 5. salir
 */
+
+
 char menuPrincipal(){
 	char opcion;
 	printf("1. Crear Test\n");
@@ -33,8 +35,34 @@ char menuPrincipal(){
 	printf("3. Visualizar Nota\n");
 	printf("4. Eliminar Test\n");
 	printf("0. Salir\n");
-	printf("Elige una opci�n: ");
+	printf("Elige una opcion: ");
+
+	scanf("%c",&opcion);
+    
+    fflush(stdout);
+	fflush(stdin);
+	return opcion;
+}
+
+char menuSecundario1(){
+	char opcion;
+	printf("1. \n");
+	printf("2. \n");
+	printf("0. Salir\n");
+	printf("Elige una opcion: ");
 
 	scanf("%c",&opcion);
 	return opcion;
 }
+
+char menuSecundario2(){
+	char opcion;
+	printf("1. \n");
+	printf("0. Salir\n");
+	printf("Elige una opcion: ");
+
+	scanf("%c",&opcion);
+	return opcion;
+}
+
+
