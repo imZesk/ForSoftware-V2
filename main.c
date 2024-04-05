@@ -70,6 +70,18 @@ int main(){
     //     sqlite3_free(errMsg);
     // }
 
+    //Insertar em la DB
+    // Crear la sentencia SQL para insertar la pregunta y la respuesta
+    //char sentencia[200];
+    //sprintf(sentencia, "INSERT INTO pregunta (pregunta, respuesta) VALUES ('%s', '%s')", pregunta, respuesta);
+
+    // Ejecutar la sentencia SQL
+    //existe = sqlite3_exec(conexion, sentencia, 0, 0, NULL);
+    //if (existe != SQLITE_OK) {
+    //    printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
+    //    return 1;
+    //}
+
     // //cerrar la base de datos
     // sqlite3_close(DB);
     // return 0;
