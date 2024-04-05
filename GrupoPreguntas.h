@@ -8,7 +8,7 @@ typedef struct grupoPreguntas{
 	int numPreguntas;
 }GrupoPreguntas;
 
-grupoPreguntas reservarMemoria(int tam);
+GrupoPreguntas reservarMemoria(int tam);
 
 void addPregunta(GrupoPreguntas * grupo, Pregunta pregunta);
 
