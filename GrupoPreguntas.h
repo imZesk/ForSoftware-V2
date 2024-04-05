@@ -5,7 +5,7 @@
 typedef struct grupoPreguntas{
 	Pregunta * arrPreguntas;
 	int tam;
-	int numU;
+	int numPreguntas;
 }GrupoPreguntas;
 
 #endif // GRUPO_PREGUNTAS_H
