@@ -17,7 +17,7 @@ int main(){
     char *errMsg = 0;
 
     //Abrimos la bd
-    int existe = sqlite3_open("./Preguntas.db", &DB);
+    int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
     //Confirmamos que se abre correctamente
     if (existe != SQLITE_OK) {
