@@ -15,11 +15,21 @@ static int callback(void *data, int argc, char **argv, char **azColName) {
 
 int main(){
 
+    FILE *archivo; // Declara un puntero a FILE
+    archivo = fopen("./lib/Log.txt", "w"); // Abre el archivo en modo escritura ("w")
+
+    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+        printf("Error al abrir el archivo.\n");
+        return 1;
+    }
+
+    fprintf(archivo, "Archivo creado. \n");
+
     // sqlite3 *DB;
     // char *errMsg = 0;
 
 
-    printf("Este es el main");
+    printf("Este es el main. \n");
 
     //Abrimos la bd
     
@@ -102,21 +112,28 @@ int main(){
                       break;
 
 			case '2': //printf("La potencia media es: %.2f\n", obtenerPotenciaMedia(lt));
+                      fprintf(archivo, "Test completado. \n");
 					  break;
 
 			case '3': //visualizarNota();
+                      fprintf(archivo, "Notas visualizadas. \n");
 				      break;
             
             case '4': //t = pedirTest();
 			          //eliminarTestAFichero(t);
                       printf("prueba\n");
+                      fprintf(archivo, "Test eliminado correctamente. \n");
 				      break;
 
 			case '0': printf("Fin del programa\n");
+                      fprintf(archivo, "Programa finalizado. \n");
 			          break;
 
 			default: printf("ERROR, introduce de nuevo\n");
+                     fprintf(archivo, "Error al introducir la orden. \n");
 		}
 	}while(opcion!='0');
+
+    fclose(archivo);
 
 }

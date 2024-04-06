@@ -37,12 +37,22 @@ void addPregunta(GrupoPreguntas * grupo){
     pregunta.pregunta = strdup(preguntaText);
     pregunta.tipoPregunta = strdup(tipoPreguntaText);
 
+    FILE *archivo; // Declara un puntero a FILE
+    archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
+
+    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
     if(grupo->numPreguntas < grupo->tam){
         grupo->arrPreguntas[grupo->numPreguntas] = pregunta;
         grupo->numPreguntas++;
-        printf("Pregunta añadida correctamente\n");
+        printf("Pregunta anadida correctamente\n");
+        fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
     }else{
         printf("No se pueden añadir más preguntas\n");
+        fprintf(archivo, "Error al añadir la pregunta.\n"); // Escribe en el archivo
     }
 }
 
@@ -51,3 +61,4 @@ void mostarPreguntas(GrupoPreguntas grupo){
         printf("Pregunta %d: %s\n", i+1, grupo.arrPreguntas[i].pregunta);
     }
 }
+
