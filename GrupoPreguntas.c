@@ -4,20 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-// typedef struct {
-//     char *pregunta;
-//     char *tipoPregunta;
-//     char *respuesta;
-// }Pregunta;
-
-GrupoPreguntas reservarMemoria(int tam){
+GrupoPreguntas reservarMemoria(){
     GrupoPreguntas grupo;
+    int tam;
+
+    printf("Ingrese la cantidad de preguntas que va a tener el test: ");
+    scanf("%d", &tam);
+
     grupo.arrPreguntas = (Pregunta *)malloc(tam * sizeof(Pregunta));
     grupo.tam = tam;
     grupo.numPreguntas = 0;
     return grupo;
 }
-
 void addPregunta(GrupoPreguntas * grupo){
 
     Pregunta pregunta;
