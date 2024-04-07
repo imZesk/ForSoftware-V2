@@ -118,13 +118,16 @@ int main(){
                         crearEncuesta(grupoTest);
                 break;
 
-			case '2':   fprintf(archivo, "Test completado. \n");
+			case '2':   //realizar test
+                        fprintf(archivo, "Test completado. \n");
 				break;
 
-			case '3':   fprintf(archivo, "Notas visualizadas. \n");
+			case '3':   //visualizar
+                        fprintf(archivo, "Notas visualizadas. \n");
 				break;
             
-            case '4':   printf("prueba\n");
+            case '4':   //eliminar test
+                        printf("prueba\n");
                         fprintf(archivo, "Test eliminado correctamente. \n");
 				break;
 
