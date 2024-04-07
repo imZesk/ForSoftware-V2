@@ -49,7 +49,7 @@ int main(){
     // printf("Conexión exitosa a la base de datos");
 
     // // Ejecuta la consulta
-    // char *sql = "SELECT pregunta, respuesta FROM pregunta;";
+    // char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
 
     // existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
     
@@ -85,7 +85,7 @@ int main(){
     //Insertar em la DB
     // Crear la sentencia SQL para insertar la pregunta y la respuesta
     //char sentencia[200];
-    //sprintf(sentencia, "INSERT INTO pregunta (pregunta, respuesta) VALUES ('%s', '%s')", pregunta, respuesta);
+    //sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipo_pregunta, pregunta, opciones, respuesta);
 
     // Ejecutar la sentencia SQL
     //existe = sqlite3_exec(conexion, sentencia, 0, 0, NULL);
