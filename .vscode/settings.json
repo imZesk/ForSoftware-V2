@@ -59,6 +59,8 @@
   "files.associations": {
     "stdio.h": "c",
     "grupopreguntas.h": "c",
-    "pregunta.h": "c"
+    "pregunta.h": "c",
+    "menus.h": "c",
+    "stdlib.h": "c"
   }
 }

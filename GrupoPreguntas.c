@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Sqlite3/sqlite3.h"
 
 GrupoPreguntas reservarMemoria(){
     GrupoPreguntas grupo;
@@ -41,6 +42,17 @@ void addPregunta(GrupoPreguntas * grupo){
     FILE *archivo; // Declara un puntero a FILE
     archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
 
+    sqlite3 *DB;
+    char *errMsg = 0;
+
+    int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+
+    if (existe != SQLITE_OK) {
+         printf("Error");
+         //logger con el error
+         return 1;
+    }
+
     if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
         printf("Error al abrir el archivo.\n");
         return;
@@ -51,10 +63,24 @@ void addPregunta(GrupoPreguntas * grupo){
         grupo->numPreguntas++;
         printf("Pregunta anadida correctamente\n");
         fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
+
+        char sentencia[200];
+        sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipo_pregunta, pregunta, opciones, respuesta);
+        //despues de la coma es donde hay que poner los parametros en el orden que he puesto
+
+        // Ejecutar la sentencia SQL
+        existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
+        if (existe != SQLITE_OK) {
+            printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
+            return 1;
+        }
+
     }else{
         printf("No se pueden añadir más preguntas\n");
         fprintf(archivo, "Error al añadir la pregunta.\n"); // Escribe en el archivo
     }
+
+    sqlite3_close(DB);
 }
 
 void mostarPreguntas(GrupoPreguntas grupo){

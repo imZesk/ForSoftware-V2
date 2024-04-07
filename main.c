@@ -26,27 +26,22 @@ int main(){
 
     fprintf(archivo, "Archivo creado. \n");
 
-    // sqlite3 *DB;
-    // char *errMsg = 0;
+    sqlite3 *DB;
+    char *errMsg = 0;
 
-
-    printf("Este es el main. \n");
 
     //Abrimos la bd
     
-    //int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+    int existe = sqlite3_open("./lib/Preguntas.db", &DB);
     // //Abrimos la bd
     // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
     // //Confirmamos que se abre correctamente
-    // if (existe != SQLITE_OK) {
-    //     printf("Error");
-    //     //logger con el error
-    //     return 1;
-    // }
-
-    // //avisamos por consola que la base de datos se ha abierto correctamente
-    // printf("Conexión exitosa a la base de datos");
+    if (existe != SQLITE_OK) {
+         printf("Error");
+         //logger con el error
+         return 1;
+    }
 
     // // Ejecuta la consulta
     // char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
@@ -118,15 +113,39 @@ int main(){
                         crearEncuesta(grupoTest);
                 break;
 
-			case '2':   //realizar test
+			case '2':  
+                        char *sql = ("SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where x = %s;", ""); 
+                        //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
+                        existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+    
+                        if (existe != SQLITE_OK) {
+                            fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                            sqlite3_free(errMsg);
+                        }
                         fprintf(archivo, "Test completado. \n");
 				break;
 
-			case '3':   //visualizar
+			case '3':   
+                        char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
+
+                        existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+    
+                        if (existe != SQLITE_OK) {
+                            fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                            sqlite3_free(errMsg);
+                        }
                         fprintf(archivo, "Notas visualizadas. \n");
 				break;
             
-            case '4':   //eliminar test
+            case '4':
+                        char *sql = ("DELETE FROM pregunta WHERE x = %s;", ""); 
+                        //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
+                        existe = sqlite3_exec(DB, sql, 0, 0, NULL);
+                        if (existe != SQLITE_OK) {
+                            printf("Error al ejecutar la consulta SQL: %s\n", errMsg);
+                            sqlite3_free(errMsg);
+                            return 1;
+                        }
                         printf("prueba\n");
                         fprintf(archivo, "Test eliminado correctamente. \n");
 				break;
