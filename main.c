@@ -134,6 +134,7 @@ int main(){
 
 			default:    printf("ERROR, introduce de nuevo\n");
                         fprintf(archivo, "Error al introducir la orden. \n");
+                        fflush(stdout);
 		}
 	}while(opcion!='0');
 

@@ -24,9 +24,12 @@ void addPregunta(GrupoPreguntas * grupo){
     char tipoPreguntaText[100];
 
     printf("Ingrese la pregunta: ");
+    fflush(stdout);
+    fflush(stdin);
     fgets(preguntaText, sizeof(preguntaText), stdin);
 
     printf("Ingrese el tipo de pregunta: ");
+    fflush(stdout);
     fgets(tipoPreguntaText, sizeof(tipoPreguntaText), stdin);
 
     preguntaText[strcspn(preguntaText, "\n")] = '\0';

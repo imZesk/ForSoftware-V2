@@ -36,11 +36,12 @@ char menuPrincipal(){
 	printf("4. Eliminar Test\n");
 	printf("0. Salir\n");
 	printf("Elige una opcion: ");
-
+    
+	fflush(stdout);
+	fflush(stdin);
+	
 	scanf("%c",&opcion);
     
-    fflush(stdout);
-	fflush(stdin);
 	return opcion;
 }
 
