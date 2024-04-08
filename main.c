@@ -72,7 +72,9 @@ int main()
             }
 
             mostarPreguntas(grupoTest);
-            crearEncuesta(grupoTest);
+
+            const char *nombreEncuesta = grupoTest.nombreEncuesta;
+            crearEncuesta(grupoTest, nombreEncuesta);
             fprintf(archivo, "Test creado. \n");
             break;
 
