@@ -51,56 +51,6 @@ int main(){
     char *sql3 = "DELETE FROM pregunta WHERE x = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
 
-    // // Ejecuta la consulta
-    // char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
-
-    // existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
-    
-    // if (existe != SQLITE_OK) {
-    //     fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
-    //     sqlite3_free(errMsg);
-    // }
-
-
-    // //Abrimos la bd
-    // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
-
-    // //Confirmamos que se abre correctamente
-    // if (existe != SQLITE_OK) {
-    //     printf("Error");
-    //     //logger con el error
-    //     return 1;
-    // }
-
-    // //avisamos por consola que la base de datos se ha abierto correctamente
-    // printf("Conexión exitosa a la base de datos");
-
-    // // Ejecuta la consulta
-    // char *sql = "SELECT pregunta, respuesta FROM pregunta;";
-
-    // existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
-    
-    // if (existe != SQLITE_OK) {
-    //     fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
-    //     sqlite3_free(errMsg);
-    // }
-
-    //Insertar em la DB
-    // Crear la sentencia SQL para insertar la pregunta y la respuesta
-    //char sentencia[200];
-    //sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipo_pregunta, pregunta, opciones, respuesta);
-
-    // Ejecutar la sentencia SQL
-    //existe = sqlite3_exec(conexion, sentencia, 0, 0, NULL);
-    //if (existe != SQLITE_OK) {
-    //    printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
-    //    return 1;
-    //}
-
-    // //cerrar la base de datos
-    // sqlite3_close(DB);
-    // return 0;
-
 
     //Menu:
     int contador;
