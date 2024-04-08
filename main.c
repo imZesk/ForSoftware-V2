@@ -92,8 +92,7 @@ int main()
             fflush(stdin);
 
             scanf("%s", hacer);
-            printf("prueba\n");
-            sprintf(sql1, "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta where nombre = %s;", hacer);
+            sprintf(sql1, "SELECT pregunta FROM pregunta WHERE nombre = '%s';", hacer);
             printf("prueba2\n");
 
             existe = sqlite3_exec(DB, sql1, callback, 0, &errMsg);
@@ -103,6 +102,7 @@ int main()
                 fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
                 sqlite3_free(errMsg);
             }
+
             fprintf(archivo, "Test completado. \n");
             break;
 
