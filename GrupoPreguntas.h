@@ -4,6 +4,7 @@
 
 typedef struct grupoPreguntas{
 	Pregunta * arrPreguntas;
+	char nombreEncuesta[50];
 	int tam;
 	int numPreguntas;
 }GrupoPreguntas;

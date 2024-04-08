@@ -35,6 +35,12 @@ void addPregunta(GrupoPreguntas *grupo)
     char preguntaText[100];
     char tipoPreguntaText[100];
     char respuestaText[100];
+    char nombreEncuesta[100];
+    
+    printf("Introduce el nombre de la encuesta: ");
+    scanf("%s", nombreEncuesta);
+
+    fprintf(archivo, "Nombre de la encuesta: %s. \n", nombreEncuesta);
 
     printf("Ingrese la pregunta: ");
     fflush(stdout);
@@ -56,9 +62,10 @@ void addPregunta(GrupoPreguntas *grupo)
 
     fprintf(archivo, "Tipo de la pregunta ingresada: %s. \n", tipoPreguntaText);
     
-
+    nombreEncuesta[strcspn(nombreEncuesta, "\n")] = '\0';
     preguntaText[strcspn(preguntaText, "\n")] = '\0';
     tipoPreguntaText[strcspn(tipoPreguntaText, "\n")] = '\0';
+    respuestaText[strcspn(respuestaText, "\n")] = '\0';
 
     pregunta.pregunta = strdup(preguntaText);
     pregunta.tipoPregunta = strdup(tipoPreguntaText);
@@ -85,7 +92,11 @@ void addPregunta(GrupoPreguntas *grupo)
         fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
 
         char sentencia[200];
+<<<<<<< Updated upstream
         sprintf(sentencia, "INSERT INTO pregunta (nombre, tipo_pregunta, pregunta, respuesta) VALUES ('%s', '%s', '%s', '%s')", NULL, NULL, preguntaText, respuestaText);
+=======
+        sprintf(sentencia, "INSERT INTO pregunta (nombre, tipo_pregunta, pregunta, respuesta) VALUES ('%s', '%s', '%s', '%s')", nombreEncuesta, tipoPreguntaText, preguntaText, respuestaText);
+>>>>>>> Stashed changes
         // Ejecutar la sentencia SQL
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
         if (existe != SQLITE_OK)

@@ -5,7 +5,7 @@
 #include "grupoPreguntas.h"
 #include "encuesta.h"
 
-Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta)
+Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta, const char *nombreEncuesta)
 {
 
     FILE *archivo;                         // Declara un puntero a FILE
@@ -18,9 +18,6 @@ Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta)
         return encuesta_vacia;
     }
 
-    char nombreEncuesta[100];
-    printf("Introduce el nombre de la encuesta: ");
-    scanf("%s", nombreEncuesta);
 
     fprintf(archivo, "Nombre de la encuesta: %s. \n", nombreEncuesta);
 
