@@ -167,7 +167,9 @@ int main(){
 		}
 	}while(opcion!='0');
 
-    fclose(archivo);
+
     sqlite3_close(DB);
+    fprintf(archivo, "Base de datos cerrada. \n");
+    fclose(archivo);
 
 }

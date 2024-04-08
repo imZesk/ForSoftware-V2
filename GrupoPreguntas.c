@@ -73,7 +73,6 @@ void addPregunta(GrupoPreguntas * grupo){
 
         char sentencia[200];
         sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipoPreguntaText, preguntaText, NULL, NULL);
-        //despues de la coma es donde hay que poner los parametros en el orden que he puesto
 
         // Ejecutar la sentencia SQL
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
