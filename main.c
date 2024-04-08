@@ -55,6 +55,7 @@ int main(){
     int contador;
     GrupoPreguntas grupoTest;
     char opcion;
+    char eliminar;
     	do{
 		opcion = menuPrincipal();
 		switch(opcion){
@@ -102,6 +103,14 @@ int main(){
                 fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
                 sqlite3_free(errMsg);
             }
+	        printf("Nombre del test a eliminar: ");
+
+	        fflush(stdout);
+	        fflush(stdin);
+
+            scanf("%c", &eliminar);
+
+            sprintf(sql3,&eliminar);
 
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
@@ -109,6 +118,7 @@ int main(){
                 printf("Error al ejecutar la consulta SQL: %s\n", errMsg);
                 sqlite3_free(errMsg);
             }
+
             printf("prueba\n");
             fprintf(archivo, "Test eliminado correctamente. \n");
             break;
