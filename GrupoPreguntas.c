@@ -33,7 +33,7 @@ void addPregunta(GrupoPreguntas *grupo)
     Pregunta pregunta;
 
     char preguntaText[100];
-    char tipoPreguntaText[100] = NULL;
+    char tipoPreguntaText[100];
     char respuestaText[100];
 
     printf("Ingrese la pregunta: ");
@@ -85,7 +85,7 @@ void addPregunta(GrupoPreguntas *grupo)
         fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
 
         char sentencia[200];
-        sprintf(sentencia, "INSERT INTO pregunta (nombre, tipo_pregunta, pregunta, respuesta) VALUES ('%s', '%s', '%s', '%s')", NULL, tipoPreguntaText, preguntaText, respuestaText);
+        sprintf(sentencia, "INSERT INTO pregunta (nombre, tipo_pregunta, pregunta, respuesta) VALUES ('%s', '%s', '%s', '%s')", NULL, NULL, preguntaText, respuestaText);
         // Ejecutar la sentencia SQL
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
         if (existe != SQLITE_OK)

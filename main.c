@@ -95,7 +95,6 @@ int main(){
             break;
 
         case '4':
-
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
             {

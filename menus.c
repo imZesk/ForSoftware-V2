@@ -32,7 +32,7 @@ char menuPrincipal()
 	char opcion;
 	printf("1. Crear Test\n");
 	printf("2. Realizar Test\n");
-	printf("3. Visualizar Nota\n");
+	printf("3. Visualizar Teses\n");
 	printf("4. Eliminar Test\n");
 	printf("0. Salir\n");
 	printf("Elige una opcion: ");
