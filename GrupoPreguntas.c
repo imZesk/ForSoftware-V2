@@ -5,7 +5,8 @@
 #include <string.h>
 #include "Sqlite3/sqlite3.h"
 
-GrupoPreguntas reservarMemoria(){
+GrupoPreguntas reservarMemoria()
+{
     GrupoPreguntas grupo;
     int tam;
 
@@ -17,12 +18,14 @@ GrupoPreguntas reservarMemoria(){
     grupo.numPreguntas = 0;
     return grupo;
 }
-void addPregunta(GrupoPreguntas * grupo){
+void addPregunta(GrupoPreguntas *grupo)
+{
 
-    FILE *archivo; // Declara un puntero a FILE
+    FILE *archivo;                         // Declara un puntero a FILE
     archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
 
-    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+    if (archivo == NULL)
+    { // Verifica si ocurrió algún error al abrir el archivo
         printf("Error al abrir el archivo.\n");
         return;
     }
@@ -57,14 +60,15 @@ void addPregunta(GrupoPreguntas * grupo){
     int existe = sqlite3_open("./lib/Preguntas.db", &DB);
     fprintf(archivo, "Base de datos abierta. \n");
 
-    if (existe != SQLITE_OK) {
-         printf("Error");
-         //logger con el error
+    if (existe != SQLITE_OK)
+    {
+        printf("Error");
+        // logger con el error
         fprintf(archivo, "Error al abrir la base de datos. \n");
     }
 
-
-    if(grupo->numPreguntas < grupo->tam){
+    if (grupo->numPreguntas < grupo->tam)
+    {
         grupo->arrPreguntas[grupo->numPreguntas] = pregunta;
         grupo->numPreguntas++;
         printf("Pregunta anadida correctamente\n");
@@ -75,12 +79,14 @@ void addPregunta(GrupoPreguntas * grupo){
 
         // Ejecutar la sentencia SQL
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
-        if (existe != SQLITE_OK) {
+        if (existe != SQLITE_OK)
+        {
             printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
             fprintf(archivo, "Error al ejecutar la sentencia SQL. \n");
         }
-
-    }else{
+    }
+    else
+    {
         printf("No se pueden añadir más preguntas\n");
         fprintf(archivo, "Error al añadir la pregunta.\n");
     }
@@ -89,18 +95,20 @@ void addPregunta(GrupoPreguntas * grupo){
     fprintf(archivo, "Base de datos cerrada.\n");
 }
 
-void mostarPreguntas(GrupoPreguntas grupo){
-    FILE *archivo; // Declara un puntero a FILE
+void mostarPreguntas(GrupoPreguntas grupo)
+{
+    FILE *archivo;                         // Declara un puntero a FILE
     archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
 
-    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+    if (archivo == NULL)
+    { // Verifica si ocurrió algún error al abrir el archivo
         printf("Error al abrir el archivo.\n");
         return;
     }
-    
-    for(int i = 0; i < grupo.numPreguntas; i++){
-        printf("Pregunta %d: %s\n", i+1, grupo.arrPreguntas[i].pregunta);
+
+    for (int i = 0; i < grupo.numPreguntas; i++)
+    {
+        printf("Pregunta %d: %s\n", i + 1, grupo.arrPreguntas[i].pregunta);
         fprintf(archivo, "Preguntas mostradas.\n");
     }
 }
-

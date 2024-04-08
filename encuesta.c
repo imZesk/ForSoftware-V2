@@ -5,12 +5,14 @@
 #include "grupoPreguntas.h"
 #include "encuesta.h"
 
-Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta){
+Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta)
+{
 
-    FILE *archivo; // Declara un puntero a FILE
+    FILE *archivo;                         // Declara un puntero a FILE
     archivo = fopen("./lib/Log.txt", "w"); // Abre el archivo en modo escritura ("w")
 
-    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+    if (archivo == NULL)
+    { // Verifica si ocurrió algún error al abrir el archivo
         printf("Error al abrir el archivo.\n");
         Encuesta encuesta_vacia;
         return encuesta_vacia;
@@ -21,10 +23,10 @@ Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta){
     scanf("%s", nombreEncuesta);
 
     fprintf(archivo, "Nombre de la encuesta: %s. \n", nombreEncuesta);
-    
+
     Encuesta encuesta;
     strcpy(encuesta.nombreEncuesta, nombreEncuesta);
     encuesta.preguntasEncuesta = preguntasEncuesta;
-    
+
     return encuesta;
 }
