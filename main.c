@@ -45,10 +45,10 @@ int main(){
          return 1;
     }
 
-    char *sql1 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where x = %s;"; 
+    char *sql1 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where nombre = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
     char *sql2 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
-    char *sql3 = "DELETE FROM pregunta WHERE x = %s;"; 
+    char *sql3 = "DELETE FROM pregunta WHERE nombre = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
 
     // // Ejecuta la consulta
