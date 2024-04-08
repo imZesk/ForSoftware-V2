@@ -72,7 +72,7 @@ void addPregunta(GrupoPreguntas * grupo){
         fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
 
         char sentencia[200];
-        sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%i', '%s', '%s', '%s')", tipo_pregunta, pregunta, opciones, respuesta);
+        sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipoPreguntaText, preguntaText, NULL, NULL);
         //despues de la coma es donde hay que poner los parametros en el orden que he puesto
 
         // Ejecutar la sentencia SQL
