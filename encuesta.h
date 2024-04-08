@@ -8,6 +8,7 @@ typedef struct encuesta{
 	GrupoPreguntas preguntasEncuesta;
 }Encuesta;
 
-Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta);
+Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta, const char *nombreEncuesta);
+
 
 #endif
