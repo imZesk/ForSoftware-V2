@@ -19,6 +19,14 @@ GrupoPreguntas reservarMemoria(){
 }
 void addPregunta(GrupoPreguntas * grupo){
 
+    FILE *archivo; // Declara un puntero a FILE
+    archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
+
+    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
     Pregunta pregunta;
 
     char preguntaText[100];
@@ -29,9 +37,13 @@ void addPregunta(GrupoPreguntas * grupo){
     fflush(stdin);
     fgets(preguntaText, sizeof(preguntaText), stdin);
 
+    fprintf(archivo, "Pregunta ingresada: %s. \n", preguntaText);
+
     printf("Ingrese el tipo de pregunta: ");
     fflush(stdout);
     fgets(tipoPreguntaText, sizeof(tipoPreguntaText), stdin);
+
+    fprintf(archivo, "Tipo de la pregunta ingresada: %s. \n", tipoPreguntaText);
 
     preguntaText[strcspn(preguntaText, "\n")] = '\0';
     tipoPreguntaText[strcspn(tipoPreguntaText, "\n")] = '\0';
@@ -39,24 +51,19 @@ void addPregunta(GrupoPreguntas * grupo){
     pregunta.pregunta = strdup(preguntaText);
     pregunta.tipoPregunta = strdup(tipoPreguntaText);
 
-    FILE *archivo; // Declara un puntero a FILE
-    archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
-
     sqlite3 *DB;
     char *errMsg = 0;
 
     int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+    fprintf(archivo, "Base de datos abierta. \n");
 
     if (existe != SQLITE_OK) {
          printf("Error");
          //logger con el error
+        fprintf(archivo, "Error al abrir la base de datos. \n");
          return 1;
     }
 
-    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
-        printf("Error al abrir el archivo.\n");
-        return;
-    }
 
     if(grupo->numPreguntas < grupo->tam){
         grupo->arrPreguntas[grupo->numPreguntas] = pregunta;
@@ -72,20 +79,31 @@ void addPregunta(GrupoPreguntas * grupo){
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
         if (existe != SQLITE_OK) {
             printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
+            fprintf(archivo, "Error al ejecutar la sentencia SQL. \n");
             return 1;
         }
 
     }else{
         printf("No se pueden añadir más preguntas\n");
-        fprintf(archivo, "Error al añadir la pregunta.\n"); // Escribe en el archivo
+        fprintf(archivo, "Error al añadir la pregunta.\n");
     }
 
     sqlite3_close(DB);
+    fprintf(archivo, "Base de datos cerrada.\n");
 }
 
 void mostarPreguntas(GrupoPreguntas grupo){
+    FILE *archivo; // Declara un puntero a FILE
+    archivo = fopen("./lib/Log.txt", "a"); // Abre el archivo en modo append ("a")
+
+    if (archivo == NULL) { // Verifica si ocurrió algún error al abrir el archivo
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+    
     for(int i = 0; i < grupo.numPreguntas; i++){
         printf("Pregunta %d: %s\n", i+1, grupo.arrPreguntas[i].pregunta);
+        fprintf(archivo, "Preguntas mostradas.\n");
     }
 }
 

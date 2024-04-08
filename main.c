@@ -33,6 +33,7 @@ int main(){
     //Abrimos la bd
     
     int existe = sqlite3_open("./lib/Preguntas.db", &DB);
+    fprintf(archivo, "Base de datos abierta. \n");
     // //Abrimos la bd
     // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
@@ -40,6 +41,7 @@ int main(){
     if (existe != SQLITE_OK) {
          printf("Error");
          //logger con el error
+         fprintf(archivo, "Error al abrir la base de datos. \n");
          return 1;
     }
 
@@ -117,6 +119,7 @@ int main(){
                         
                         mostarPreguntas(grupoTest);
                         crearEncuesta(grupoTest);
+                        fprintf(archivo, "Test creado. \n");
                 break;
 
 			case '2':  
