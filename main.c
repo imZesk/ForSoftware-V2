@@ -47,7 +47,7 @@ int main(){
     char *sql1 = "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta where nombre = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
     char *sql2 = "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta;";
-    char *sql3 = "DELETE FROM pregunta WHERE nombre = %s;"; 
+    char *sql3; //= "DELETE FROM pregunta WHERE nombre = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
     char *sql4 = "SELECT nombre FROM pregunta;";
 
@@ -55,7 +55,7 @@ int main(){
     int contador;
     GrupoPreguntas grupoTest;
     char opcion;
-    char eliminar;
+    char eliminar[100];
     	do{
 		opcion = menuPrincipal();
 		switch(opcion){
@@ -108,9 +108,10 @@ int main(){
 	        fflush(stdout);
 	        fflush(stdin);
 
-            scanf("%c", &eliminar);
-
-            sprintf(sql3,&eliminar);
+            scanf("%s", &eliminar);
+            printf("prueba\n");
+            sprintf(sql3,"DELETE FROM pregunta WHERE nombre = %s;",&eliminar);
+            printf("prueba2\n");
 
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
