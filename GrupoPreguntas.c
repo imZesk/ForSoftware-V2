@@ -85,8 +85,7 @@ void addPregunta(GrupoPreguntas *grupo)
         fprintf(archivo, "Pregunta añadida correctamente.\n"); // Escribe en el archivo
 
         char sentencia[200];
-        sprintf(sentencia, "INSERT INTO pregunta (tipo_pregunta, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipoPreguntaText, preguntaText, NULL, NULL);
-
+        sprintf(sentencia, "INSERT INTO pregunta (nombre, tipo_pregunta, pregunta, respuesta) VALUES ('%s', '%s', '%s', '%s')", tipoPreguntaText, preguntaText, NULL, NULL);
         // Ejecutar la sentencia SQL
         existe = sqlite3_exec(DB, sentencia, 0, 0, NULL);
         if (existe != SQLITE_OK)
