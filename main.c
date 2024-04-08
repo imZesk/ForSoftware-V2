@@ -168,5 +168,6 @@ int main(){
 	}while(opcion!='0');
 
     fclose(archivo);
+    sqlite3_close(DB);
 
 }
