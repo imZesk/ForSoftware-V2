@@ -10,3 +10,5 @@ Pasos para que sqlite3 funcione:
 5- hacer click en "Nuevo" y pegar la ruta copiuada anteriormente.
 6- Aceptar hasta salir.
 7- El proyecto compila y funciona.
+
+Para compilar el proyecto hay que escribir esto: gcc *.c -o eje.exe -L./Sqlite3 -lsqlite3

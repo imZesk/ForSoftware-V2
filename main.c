@@ -47,7 +47,7 @@ int main()
         return 1;
     }
     char sql1[1000];
-    char *sql2 = "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta;";
+    char *sql2 = "SELECT nombre, pregunta, respuesta FROM pregunta;";
     char sql3[1000];
     char *sql4 = "SELECT nombre FROM pregunta;";
     char sql5[1000];
