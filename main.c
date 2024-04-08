@@ -50,6 +50,7 @@ int main()
     char *sql2 = "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta;";
     char sql3[1000];
     char *sql4 = "SELECT nombre FROM pregunta;";
+    char sql5[1000];
 
     // Menu:
     int contador;
@@ -57,6 +58,7 @@ int main()
     char opcion;
     char eliminar[100];
     char hacer[100];
+    char respuesta[100];
     do
     {
         opcion = menuPrincipal();
@@ -92,10 +94,25 @@ int main()
             fflush(stdin);
 
             scanf("%s", hacer);
-            sprintf(sql1, "SELECT pregunta FROM pregunta WHERE nombre = '%s';", hacer);
-            printf("prueba2\n");
+            sprintf(sql1, "SELECT pregunta FROM pregunta WHERE nombre LIKE '%s';", hacer);
 
             existe = sqlite3_exec(DB, sql1, callback, 0, &errMsg);
+
+            if (existe != SQLITE_OK)
+            {
+                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                sqlite3_free(errMsg);
+            }
+            printf("Responda la pregunta: ");
+
+            fflush(stdout);
+            fflush(stdin);
+
+            scanf("%s", respuesta);
+
+            sprintf(sql5, "SELECT respuesta FROM pregunta WHERE nombre LIKE '%s';", hacer);
+
+            existe = sqlite3_exec(DB, sql5, callback, 0, &errMsg);
 
             if (existe != SQLITE_OK)
             {
@@ -132,9 +149,7 @@ int main()
             fflush(stdin);
 
             scanf("%s", eliminar);
-            printf("prueba\n");
             sprintf(sql3, "DELETE FROM pregunta WHERE nombre = '%s';", eliminar);
-            printf("prueba2\n");
 
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
@@ -143,7 +158,6 @@ int main()
                 sqlite3_free(errMsg);
             }
 
-            printf("prueba3\n");
             fprintf(archivo, "Test eliminado correctamente. \n");
             break;
 
