@@ -33,7 +33,7 @@ void addPregunta(GrupoPreguntas *grupo)
     Pregunta pregunta;
 
     char preguntaText[100];
-    char tipoPreguntaText[100];
+    char tipoPreguntaText[100] = NULL;
     char respuestaText[100];
 
     printf("Ingrese la pregunta: ");
@@ -43,10 +43,10 @@ void addPregunta(GrupoPreguntas *grupo)
 
     fprintf(archivo, "Pregunta ingresada: %s. \n", preguntaText);
 
-    printf("Ingrese el tipo de pregunta: ");
+    /*printf("Ingrese el tipo de pregunta: ");
     fflush(stdout);
     fgets(tipoPreguntaText, sizeof(tipoPreguntaText), stdin);
-    fflush(stdin);
+    fflush(stdin);*/
     
     printf("Ingrese la respuesta a la pregunta: ");
     fflush(stdout);
