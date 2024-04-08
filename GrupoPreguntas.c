@@ -34,6 +34,7 @@ void addPregunta(GrupoPreguntas *grupo)
 
     char preguntaText[100];
     char tipoPreguntaText[100];
+    char respuestaText[100];
 
     printf("Ingrese la pregunta: ");
     fflush(stdout);
@@ -45,14 +46,23 @@ void addPregunta(GrupoPreguntas *grupo)
     printf("Ingrese el tipo de pregunta: ");
     fflush(stdout);
     fgets(tipoPreguntaText, sizeof(tipoPreguntaText), stdin);
+    fflush(stdin);
+    
+    printf("Ingrese la respuesta a la pregunta: ");
+    fflush(stdout);
+    fgets(respuestaText, sizeof(respuestaText), stdin);
+    fflush(stdin);
+
 
     fprintf(archivo, "Tipo de la pregunta ingresada: %s. \n", tipoPreguntaText);
+    
 
     preguntaText[strcspn(preguntaText, "\n")] = '\0';
     tipoPreguntaText[strcspn(tipoPreguntaText, "\n")] = '\0';
 
     pregunta.pregunta = strdup(preguntaText);
     pregunta.tipoPregunta = strdup(tipoPreguntaText);
+    pregunta.respuesta = strdup(respuestaText);
 
     sqlite3 *DB;
     char *errMsg = 0;
