@@ -43,6 +43,12 @@ int main(){
          return 1;
     }
 
+    char *sql1 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where x = %s;"; 
+    //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
+    char *sql2 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
+    char *sql3 = "DELETE FROM pregunta WHERE x = %s;"; 
+    //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
+
     // // Ejecuta la consulta
     // char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
 
@@ -114,9 +120,8 @@ int main(){
                 break;
 
 			case '2':  
-                        char *sql = ("SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where x = %s;", ""); 
-                        //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
-                        existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+                        
+                        existe = sqlite3_exec(DB, sql1, callback, 0, &errMsg);
     
                         if (existe != SQLITE_OK) {
                             fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
@@ -126,9 +131,9 @@ int main(){
 				break;
 
 			case '3':   
-                        char *sql = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
+                        
 
-                        existe = sqlite3_exec(DB, sql, callback, 0, &errMsg);
+                        existe = sqlite3_exec(DB, sql2, callback, 0, &errMsg);
     
                         if (existe != SQLITE_OK) {
                             fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
@@ -138,9 +143,8 @@ int main(){
 				break;
             
             case '4':
-                        char *sql = ("DELETE FROM pregunta WHERE x = %s;", ""); 
-                        //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
-                        existe = sqlite3_exec(DB, sql, 0, 0, NULL);
+
+                        existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
                         if (existe != SQLITE_OK) {
                             printf("Error al ejecutar la consulta SQL: %s\n", errMsg);
                             sqlite3_free(errMsg);
