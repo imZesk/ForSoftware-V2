@@ -61,7 +61,6 @@ void addPregunta(GrupoPreguntas * grupo){
          printf("Error");
          //logger con el error
         fprintf(archivo, "Error al abrir la base de datos. \n");
-         return 1;
     }
 
 
@@ -79,7 +78,6 @@ void addPregunta(GrupoPreguntas * grupo){
         if (existe != SQLITE_OK) {
             printf("Error al ejecutar la sentencia SQL: %s\n", sqlite3_errmsg(DB));
             fprintf(archivo, "Error al ejecutar la sentencia SQL. \n");
-            return 1;
         }
 
     }else{
