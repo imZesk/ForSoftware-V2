@@ -44,10 +44,10 @@ int main()
         return 1;
     }
 
-    char *sql1 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where x = %s;";
+    char *sql1 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta where id = %s;";
     // sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
     char *sql2 = "SELECT tipo_pregunta, pregunta, opciones, respuesta FROM pregunta;";
-    char *sql3 = "DELETE FROM pregunta WHERE x = %s;";
+    char *sql3 = "DELETE FROM pregunta WHERE id = %s;";
     // sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
 
     // Menu:
@@ -94,7 +94,7 @@ int main()
                 fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
                 sqlite3_free(errMsg);
             }
-            fprintf(archivo, "Notas visualizadas. \n");
+            fprintf(archivo, "Teses visualizadas. \n");
             break;
 
         case '4':
@@ -104,7 +104,6 @@ int main()
             {
                 printf("Error al ejecutar la consulta SQL: %s\n", errMsg);
                 sqlite3_free(errMsg);
-                return 1;
             }
             printf("prueba\n");
             fprintf(archivo, "Test eliminado correctamente. \n");
