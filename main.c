@@ -49,6 +49,7 @@ int main(){
     char *sql2 = "SELECT nombre, tipo_pregunta, pregunta, respuesta FROM pregunta;";
     char *sql3 = "DELETE FROM pregunta WHERE nombre = %s;"; 
     //sustituir la x por el parametro que pase el usuario y la "" por lo que pase el usuario
+    char *sql4 = "SELECT nombre FROM pregunta;";
 
     //Menu:
     int contador;
@@ -95,6 +96,13 @@ int main(){
             break;
 
         case '4':
+            existe = sqlite3_exec(DB, sql4, callback, 0, &errMsg);
+
+                if (existe != SQLITE_OK) {
+                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                sqlite3_free(errMsg);
+            }
+
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
             {
