@@ -7,4 +7,6 @@ typedef struct {
     char *respuesta;
 }Pregunta;
 
+void responderPregunta(Pregunta pregunta);
+
 #endif // PREGUNTA_H
