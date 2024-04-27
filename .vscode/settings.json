@@ -61,6 +61,8 @@
     "grupopreguntas.h": "c",
     "pregunta.h": "c",
     "menus.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "sqlite3.h": "c",
+    "string.h": "c"
   }
 }

@@ -1,0 +1,15 @@
+[16:23:48] Nombre de la encuesta: 8P°w ı°w(x@. 
+atos abierta. 
+[16:23:23] Test creado. 
+[16:23:23] Teses visualizadas. 
+[16:23:23] Test eliminado correctamente. 
+[16:23:23] Programa finalizado. 
+[16:23:23] Base de datos cerrada. 
+[16:23:30] Nombre de la encuesta: amen. 
+[16:23:30] Pregunta ingresada: dos
+. 
+[16:23:30] Tipo de la pregunta ingresada: $. 
+[16:23:30] Base de datos abierta. 
+[16:23:30] Pregunta a√±adida correctamente.
+[16:23:30] Base de datos cerrada.
+[16:23:48] Preguntas mostradas.

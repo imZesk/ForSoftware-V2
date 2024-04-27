@@ -3,6 +3,7 @@
 #include "Sqlite3/sqlite3.h"
 #include "GrupoPreguntas.h"
 #include "encuesta.h"
+#include <time.h>
 
 static int callback(void *data, int argc, char **argv, char **azColName)
 {
@@ -16,7 +17,8 @@ static int callback(void *data, int argc, char **argv, char **azColName)
 
 int main()
 {
-
+    time_t hora = time(NULL);
+    struct tm tm = *localtime(&hora);
     FILE *archivo;                         // Declara un puntero a FILE
     archivo = fopen("./lib/Log.txt", "w"); // Abre el archivo en modo escritura ("w")
 
@@ -26,7 +28,7 @@ int main()
         return 1;
     }
 
-    fprintf(archivo, "Archivo creado. \n");
+    fprintf(archivo, "[%d:%d:%d] Archivo creado. \n", tm.tm_hour,tm.tm_min,tm.tm_sec);
 
     sqlite3 *DB;
     char *errMsg = 0;
@@ -34,7 +36,7 @@ int main()
     // Abrimos la bd
 
     int existe = sqlite3_open("./lib/Preguntas.db", &DB);
-    fprintf(archivo, "Base de datos abierta. \n");
+    fprintf(archivo, "[%d:%d:%d] Base de datos abierta. \n", tm.tm_hour,tm.tm_min,tm.tm_sec);
     // //Abrimos la bd
     // int existe = sqlite3_open("./lib/Preguntas.db", &DB);
 
@@ -43,7 +45,7 @@ int main()
     {
         printf("Error");
         // logger con el error
-        fprintf(archivo, "Error al abrir la base de datos. \n");
+        fprintf(archivo, "[%d:%d:%d] Error al abrir la base de datos. \n", tm.tm_hour,tm.tm_min,tm.tm_sec);
         return 1;
     }
     char sql1[1000];
@@ -77,7 +79,7 @@ int main()
 
             const char *nombreEncuesta = grupoTest.nombreEncuesta;
             crearEncuesta(grupoTest, nombreEncuesta);
-            fprintf(archivo, "Test creado. \n");
+            fprintf(archivo, "[%d:%d:%d] Test creado. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
             break;
 
         case '2':
@@ -85,7 +87,7 @@ int main()
 
             if (existe != SQLITE_OK)
             {
-                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                fprintf(stderr, "[%d:%d:%d] Error en la consulta SQL: %s\n", tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
             printf("Nombre del test a hacer: ");
@@ -100,7 +102,7 @@ int main()
 
             if (existe != SQLITE_OK)
             {
-                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                fprintf(stderr, "[%d:%d:%d] Error en la consulta SQL: %s\n",tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
             printf("Responda la pregunta: ");
@@ -116,11 +118,11 @@ int main()
 
             if (existe != SQLITE_OK)
             {
-                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                fprintf(stderr, "[%d:%d:%d] Error en la consulta SQL: %s\n",tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
 
-            fprintf(archivo, "Test completado. \n");
+            fprintf(archivo, "[%d:%d:%d] Test completado. \n", tm.tm_hour,tm.tm_min,tm.tm_sec);
             break;
 
         case '3':
@@ -129,10 +131,10 @@ int main()
 
             if (existe != SQLITE_OK)
             {
-                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                fprintf(stderr, "[%d:%d:%d] Error en la consulta SQL: %s\n",tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
-            fprintf(archivo, "Teses visualizadas. \n");
+            fprintf(archivo, "[%d:%d:%d] Teses visualizadas. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
             break;
 
         case '4':
@@ -140,7 +142,7 @@ int main()
 
             if (existe != SQLITE_OK)
             {
-                fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+                fprintf(stderr, "[%d:%d:%d] Error en la consulta SQL: %s\n",tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
             printf("Nombre del test a eliminar: ");
@@ -154,26 +156,26 @@ int main()
             existe = sqlite3_exec(DB, sql3, 0, 0, NULL);
             if (existe != SQLITE_OK)
             {
-                printf("Error al ejecutar la consulta SQL: %s\n", errMsg);
+                fprintf(stderr,"Error al ejecutar la consulta SQL: %s\n",tm.tm_hour,tm.tm_min,tm.tm_sec, errMsg);
                 sqlite3_free(errMsg);
             }
 
-            fprintf(archivo, "Test eliminado correctamente. \n");
+            fprintf(archivo, "[%d:%d:%d] Test eliminado correctamente. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
             break;
 
         case '0':
             printf("Fin del programa\n");
-            fprintf(archivo, "Programa finalizado. \n");
+            fprintf(archivo, "[%d:%d:%d] Programa finalizado. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
             break;
 
         default:
             printf("ERROR, introduce de nuevo\n");
-            fprintf(archivo, "Error al introducir la orden. \n");
+            fprintf(archivo, "[%d:%d:%d] Error al introducir la orden. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
             fflush(stdout);
         }
     } while (opcion != '0');
 
     sqlite3_close(DB);
-    fprintf(archivo, "Base de datos cerrada. \n");
+    fprintf(archivo, "[%d:%d:%d] Base de datos cerrada. \n",tm.tm_hour,tm.tm_min,tm.tm_sec);
     fclose(archivo);
 }
