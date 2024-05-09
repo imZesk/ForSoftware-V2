@@ -85,6 +85,25 @@ int main(int argc, char *argv[])
 	// Closing the listening sockets (is not going to be used anymore)
 	closesocket(conn_socket);
 
+    //SEND and RECEIVE data
+	printf("Waiting for incoming messages from client... \n");
+	do {
+		int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+		if (bytes > 0) {
+			printf("Receiving message... \n");
+			printf("Data received: %s \n", recvBuff);
+
+			printf("Sending reply... \n");
+			strcpy(sendBuff, "ACK -> ");
+			strcat(sendBuff, recvBuff);
+			send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+			printf("Data sent: %s \n", sendBuff);
+
+			if (strcmp(recvBuff, "Bye") == 0)
+				break;
+		}
+	} while (1);
+
     //conexion a la base de datos
     /*sqlite3 *DB;
     char *errMsg = 0;

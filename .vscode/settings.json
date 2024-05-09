@@ -63,6 +63,8 @@
     "menus.h": "c",
     "stdlib.h": "c",
     "sqlite3.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "iostream": "cpp",
+    "ostream": "cpp"
   }
 }
