@@ -1,8 +1,5 @@
 #include <stdio.h>
-#include "menus.h"
-#include "Sqlite3/sqlite3.h"
-#include "GrupoPreguntas.h"
-#include "encuesta.h"
+//#include "./Sqlite3/sqlite3.h"
 #include <time.h>
 
 #include <winsock2.h>
@@ -89,7 +86,7 @@ int main(int argc, char *argv[])
 	closesocket(conn_socket);
 
     //conexion a la base de datos
-    sqlite3 *DB;
+    /*sqlite3 *DB;
     char *errMsg = 0;
 
     // Abrimos la bd
@@ -177,7 +174,7 @@ int main(int argc, char *argv[])
     {
         sqlite3_free(errMsg);
     }
-    sqlite3_close(DB);
+    sqlite3_close(DB);*/
 
     	// CLOSING the sockets and cleaning Winsock...
 	closesocket(comm_socket);
