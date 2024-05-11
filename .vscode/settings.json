@@ -65,6 +65,8 @@
     "sqlite3.h": "c",
     "string.h": "c",
     "iostream": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "time.h": "c",
+    "winsock2.h": "c"
   }
 }

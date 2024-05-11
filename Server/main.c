@@ -1,6 +1,6 @@
 #include <stdio.h>
-//#include "./Sqlite3/sqlite3.h"
-#include <time.h>
+#include <time.h>  
+#include "sqlite3.h" 
 
 #include <winsock2.h>
 
@@ -79,27 +79,41 @@ int main(int argc, char *argv[])
 		WSACleanup();
 		return -1;
 	}
-	printf("Conexión entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr),
-			ntohs(client.sin_port));
+	printf("Conexion entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 
-	// Closing the listening sockets (is not going to be used anymore)
-	closesocket(conn_socket);
+
+    sqlite3 *DB;
+    char *errMsg = 0;
+
+    // Abrimos la bd
+    int existe = sqlite3_open("./lib/servidor.db", &DB);
+    // //Confirmamos que se abre correctamente
+    if (existe != SQLITE_OK)
+    {
+        printf("Error");
+        // logger con el error
+        return 1;
+    }
+    printf("base de datos abierta\n");
 
     //SEND and RECEIVE data
-	printf("Waiting for incoming messages from client... \n");
+	printf("Esperando mensajes entrantes del cliente... \n");
 	do {
 		int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 		if (bytes > 0) {
-			printf("Receiving message... \n");
-			printf("Data received: %s \n", recvBuff);
+			printf("Mensaje recibido... \n");
+			printf("Datos recibidos: %s \n", recvBuff);
+            if (strcmp(recvBuff, "Visualizar test.") == 0){
 
-			printf("Sending reply... \n");
+            }
+
+			printf("Enviando respuesta... \n");
 			strcpy(sendBuff, "ACK -> ");
 			strcat(sendBuff, recvBuff);
 			send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-			printf("Data sent: %s \n", sendBuff);
+			printf("Datos enviados: %s \n", sendBuff);
 
-			if (strcmp(recvBuff, "Bye") == 0)
+			if (strcmp(recvBuff, "Fin") == 0)
 				break;
 		}
 	} while (1);

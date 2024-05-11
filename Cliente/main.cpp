@@ -1,6 +1,7 @@
 #include <iostream>
 #include <winsock2.h>
 #include <cstring>
+#include "menus.h"
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -14,23 +15,23 @@ int main(int argc, char *argv[])
     struct sockaddr_in server;
     char sendBuff[512], recvBuff[512];
 
-    cout << "\nInitialising Winsock...\n";
+    cout << endl<<"Inicializando Winsock..."<<endl;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        cout << "Failed. Error Code : " << WSAGetLastError() << endl;
+        cout << "Fallo. Codigo de error : " << WSAGetLastError() << endl;
         return -1;
     }
 
-    cout << "Initialised."<<endl;
+    cout << "Inicializado."<<endl;
 
     //SOCKET creation
 	if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
-		cout << "Could not create socket :"<<WSAGetLastError()<<endl;
+		cout << "No se ha podido crear el socket :"<<WSAGetLastError()<<endl;
 		WSACleanup();
 		return -1;
 	}
 
-	cout<<"Socket created."<<endl;
+	cout<<"Socket creado."<<endl;
 
     server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	server.sin_family = AF_INET;
@@ -38,36 +39,83 @@ int main(int argc, char *argv[])
 
     //CONNECT to remote server
 	if (connect(s, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR) {
-		cout<<"Connection error: "<< WSAGetLastError()<<endl;
+		cout<<"Error de conexion: "<< WSAGetLastError()<<endl;
 		closesocket(s);
 		WSACleanup();
 		return -1;
 	}
-    cout<<"Connection stablished with: "<<inet_ntoa(server.sin_addr)<<" ("
+    cout<<"Conexion establecida con: "<<inet_ntoa(server.sin_addr)<<" ("
     <<ntohs(server.sin_port)<<")"<<endl;
 
-    // SEND and RECEIVE data
-	cout<<"Sending message 1..."<<endl;
-    strcpy(sendBuff, "Hello, server.");
-	send(s, sendBuff, sizeof(sendBuff), 0);
+	menuPrincipal();
 
-	cout<<"Receiving message 1..."<<endl;
-	recv(s, recvBuff, sizeof(recvBuff), 0);
-	cout<<"Data received: "<< recvBuff<<endl;
+	// Menu:
+    int contador;
+    char opcion;
+    char eliminar[100];
+    char hacer[100];
+    char respuesta[100];
+    do
+    {
+        opcion = menuPrincipal();
+        switch (opcion)
+        {
+        case '1':
+			cout<<"Envio del mensaje 1..."<<endl;
+    		strcpy(sendBuff, "Crear test.");
+			send(s, sendBuff, sizeof(sendBuff), 0);
 
-	cout<<"Sending message 2..."<<endl;
-	strcpy(sendBuff, "Hello again.");
-	send(s, sendBuff, sizeof(sendBuff), 0);
-	cout<<"Data sent: "<<sendBuff<<endl;
+			cout<<"Recepcion del mensaje 1..."<<endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout<<"Datos recibidos: "<< recvBuff<<endl;
+            break;
 
-	cout<<"Receiving message 2..."<<endl;
-	recv(s, recvBuff, sizeof(recvBuff), 0);
-	cout<<"Data received: "<<recvBuff<<endl;
+        case '2':
+			cout<<"Envio del mensaje 1..."<<endl;
+    		strcpy(sendBuff, "Realizar test.");
+			send(s, sendBuff, sizeof(sendBuff), 0);
 
-	cout<<"Sending last message..."<<endl;
-	strcpy(sendBuff, "Bye");
-	send(s, sendBuff, sizeof(sendBuff), 0);
-	cout<<"Data sent: "<<sendBuff<<endl;
+			cout<<"Recepcion del mensaje 1..."<<endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout<<"Datos recibidos: "<< recvBuff<<endl;
+            break;
+
+        case '3':
+			cout<<"Envio del mensaje 1..."<<endl;
+    		strcpy(sendBuff, "Visualizar test.");
+			send(s, sendBuff, sizeof(sendBuff), 0);
+
+			cout<<"Recepcion del mensaje 1..."<<endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout<<"Datos recibidos: "<< recvBuff<<endl;
+            break;
+
+        case '4':
+			cout<<"Envio del mensaje 1..."<<endl;
+    		strcpy(sendBuff, "Eliminar test.");
+			send(s, sendBuff, sizeof(sendBuff), 0);
+
+			cout<<"Recepcion del mensaje 1..."<<endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout<<"Datos recibidos: "<< recvBuff<<endl;
+            break;
+
+        case '0':
+			cout<<"Envio del mensaje 1..."<<endl;
+    		strcpy(sendBuff, "Fin.");
+			send(s, sendBuff, sizeof(sendBuff), 0);
+
+			cout<<"Recepcion del mensaje 1..."<<endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout<<"Datos recibidos: "<< recvBuff<<endl;
+
+            cout<<"Fin del programa"<<endl;
+            break;
+
+        default:
+            cout<<"ERROR, introduce de nuevo"<<endl;
+        }
+    } while (opcion != '0');
 
     // CLOSING the socket and cleaning Winsock...
     closesocket(s);
