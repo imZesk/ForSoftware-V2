@@ -11,4 +11,7 @@ Pasos para que sqlite3 funcione:
 6- Aceptar hasta salir.
 7- El proyecto compila y funciona.
 
-Para compilar el proyecto hay que escribir esto: gcc *.c -o eje.exe -L../Sqlite3 -lsqlite3 -lws2_32
+Para compilar el proyecto hay que escribir esto: 
+
+server: gcc *.c -o server.exe -L../Sqlite3 -lsqlite3 -lws2_32
+cliente: g++ *.cpp -o cliente.exe -lws2_32
