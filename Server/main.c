@@ -17,6 +17,29 @@ static int callback(void *data, int argc, char **argv, char **azColName)
     return 0;
 }
 
+int abrirBD(sqlite3 *DB){
+    // Abrimos la bd
+    int existe = sqlite3_open("../lib/servidor.db", &DB);
+    // //Confirmamos que se abre correctamente
+    if (existe != SQLITE_OK)
+    {
+        printf("Error al abrir la base de datos\n");
+        // logger con el error
+    }
+    return existe;
+}
+
+void cerrarBD(sqlite3 *DB){
+    sqlite3_close(DB);
+}
+
+char* visualizar_test(int existe, sqlite3 *DB, char *errMsg){
+    printf("Visualiza\n");
+    //char *sql2 = "SELECT nombre, pregunta, respuesta FROM pregunta;";
+    //existe = sqlite3_exec(DB, sql2, callback, 0, &errMsg);
+    return "Funciona";
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -87,16 +110,11 @@ int main(int argc, char *argv[])
 
     sqlite3 *DB;
     char *errMsg = 0;
+    int existe;
+    char *visualizado;
 
-    // Abrimos la bd
-    int existe = sqlite3_open("../lib/servidor.db", &DB);
-    // //Confirmamos que se abre correctamente
-    if (existe != SQLITE_OK)
-    {
-        printf("Error");
-        // logger con el error
-        return 1;
-    }
+    existe=abrirBD(DB);
+    
     printf("base de datos abierta\n");
 
     //SEND and RECEIVE data
@@ -107,7 +125,7 @@ int main(int argc, char *argv[])
 			printf("Mensaje recibido... \n");
 			printf("Datos recibidos: %s \n", recvBuff);
             if (strcmp(recvBuff, "Visualizar test.") == 0){
-                char visualizado=visualizar_test();
+                visualizado=visualizar_test(existe,DB,errMsg);
                 printf("Enviando respuesta... \n");
 			    strcpy(sendBuff, visualizado);
 			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
@@ -121,9 +139,15 @@ int main(int argc, char *argv[])
 			printf("Datos enviados: %s \n", sendBuff);
 
 			if (strcmp(recvBuff, "Fin") == 0)
+                cerrarBD(DB);
 				break;
 		}
 	} while (1);
+
+    closesocket(comm_socket);
+	WSACleanup();
+    return 0;
+}
 
     //conexion a la base de datos
     /*sqlite3 *DB;
@@ -217,11 +241,5 @@ int main(int argc, char *argv[])
     sqlite3_close(DB);*/
 
     	// CLOSING the sockets and cleaning Winsock...
-	closesocket(comm_socket);
-	WSACleanup();
-    return 0;
-}
 
-char visualizar_test(){
 
-}
