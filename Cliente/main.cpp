@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
         case '0':
 			cout<<"Envio del mensaje 1..."<<endl;
-    		strcpy(sendBuff, "Fin.");
+    		strcpy(sendBuff, "Fin");
 			send(s, sendBuff, sizeof(sendBuff), 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;

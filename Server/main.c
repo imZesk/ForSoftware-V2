@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>  
-#include "sqlite3.h" 
+#include "../Sqlite3/sqlite3.h" 
 
 #include <winsock2.h>
 
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	SOCKET comm_socket;
 	struct sockaddr_in server;
 	struct sockaddr_in client;
-	char sendBuff[512], recvBuff[512];
+	char sendBuff[1000], recvBuff[1000];
 
 	printf("\nInicializando Winsock...\n");
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -81,12 +81,15 @@ int main(int argc, char *argv[])
 	}
 	printf("Conexion entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 
+    // Closing the listening sockets (is not going to be used anymore)
+	closesocket(conn_socket);
+
 
     sqlite3 *DB;
     char *errMsg = 0;
 
     // Abrimos la bd
-    int existe = sqlite3_open("./lib/servidor.db", &DB);
+    int existe = sqlite3_open("../lib/servidor.db", &DB);
     // //Confirmamos que se abre correctamente
     if (existe != SQLITE_OK)
     {
@@ -104,7 +107,11 @@ int main(int argc, char *argv[])
 			printf("Mensaje recibido... \n");
 			printf("Datos recibidos: %s \n", recvBuff);
             if (strcmp(recvBuff, "Visualizar test.") == 0){
-
+                char visualizado=visualizar_test();
+                printf("Enviando respuesta... \n");
+			    strcpy(sendBuff, visualizado);
+			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+			    printf("Datos enviados: %s \n", sendBuff);
             }
 
 			printf("Enviando respuesta... \n");
@@ -213,4 +220,8 @@ int main(int argc, char *argv[])
 	closesocket(comm_socket);
 	WSACleanup();
     return 0;
+}
+
+char visualizar_test(){
+
 }
