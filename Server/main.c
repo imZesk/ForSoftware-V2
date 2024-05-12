@@ -35,8 +35,8 @@ void cerrarBD(sqlite3 *DB){
 
 char* visualizar_test(int existe, sqlite3 *DB, char *errMsg){
     printf("Visualiza\n");
-    //char *sql2 = "SELECT nombre, pregunta, respuesta FROM pregunta;";
-    //existe = sqlite3_exec(DB, sql2, callback, 0, &errMsg);
+    char *sql2 = "SELECT nombre, cant_preg FROM test;";
+    existe = sqlite3_exec(DB, sql2, callback, 0, &errMsg);
     return "Funciona";
 }
 
@@ -130,18 +130,21 @@ int main(int argc, char *argv[])
 			    strcpy(sendBuff, visualizado);
 			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 			    printf("Datos enviados: %s \n", sendBuff);
-            }
-
-			printf("Enviando respuesta... \n");
-			strcpy(sendBuff, "ACK -> ");
-			strcat(sendBuff, recvBuff);
-			send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-			printf("Datos enviados: %s \n", sendBuff);
-
-			if (strcmp(recvBuff, "Fin") == 0)
+            }else if (strcmp(recvBuff, "Fin") == 0){
+                strcpy(sendBuff, "ACK -> ");
+			    strcat(sendBuff, recvBuff);
+			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+			    printf("Datos enviados: %s \n", sendBuff);
                 cerrarBD(DB);
-				break;
-		}
+                break;
+            }else{
+                printf("Enviando respuesta... \n");
+			    strcpy(sendBuff, "ACK -> ");
+			    strcat(sendBuff, recvBuff);
+			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+			    printf("Datos enviados: %s \n", sendBuff);
+            }
+        }
 	} while (1);
 
     closesocket(comm_socket);

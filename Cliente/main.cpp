@@ -2,6 +2,7 @@
 #include <winsock2.h>
 #include <cstring>
 #include "menus.h"
+#include <limits>
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -58,12 +59,13 @@ int main(int argc, char *argv[])
     do
     {
         opcion = menuPrincipal();
+		
         switch (opcion)
         {
         case '1':
 			cout<<"Envio del mensaje 1..."<<endl;
     		strcpy(sendBuff, "Crear test.");
-			send(s, sendBuff, sizeof(sendBuff), 0);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
         case '2':
 			cout<<"Envio del mensaje 1..."<<endl;
     		strcpy(sendBuff, "Realizar test.");
-			send(s, sendBuff, sizeof(sendBuff), 0);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -83,7 +85,7 @@ int main(int argc, char *argv[])
         case '3':
 			cout<<"Envio del mensaje 1..."<<endl;
     		strcpy(sendBuff, "Visualizar test.");
-			send(s, sendBuff, sizeof(sendBuff), 0);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -93,7 +95,7 @@ int main(int argc, char *argv[])
         case '4':
 			cout<<"Envio del mensaje 1..."<<endl;
     		strcpy(sendBuff, "Eliminar test.");
-			send(s, sendBuff, sizeof(sendBuff), 0);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
         case '0':
 			cout<<"Envio del mensaje 1..."<<endl;
     		strcpy(sendBuff, "Fin");
-			send(s, sendBuff, sizeof(sendBuff), 0);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout<<"Recepcion del mensaje 1..."<<endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
@@ -115,6 +117,7 @@ int main(int argc, char *argv[])
         default:
             cout<<"ERROR, introduce de nuevo"<<endl;
         }
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
     } while (opcion != '0');
 
     // CLOSING the socket and cleaning Winsock...
