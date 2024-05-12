@@ -9,18 +9,20 @@
 
 static int callback(void *data, int argc, char **argv, char **azColName) {
     char *buffer = (char *)data;
-    int offset = 0; // Offset para escribir en el búfer
 
-    // Iterar sobre las columnas de la fila
+    // Iterar sobre las columnas
     for (int i = 0; i < argc; i++) {
-        // Concatenar el valor de la columna al búfer
-        offset += snprintf(buffer + offset, 1024 - offset, "%s=%s", azColName[i], argv[i]);
-        if (i < argc - 1) {
-            // Si no es la última columna, agregar una coma
-            offset += snprintf(buffer + offset, 1024 - offset, ", ");
+        // Verificar si el buffer está vacío
+        if (buffer[0] != '\0') {
+            // Concatenar una coma si no es el primer elemento de la fila
+            strcat(buffer, ",");
         }
+        // Concatenar el valor de la columna al buffer
+        strcat(buffer, argv[i]);
     }
-    strcat(buffer, "\n"); // Agregar nueva línea al final de la fila
+    // Concatenar un punto y coma al final de la fila
+    strcat(buffer, ";");
+
     return 0;
 }
 
