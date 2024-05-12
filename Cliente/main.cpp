@@ -107,11 +107,15 @@ int main(int argc, char *argv[])
 
 		case '5':
 			cout << "Ingrese el tipo de pregunta (1, 2 o 3): ";
-			cin.getline(hacer, sizeof(hacer));
+			cin >> hacer;
+			cin.ignore();
+
 			cout << "Ingrese la pregunta: ";
 			cin.getline(sendBuff, sizeof(sendBuff));
+
 			cout << "Ingrese las opciones (opcional): ";
 			cin.getline(eliminar, sizeof(eliminar));
+
 			cout << "Ingrese la respuesta: ";
 			cin.getline(respuesta, sizeof(respuesta));
 
