@@ -7,21 +7,24 @@
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
+#define MAX_BUFFER_SIZE 10000;
+
 static int callback(void *data, int argc, char **argv, char **azColName) {
     char *buffer = (char *)data;
+    size_t tam_buffer = strlen(buffer);
+    size_t espacio_restante = MAX_BUFFER_SIZE - tam_buffer - 1; // Leave room for null terminator
 
-    // Iterar sobre las columnas
     for (int i = 0; i < argc; i++) {
-        // Verificar si el buffer está vacío
-        if (buffer[0] != '\0') {
-            // Concatenar una coma si no es el primer elemento de la fila
-            strcat(buffer, ",");
+        if (tam_buffer > 0 && espacio_restante > 1) {
+            strncat(buffer, ",", espacio_restante);
+            tam_buffer++; // Account for added comma
+            espacio_restante--;
         }
-        // Concatenar el valor de la columna al buffer
-        strcat(buffer, argv[i]);
+        strncpy(buffer + tam_buffer, argv[i], espacio_restante);
+        tam_buffer += strlen(argv[i]);
+        espacio_restante -= strlen(argv[i]);
     }
-    // Concatenar un punto y coma al final de la fila
-    strcat(buffer, ";");
+    strncat(buffer, ";", espacio_restante);
 
     return 0;
 }
@@ -45,21 +48,16 @@ void cerrarBD(sqlite3 *DB){
 char* visualizar_test(sqlite3 *DB, char *errMsg) {
     printf("Visualiza\n");
     char *data = (char *)malloc(sizeof(char) * 1024);
-    if (data == NULL) {
-        fprintf(stderr, "Error: No se pudo asignar memoria.\n");
-        return NULL;
-    }
-    memset(data, 0, 1024); // Inicializar el búfer con ceros
-
     char *sql2 = "SELECT nombre, cant_preg FROM test;";
-    int existe = sqlite3_exec(DB, sql2, callback, (void *)data, &errMsg);
-    if (existe != SQLITE_OK) {
-        printf("Error en la consulta SQL: %s\n", errMsg);
+    int rc = sqlite3_exec(DB, sql2, callback, (void *)data, &errMsg);
+    if (rc!= SQLITE_OK) {
+        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+        sqlite3_free(errMsg);
         free(data);
         return NULL;
     }
     printf("Datos de la tabla test:\n%s\n", data);
-    return data; // Devuelve el resultado de la consulta SQL
+    return data;
 }
 
 void crearPregunta(sqlite3 *DB, char *errMsg, char *recvBuff) {
