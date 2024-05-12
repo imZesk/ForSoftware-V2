@@ -7,36 +7,20 @@
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
-static int callback2(void *data, int argc, char **argv, char **azColName) {
+static int callback(void *data, int argc, char **argv, char **azColName) {
     char *buffer = (char *)data;
+    int offset = 0; // Offset para escribir en el búfer
 
-    // Iterar sobre las columnas
+    // Iterar sobre las columnas de la fila
     for (int i = 0; i < argc; i++) {
-        // Verificar si el buffer está vacío
-        if (buffer[0] != '\0') {
-            // Concatenar una coma si no es el primer elemento de la fila
-            strcat(buffer, ",");
-        }
-        // Concatenar el valor de la columna al buffer
-        strcat(buffer, argv[i]);
-    }
-    // Concatenar un punto y coma al final de la fila
-    strcat(buffer, ";");
-
-    return 0;
-}
-
-static int callback(void *data, int argc, char **argv, char **azColName)
-{
-    char *buffer = (char *)data;
-    for (int i = 0; i < argc; i++)
-    {
-        strcat(buffer, argv[i]);
+        // Concatenar el valor de la columna al búfer
+        offset += snprintf(buffer + offset, 1024 - offset, "%s=%s", azColName[i], argv[i]);
         if (i < argc - 1) {
-            strcat(buffer, ",");
+            // Si no es la última columna, agregar una coma
+            offset += snprintf(buffer + offset, 1024 - offset, ", ");
         }
     }
-    strcat(buffer, ";");
+    strcat(buffer, "\n"); // Agregar nueva línea al final de la fila
     return 0;
 }
 
@@ -56,37 +40,24 @@ void cerrarBD(sqlite3 *DB){
     sqlite3_close(DB);
 }
 
-char* visualizar_test(int existe, sqlite3 *DB, char *errMsg){
+char* visualizar_test(sqlite3 *DB, char *errMsg) {
     printf("Visualiza\n");
     char *data = (char *)malloc(sizeof(char) * 1024);
-    char *sql2 = "SELECT nombre, cant_preg FROM test;";
-    existe = sqlite3_exec(DB, sql2, callback, 0, &errMsg);
-    if (existe != SQLITE_OK) {
-        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+    if (data == NULL) {
+        fprintf(stderr, "Error: No se pudo asignar memoria.\n");
         return NULL;
     }
-    printf("Datos de la tabla test:\n%s\n", data);
-    return "Funciona";
-}
-
-char* visualizar_test2(int *existe,sqlite3 *DB, char *errMsg) {
-    printf("Visualiza\n");
-    char *data = (char *)malloc(sizeof(char) * 1024);
-    if (!data) {
-        printf("Error: No se pudo asignar memoria\n");
-        return NULL;
-    }
-    data[0] = '\0'; // Inicializar el buffer de datos
+    memset(data, 0, 1024); // Inicializar el búfer con ceros
 
     char *sql2 = "SELECT nombre, cant_preg FROM test;";
-    *existe = sqlite3_exec(DB, sql2, callback2, (void *)data, &errMsg);
+    int existe = sqlite3_exec(DB, sql2, callback, (void *)data, &errMsg);
     if (existe != SQLITE_OK) {
-        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
+        printf("Error en la consulta SQL: %s\n", errMsg);
         free(data);
         return NULL;
     }
     printf("Datos de la tabla test:\n%s\n", data);
-    return data;
+    return data; // Devuelve el resultado de la consulta SQL
 }
 
 int main(int argc, char *argv[])
@@ -174,11 +145,11 @@ int main(int argc, char *argv[])
 			printf("Mensaje recibido... \n");
 			printf("Datos recibidos: %s \n", recvBuff);
             if (strcmp(recvBuff, "Visualizar test.") == 0){
-                visualizado=visualizar_test2(&existe,DB,errMsg);
+                visualizado = visualizar_test(DB, errMsg);
                 printf("Enviando respuesta... \n");
-			    strcpy(sendBuff, visualizado);
-			    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-			    printf("Datos enviados: %s \n", sendBuff);
+                strcpy(sendBuff, visualizado);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
             }else if (strcmp(recvBuff, "Fin") == 0){
                 strcpy(sendBuff, "ACK -> ");
 			    strcat(sendBuff, recvBuff);
@@ -196,6 +167,7 @@ int main(int argc, char *argv[])
         }
 	} while (1);
 
+    free(visualizado);
     closesocket(comm_socket);
 	WSACleanup();
     return 0;
