@@ -62,6 +62,27 @@ char* visualizar_test(sqlite3 *DB, char *errMsg) {
     return data; // Devuelve el resultado de la consulta SQL
 }
 
+void crearPregunta(sqlite3 *DB, char *errMsg, char *recvBuff) {
+    char *tipo_pregunta = strtok(recvBuff, ",");
+    char *pregunta = strtok(NULL, ",");
+    char *opciones = strtok(NULL, ",");
+    char *respuesta = strtok(NULL, ",");
+
+    // Validar el tipo de pregunta (solo puede ser 1, 2 o 3)
+    if (strcmp(tipo_pregunta, "1") == 0 || strcmp(tipo_pregunta, "2") == 0 || strcmp(tipo_pregunta, "3") == 0) {
+        char sql[512];
+        sprintf(sql, "INSERT INTO preguntas (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo_pregunta, pregunta, opciones, respuesta);
+        int existe = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
+        if (existe != SQLITE_OK) {
+            printf("Error en la consulta SQL: %s\n", errMsg);
+        } else {
+            printf("Pregunta creada exitosamente.\n");
+        }
+    } else {
+        printf("Tipo de pregunta invalido. Solo puede ser 1, 2 o 3.\n");
+    }
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -150,6 +171,11 @@ int main(int argc, char *argv[])
                 visualizado = visualizar_test(DB, errMsg);
                 printf("Enviando respuesta... \n");
                 strcpy(sendBuff, visualizado);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
+            }else if (strcmp(recvBuff, "Crear Pregunta.") == 0) {
+                crearPregunta(DB, errMsg, recvBuff);
+                strcpy(sendBuff, "Pregunta creada exitosamente.");
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }else if (strcmp(recvBuff, "Fin") == 0){
