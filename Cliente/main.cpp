@@ -3,11 +3,41 @@
 #include <cstring>
 #include "menus.h"
 #include <limits>
+#include <sstream>
+#include <string>
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
 using namespace std;
+
+void separarPalabras(const char *cadena) {
+    stringstream ss(cadena);
+    string grupo;
+    
+    // Iterar sobre cada grupo separado por punto y coma
+    while (getline(ss, grupo, ';')) {
+        stringstream grupo_ss(grupo);
+        string palabra;
+        int contador = 0;
+        
+        // Iterar sobre cada palabra en el grupo separado por coma
+        while (getline(grupo_ss, palabra, ',')) {
+            // Imprimir cada palabra en una fila diferente
+            if (contador == 0) {
+                cout << "Nombre: " << palabra << endl;
+            } else if (contador == 1) {
+                cout << "Cantidad de preguntas: " << palabra << endl;
+            } else {
+                cout << palabra << endl;
+            }
+            contador++;
+        }
+        
+        // Imprimir una línea en blanco entre grupos
+        cout << endl;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -93,6 +123,9 @@ int main(int argc, char *argv[])
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
+			cout << endl;
+			cout<< "Teses: "<<endl;
+			separarPalabras(recvBuff);
 			break;
 
 		case '4':
