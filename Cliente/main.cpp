@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
 	char opcion;
 	char eliminar[100];
 	char hacer[100];
+	char pregunta[100];
 	char respuesta[100];
 	do
 	{
@@ -150,12 +151,16 @@ int main(int argc, char *argv[])
 			break;
 
 		case '5':
+			cout << "Envio del mensaje 1..." << endl;
+			strcpy(sendBuff, "Crear Pregunta.");
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
 			cout << "Ingrese el tipo de pregunta (1, 2 o 3): ";
 			cin >> hacer;
 			cin.ignore();
 
 			cout << "Ingrese la pregunta: ";
-			cin.getline(sendBuff, sizeof(sendBuff));
+			cin.getline(pregunta, sizeof(pregunta));
 
 			cout << "Ingrese las opciones (opcional): ";
 			cin.getline(eliminar, sizeof(eliminar));
@@ -166,11 +171,9 @@ int main(int argc, char *argv[])
 			// Validar el tipo de pregunta (solo puede ser 1, 2 o 3)
 			if (strcmp(hacer, "1") == 0 || strcmp(hacer, "2") == 0 || strcmp(hacer, "3") == 0)
 			{
-				// Formatear el mensaje y enviarlo al servidor
-				strcpy(sendBuff, "Crear Pregunta.");
 				strcat(sendBuff, hacer);
 				strcat(sendBuff, ",");
-				strcat(sendBuff, sendBuff);
+				strcat(sendBuff, pregunta);
 				strcat(sendBuff, ",");
 				strcat(sendBuff, eliminar);
 				strcat(sendBuff, ",");
