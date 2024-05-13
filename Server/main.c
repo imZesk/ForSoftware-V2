@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <time.h>  
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
 #include "../Sqlite3/sqlite3.h" 
 
 #include <winsock2.h>
@@ -7,7 +9,7 @@
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
-#define MAX_BUFFER_SIZE 10000;
+#define MAX_BUFFER_SIZE 1024
 
 static int callback(void *data, int argc, char **argv, char **azColName) {
     char *buffer = (char *)data;
@@ -33,7 +35,7 @@ int callback2(void *NotUsed, int argc, char **argv, char **azColName) {
     return 0;
 }
 
-int abrirBD(sqlite3 *DB){
+void abrirBD(sqlite3 *DB){
     // Abrimos la bd
     int existe = sqlite3_open("../lib/servidor.db", &DB);
     // //Confirmamos que se abre correctamente
@@ -42,7 +44,6 @@ int abrirBD(sqlite3 *DB){
         printf("Error al abrir la base de datos\n");
         // logger con el error
     }
-    return existe;
 }
 
 void cerrarBD(sqlite3 *DB){
@@ -63,6 +64,63 @@ char* visualizar_test(sqlite3 *DB, char *errMsg) {
     strcpy(data, "Geo,3;Mate,4;");
     printf("Datos de la tabla test:\n%s\n", data);
     return data;
+}
+
+char* visualizar_tests(sqlite3 *db) {
+    sqlite3_stmt *stmt;
+
+    char sql[] = "SELECT nombre, cant_preg FROM test";
+
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+        printf("Error preparing statement (SELECT)\n");
+        printf("%s\n", sqlite3_errmsg(db));
+        return "Error preparando la declaracion\n";
+    }
+
+    printf("SQL query prepared (SELECT)\n");
+
+    char *teses = (char *)malloc(MAX_BUFFER_SIZE);
+    if (teses == NULL) {
+        printf("Error: Unable to allocate memory for teses\n");
+        return NULL;
+    }
+    memset(teses, 0, MAX_BUFFER_SIZE);
+
+    char nombre[100];
+    int cant_preg;
+    int first_row = 1;
+
+    printf("\n");
+    printf("\n");
+    printf("Mostrando tests:\n");
+    do {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            strcpy(nombre, (char *)sqlite3_column_text(stmt, 0));
+            cant_preg = sqlite3_column_int(stmt, 1);
+            if (first_row) {
+                sprintf(teses, "%s,%d", nombre, cant_preg);
+                first_row = 0;
+            } else {
+                sprintf(teses, "%s;%s,%d", teses, nombre, cant_preg);
+            }
+        }
+    } while (result == SQLITE_ROW);
+
+    printf("Teses: %s\n", teses);
+
+    result = sqlite3_finalize(stmt);
+    if (result != SQLITE_OK) {
+        printf("Error finalizing statement (SELECT)\n");
+        printf("%s\n", sqlite3_errmsg(db));
+        free(teses);
+        return NULL;
+    }
+
+    printf("Prepared statement finalized (SELECT)\n");
+
+    return teses;
 }
 
 void eliminar_test(char* eliminar, sqlite3 *DB, char *errMsg) {
@@ -170,10 +228,9 @@ int main(int argc, char *argv[])
 
     sqlite3 *DB;
     char *errMsg = 0;
-    int existe;
     char *visualizado;
 
-    existe=abrirBD(DB);
+    abrirBD(DB);
     
     printf("base de datos abierta\n");
 
@@ -185,7 +242,7 @@ int main(int argc, char *argv[])
 			printf("Mensaje recibido... \n");
 			printf("Datos recibidos: %s \n", recvBuff);
             if (strcmp(recvBuff, "Visualizar test.") == 0){
-                visualizado = visualizar_test(DB, errMsg);
+                visualizado = visualizar_tests(DB);
                 printf("Enviando respuesta... \n");
                 strcpy(sendBuff, visualizado);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
@@ -197,13 +254,24 @@ int main(int argc, char *argv[])
                 printf("Datos enviados: %s \n", sendBuff);
             }else if (strcmp(recvBuff, "Eliminar test.") == 0) {
                 visualizado = visualizar_test(DB, errMsg);
-                strcpy(sendBuff, visualizado);
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                printf("Datos enviados: %s \n", sendBuff);
+                size_t visualizado_len = strlen(visualizado);
+
+                // Envía solo la cantidad de datos necesarios
+                send(comm_socket, visualizado, visualizado_len, 0);
+                printf("Datos enviados: %s \n", visualizado);
+
+                memset(recvBuff, 0, sizeof(recvBuff));
+    
                 recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                eliminar_test(recvBuff,DB,errMsg);
+                printf("Datos recibidos: %s \n", recvBuff);
+    
+                eliminar_test(recvBuff, DB, errMsg);
+
                 strcpy(sendBuff, "Test eliminado correctamente");
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                strcat(sendBuff, "\0"); // Añade un carácter nulo al final de la cadena
+                
+                // Envía solo la cantidad de datos necesarios
+                send(comm_socket, sendBuff, strlen(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }else if (strcmp(recvBuff, "Fin") == 0){
                 strcpy(sendBuff, "ACK -> ");
