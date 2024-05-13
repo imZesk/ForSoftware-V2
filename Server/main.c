@@ -29,6 +29,10 @@ static int callback(void *data, int argc, char **argv, char **azColName) {
     return 0;
 }
 
+int callback2(void *NotUsed, int argc, char **argv, char **azColName) {
+    return 0;
+}
+
 int abrirBD(sqlite3 *DB){
     // Abrimos la bd
     int existe = sqlite3_open("../lib/servidor.db", &DB);
@@ -48,8 +52,8 @@ void cerrarBD(sqlite3 *DB){
 char* visualizar_test(sqlite3 *DB, char *errMsg) {
     printf("Visualiza\n");
     char *data = (char *)malloc(sizeof(char) * 1024);
-    char *sql2 = "SELECT nombre, cant_preg FROM test;";
-    int rc = sqlite3_exec(DB, sql2, callback, (void *)data, &errMsg);
+    char *sql1 = "SELECT nombre, cant_preg FROM test;";
+    int rc = sqlite3_exec(DB, sql1, callback, (void *)data, &errMsg);
     /*if (rc!= SQLITE_OK) {
         fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
         sqlite3_free(errMsg);
@@ -59,6 +63,20 @@ char* visualizar_test(sqlite3 *DB, char *errMsg) {
     strcpy(data, "Geo,3;Mate,4;");
     printf("Datos de la tabla test:\n%s\n", data);
     return data;
+}
+
+void eliminar_test(char* eliminar, sqlite3 *DB, char *errMsg) {
+    printf("Elimina\n");
+    char sql[100];
+    sprintf(sql, "DELETE FROM test WHERE nombre = '%s';", eliminar);
+    
+    int rc = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error ejecutando la sentencia SQL: %s\n", errMsg);
+        sqlite3_free(errMsg);
+    } else {
+        printf("Test eliminado correctamente.\n");
+    }
 }
 
 void crearPregunta(sqlite3 *DB, char *errMsg, char *recvBuff) {
@@ -175,6 +193,16 @@ int main(int argc, char *argv[])
             }else if (strcmp(recvBuff, "Crear Pregunta.") == 0) {
                 crearPregunta(DB, errMsg, recvBuff);
                 strcpy(sendBuff, "Pregunta creada exitosamente.");
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
+            }else if (strcmp(recvBuff, "Eliminar test.") == 0) {
+                visualizado = visualizar_test(DB, errMsg);
+                strcpy(sendBuff, visualizado);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
+                recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                eliminar_test(recvBuff,DB,errMsg);
+                strcpy(sendBuff, "Test eliminado correctamente");
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }else if (strcmp(recvBuff, "Fin") == 0){

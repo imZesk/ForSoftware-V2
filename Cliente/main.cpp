@@ -136,6 +136,17 @@ int main(int argc, char *argv[])
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
+			cout << endl;
+			cout<< "Teses: "<<endl;
+			separarPalabras(recvBuff);
+			cout << "Nombre del test a eliminar: ";
+			cin >> eliminar;
+			cout << endl;
+			strcpy(sendBuff, eliminar);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			cout << "Recepcion del mensaje 2..." << endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout << "Datos recibidos: " << recvBuff << endl;
 			break;
 
 		case '5':
