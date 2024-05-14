@@ -96,7 +96,9 @@ int main(int argc, char *argv[])
 	char opcion;
 	char eliminar[100];
 	char hacer[100];
+	char tipo[10];
 	char pregunta[100];
+	char opciones[100];
 	char respuesta[100];
 	do
 	{
@@ -163,45 +165,45 @@ int main(int argc, char *argv[])
 			strcpy(sendBuff, "Crear Pregunta.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Ingrese el tipo de pregunta (1, 2 o 3): ";
-			cin >> hacer;
-			cin.ignore();
+			do
+			{
+				cout << "Ingrese el tipo de pregunta (1, 2 o 3): ";
+				cin >> tipo;
+				cin.ignore();
+			} while (strcmp(tipo, "1") != 0 || strcmp(tipo, "2") != 0 || strcmp(tipo, "3") != 0);
 
 			cout << "Ingrese la pregunta: ";
 			cin.getline(pregunta, sizeof(pregunta));
 
-			cout << "Ingrese las opciones (opcional): ";
-			cin.getline(eliminar, sizeof(eliminar));
+			if (strcmp(tipo, "1") == 0)
+			{
+				cout << "Ingrese las opciones (opcional): ";
+				cin.getline(opciones, sizeof(opciones));
+			}
+			else
+			{
+				do
+				{
+					cout << "Ingrese las opciones: ";
+					cin.getline(opciones, sizeof(opciones));
+				} while (strcmp(opciones, ""));
+			}
 
 			cout << "Ingrese la respuesta: ";
 			cin.getline(respuesta, sizeof(respuesta));
 
-			// Validar el tipo de pregunta (solo puede ser 1, 2 o 3)
-			if (strcmp(hacer, "1") == 0 || strcmp(hacer, "2") == 0 || strcmp(hacer, "3") == 0)
-			{
-				strcat(sendBuff, hacer);
-				strcat(sendBuff, ",");
-				strcat(sendBuff, pregunta);
-				strcat(sendBuff, ",");
-				strcat(sendBuff, eliminar);
-				strcat(sendBuff, ",");
-				strcat(sendBuff, respuesta);
-				send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			strcat(sendBuff, tipo);
+			strcat(sendBuff, ",");
+			strcat(sendBuff, pregunta);
+			strcat(sendBuff, ",");
+			strcat(sendBuff, opciones);
+			strcat(sendBuff, ",");
+			strcat(sendBuff, respuesta);
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-				cout << "Recepcion del mensaje..." << endl;
-				recv(s, recvBuff, sizeof(recvBuff), 0);
-				cout << "Datos recibidos: " << recvBuff << endl;
-
-				if (strcmp(recvBuff, "Pregunta creada exitosamente.") != 0)
-				{
-					// Hubo un error al crear la pregunta, mostrar mensaje de error y manejar la situación adecuadamente
-					cout << "Error al crear la pregunta." << endl;
-				}
-			}
-			else
-			{
-				cout << "Tipo de pregunta invalido. Solo puede ser 1, 2 o 3." << endl;
-			}
+			cout << "Recepcion del mensaje..." << endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout << "Datos recibidos: " << recvBuff << endl;
 			break;
 		case '0':
 			cout << "Envio del mensaje 1..." << endl;

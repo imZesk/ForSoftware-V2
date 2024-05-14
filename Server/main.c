@@ -55,12 +55,12 @@ char* visualizar_test(sqlite3 *DB, char *errMsg) {
     char *data = (char *)malloc(sizeof(char) * 1024);
     char *sql1 = "SELECT nombre, cant_preg FROM test;";
     int rc = sqlite3_exec(DB, sql1, callback, (void *)data, &errMsg);
-    /*if (rc!= SQLITE_OK) {
+    if (rc!= SQLITE_OK) {
         fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
         sqlite3_free(errMsg);
         free(data);
         return NULL;
-    }*/
+    }
     strcpy(data, "Geo,3;Mate,4;");
     printf("Datos de la tabla test:\n%s\n", data);
     return data;
@@ -146,7 +146,7 @@ void crearPregunta(sqlite3 *DB, char *errMsg, char *recvBuff) {
     // Validar el tipo de pregunta (solo puede ser 1, 2 o 3)
     if (strcmp(tipo_pregunta, "1") == 0 || strcmp(tipo_pregunta, "2") == 0 || strcmp(tipo_pregunta, "3") == 0) {
         char sql[512];
-        sprintf(sql, "INSERT INTO preguntas (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo_pregunta, pregunta, opciones, respuesta);
+        sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo_pregunta, pregunta, opciones, respuesta);
         int existe = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
         if (existe != SQLITE_OK) {
             printf("Error en la consulta SQL: %s\n", errMsg);
