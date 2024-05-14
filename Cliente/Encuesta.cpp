@@ -6,7 +6,7 @@ Encuesta::Encuesta(int id, int cantidadPreguntas, std::string nombre) {
     this->nombre = nombre;
 }
 
-void Encuesta::agregarPregunta(Pregunta pregunta) {
+void Encuesta::agregarPregunta(Pregunta* pregunta) {
     this->preguntas.push_back(pregunta);
     this->cantidadPreguntas++;
 }

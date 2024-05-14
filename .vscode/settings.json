@@ -59,7 +59,7 @@
   "files.associations": {
     "stdio.h": "c",
     "grupopreguntas.h": "c",
-    "pregunta.h": "c",
+    "Pregunta/Pregunta.h": "c",
     "menus.h": "c",
     "stdlib.h": "c",
     "sqlite3.h": "c",

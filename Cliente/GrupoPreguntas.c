@@ -1,5 +1,5 @@
 #include "grupoPreguntas.h"
-#include "pregunta.h"
+#include "Pregunta/Pregunta.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
