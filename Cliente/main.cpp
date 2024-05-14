@@ -168,9 +168,8 @@ int main(int argc, char *argv[])
 			do
 			{
 				cout << "Ingrese el tipo de pregunta (1, 2 o 3): ";
-				cin >> tipo;
-				cin.ignore();
-			} while (strcmp(tipo, "1") != 0 || strcmp(tipo, "2") != 0 || strcmp(tipo, "3") != 0);
+				cin.getline(tipo, sizeof(tipo));
+			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0);
 
 			cout << "Ingrese la pregunta: ";
 			cin.getline(pregunta, sizeof(pregunta));
@@ -192,14 +191,10 @@ int main(int argc, char *argv[])
 			cout << "Ingrese la respuesta: ";
 			cin.getline(respuesta, sizeof(respuesta));
 
-			strcat(sendBuff, tipo);
-			strcat(sendBuff, ",");
-			strcat(sendBuff, pregunta);
-			strcat(sendBuff, ",");
-			strcat(sendBuff, opciones);
-			strcat(sendBuff, ",");
-			strcat(sendBuff, respuesta);
-			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			send(s, tipo, sizeof(tipo), 0);
+    		send(s, pregunta, sizeof(pregunta), 0);
+    		send(s, opciones, sizeof(opciones), 0);
+    		send(s, respuesta, sizeof(respuesta), 0);
 
 			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
