@@ -11,32 +11,40 @@
 
 using namespace std;
 
-void separarPalabras(const char *cadena) {
-    stringstream ss(cadena);
-    string grupo;
-    
-    // Iterar sobre cada grupo separado por punto y coma
-    while (getline(ss, grupo, ';')) {
-        stringstream grupo_ss(grupo);
-        string palabra;
-        int contador = 0;
-        
-        // Iterar sobre cada palabra en el grupo separado por coma
-        while (getline(grupo_ss, palabra, ',')) {
-            // Imprimir cada palabra en una fila diferente
-            if (contador == 0) {
-                cout << "Nombre: " << palabra << endl;
-            } else if (contador == 1) {
-                cout << "Cantidad de preguntas: " << palabra << endl;
-            } else {
-                cout << palabra << endl;
-            }
-            contador++;
-        }
-        
-        // Imprimir una línea en blanco entre grupos
-        cout << endl;
-    }
+void separarPalabras(const char *cadena)
+{
+	stringstream ss(cadena);
+	string grupo;
+
+	// Iterar sobre cada grupo separado por punto y coma
+	while (getline(ss, grupo, ';'))
+	{
+		stringstream grupo_ss(grupo);
+		string palabra;
+		int contador = 0;
+
+		// Iterar sobre cada palabra en el grupo separado por coma
+		while (getline(grupo_ss, palabra, ','))
+		{
+			// Imprimir cada palabra en una fila diferente
+			if (contador == 0)
+			{
+				cout << "Nombre: " << palabra << endl;
+			}
+			else if (contador == 1)
+			{
+				cout << "Cantidad de preguntas: " << palabra << endl;
+			}
+			else
+			{
+				cout << palabra << endl;
+			}
+			contador++;
+		}
+
+		// Imprimir una línea en blanco entre grupos
+		cout << endl;
+	}
 }
 
 int main(int argc, char *argv[])
@@ -125,7 +133,7 @@ int main(int argc, char *argv[])
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
-			cout<< "Teses: "<<endl;
+			cout << "Teses: " << endl;
 			separarPalabras(recvBuff);
 			break;
 
@@ -138,7 +146,7 @@ int main(int argc, char *argv[])
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
-			cout<< "Teses: "<<endl;
+			cout << "Teses: " << endl;
 			separarPalabras(recvBuff);
 			cout << "Nombre del test a eliminar: ";
 			cin >> eliminar;
@@ -183,12 +191,18 @@ int main(int argc, char *argv[])
 				cout << "Recepcion del mensaje..." << endl;
 				recv(s, recvBuff, sizeof(recvBuff), 0);
 				cout << "Datos recibidos: " << recvBuff << endl;
+
+				if (strcmp(recvBuff, "Pregunta creada exitosamente.") != 0)
+				{
+					// Hubo un error al crear la pregunta, mostrar mensaje de error y manejar la situación adecuadamente
+					cout << "Error al crear la pregunta." << endl;
+				}
 			}
 			else
 			{
 				cout << "Tipo de pregunta invalido. Solo puede ser 1, 2 o 3." << endl;
 			}
-
+			break;
 		case '0':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Fin");

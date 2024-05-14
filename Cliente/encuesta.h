@@ -1,14 +1,19 @@
 #ifndef ENCUESTA_H
 #define ENCUESTA_H
-#include "GrupoPreguntas.h"
 
-typedef struct encuesta{
-    int idEncuesta;
-    char nombreEncuesta[50];
-	GrupoPreguntas preguntasEncuesta;
-}Encuesta;
+#include <string>
+#include <vector>
+#include "Pregunta.h"
 
-Encuesta crearEncuesta(GrupoPreguntas preguntasEncuesta, const char *nombreEncuesta);
+class Encuesta {
+public:
+    int id;
+    int cantidadPreguntas;
+    std::string nombre;
+    std::vector<Pregunta> preguntas;
 
+    Encuesta(int id, int cantidadPreguntas, std::string nombre);
+    void agregarPregunta(Pregunta pregunta);
+};
 
-#endif
+#endif // ENCUESTA_H

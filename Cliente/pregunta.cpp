@@ -1,14 +1,9 @@
-#include <iostream>
-#include <cstring>
-#include "pregunta.h"
+#include "Pregunta.h"
 
-using namespace std;
-
-void responderPregunta(Pregunta pregunta) {
-    cout << "Pregunta: " << pregunta.pregunta << endl;
-    cout << "Respuesta: ";
-    char respuesta[100];
-    cin.getline(respuesta, sizeof(respuesta));
-    pregunta.respuesta = strdup(respuesta);
-    cout << "Respuesta guardada: " << pregunta.respuesta << endl;
+Pregunta::Pregunta(int id, std::string tipo, std::string pregunta, std::vector<std::string> opciones, std::string respuesta) {
+    this->idPregunta = id;
+    this->tipoPregunta = tipo;
+    this->pregunta = pregunta;
+    this->opciones = opciones;
+    this->respuesta = respuesta;
 }
