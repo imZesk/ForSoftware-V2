@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
             }*/
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
-                visualizado = visualizar_test(DB, errMsg);
+                 visualizado = visualizar_tests(DB);
                 size_t visualizado_len = strlen(visualizado);
 
                 // Envía solo la cantidad de datos necesarios
