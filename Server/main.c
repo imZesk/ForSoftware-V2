@@ -15,7 +15,7 @@ char *visualizar_tests(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
 
-    char sql[] = "SELECT nombre, cant_preg FROM test";
+    char sql[] = "SELECT id_t, nombre, cant_preg FROM test";
 
     int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (result != SQLITE_OK)
@@ -37,6 +37,7 @@ char *visualizar_tests(sqlite3 *db)
 
     char nombre[100];
     int cant_preg;
+    int id;
     int first_row = 1;
 
     printf("\n");
@@ -47,16 +48,17 @@ char *visualizar_tests(sqlite3 *db)
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW)
         {
-            strcpy(nombre, (char *)sqlite3_column_text(stmt, 0));
-            cant_preg = sqlite3_column_int(stmt, 1);
+            id = sqlite3_column_int(stmt, 0);
+            strcpy(nombre, (char *)sqlite3_column_text(stmt, 1));
+            cant_preg = sqlite3_column_int(stmt, 2);
             if (first_row)
             {
-                sprintf(teses, "%s,%d", nombre, cant_preg);
+                sprintf(teses, "%d,%s,%d", id, nombre, cant_preg);
                 first_row = 0;
             }
             else
             {
-                sprintf(teses, "%s;%s,%d", teses, nombre, cant_preg);
+                sprintf(teses, "%s;%d,%s,%d", teses, id, nombre, cant_preg);
             }
         }
     } while (result == SQLITE_ROW);

@@ -2,6 +2,7 @@
 #include <winsock2.h>
 #include <cstring>
 #include "menus.h"
+#include "Encuesta.h"
 #include <limits>
 #include <sstream>
 #include <string>
@@ -13,38 +14,42 @@ using namespace std;
 
 void separarPalabras(const char *cadena)
 {
-	stringstream ss(cadena);
-	string grupo;
+    stringstream ss(cadena);
+    string grupo;
 
-	// Iterar sobre cada grupo separado por punto y coma
-	while (getline(ss, grupo, ';'))
-	{
-		stringstream grupo_ss(grupo);
-		string palabra;
-		int contador = 0;
+    // Iterar sobre cada grupo separado por punto y coma
+    while (getline(ss, grupo, ';'))
+    {
+        stringstream grupo_ss(grupo);
+        string palabra;
+        int id_encuesta = 0;
+        string nombre_encuesta;
+        int cantidad_preguntas = 0;
 
-		// Iterar sobre cada palabra en el grupo separado por coma
-		while (getline(grupo_ss, palabra, ','))
-		{
-			// Imprimir cada palabra en una fila diferente
-			if (contador == 0)
-			{
-				cout << "Nombre: " << palabra << endl;
-			}
-			else if (contador == 1)
-			{
-				cout << "Cantidad de preguntas: " << palabra << endl;
-			}
-			else
-			{
-				cout << palabra << endl;
-			}
-			contador++;
-		}
+        int contador = 0;
+        while (getline(grupo_ss, palabra, ','))
+        {
+            if (contador == 0)
+            {
+                id_encuesta = stoi(palabra);
+            }
+            else if (contador == 1)
+            {
+                nombre_encuesta = palabra;
+            }
+            else
+            {
+                cantidad_preguntas = stoi(palabra);
+            }
+            contador++;
+        }
 
-		// Imprimir una línea en blanco entre grupos
-		cout << endl;
-	}
+        // Crear una nueva encuesta con los valores obtenidos
+        Encuesta nueva_encuesta(id_encuesta,  cantidad_preguntas, nombre_encuesta);
+        cout<<"Nombre: "<<nueva_encuesta.nombre<<endl;
+		cout<<"Cantidad de preguntas: "<<nueva_encuesta.cantidadPreguntas<<endl;
+		cout<<endl;
+    }
 }
 
 int main(int argc, char *argv[])
