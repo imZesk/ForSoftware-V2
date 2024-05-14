@@ -95,7 +95,7 @@ void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
     }
 }
 
-void crearPregunta(sqlite3 *DB, char *errMsg, char tipo, char pregunta, char opciones, char respuesta)
+void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *opciones, char *respuesta)
 {
     
 
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }
-            /*else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
+            else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
                 char tipo[10];
                 char pregunta[100];
@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
                 strcpy(sendBuff, "Pregunta creada exitosamente.");
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
-            }*/
+            }
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
                  visualizado = visualizar_tests(DB);
