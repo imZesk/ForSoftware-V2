@@ -204,12 +204,6 @@ int main(int argc, char *argv[])
 			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
-
-			if (strcmp(recvBuff, "Pregunta creada exitosamente.") != 0)
-			{
-				// Hubo un error al crear la pregunta, mostrar mensaje de error y manejar la situación adecuadamente
-				cout << "Error al crear la pregunta." << endl;
-			}
 			break;
 		case '0':
 			cout << "Envio del mensaje 1..." << endl;
