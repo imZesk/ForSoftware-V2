@@ -251,7 +251,13 @@ int main(int argc, char *argv[])
     char *errMsg = 0;
     char *visualizado;
 
-    abrirBD(DB);
+    int existe = sqlite3_open("../lib/servidor.db", &DB);
+    // //Confirmamos que se abre correctamente
+    if (existe != SQLITE_OK)
+    {
+        printf("Error al abrir la base de datos\n");
+        // logger con el error
+    }
 
     printf("base de datos abierta\n");
 
@@ -272,7 +278,7 @@ int main(int argc, char *argv[])
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }
-            else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
+            /*else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
                 char tipo[10];
                 char pregunta[100];
@@ -290,7 +296,7 @@ int main(int argc, char *argv[])
                 strcpy(sendBuff, "Pregunta creada exitosamente.");
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
-            }
+            }*/
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
                 visualizado = visualizar_test(DB, errMsg);
@@ -320,7 +326,7 @@ int main(int argc, char *argv[])
                 strcat(sendBuff, recvBuff);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
-                cerrarBD(DB);
+                sqlite3_close(DB);
                 break;
             }
             else
