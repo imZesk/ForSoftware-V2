@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../Sqlite3/sqlite3.h" 
+#include "sqlite3.h" 
 
 #include <winsock2.h>
 
