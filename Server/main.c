@@ -11,69 +11,6 @@
 
 #define MAX_BUFFER_SIZE 1024
 
-static int callback(void *data, int argc, char **argv, char **azColName)
-{
-    char *buffer = (char *)data;
-    size_t tam_buffer = strlen(buffer);
-    size_t espacio_restante = MAX_BUFFER_SIZE - tam_buffer - 1; // Leave room for null terminator
-
-    for (int i = 0; i < argc; i++)
-    {
-        if (tam_buffer > 0 && espacio_restante > 1)
-        {
-            strncat(buffer, ",", espacio_restante);
-            tam_buffer++; // Account for added comma
-            espacio_restante--;
-        }
-        strncpy(buffer + tam_buffer, argv[i], espacio_restante);
-        tam_buffer += strlen(argv[i]);
-        espacio_restante -= strlen(argv[i]);
-    }
-    strncat(buffer, ";", espacio_restante);
-
-    return 0;
-}
-
-int callback2(void *NotUsed, int argc, char **argv, char **azColName)
-{
-    return 0;
-}
-
-void abrirBD(sqlite3 *DB)
-{
-    // Abrimos la bd
-    int existe = sqlite3_open("../lib/servidor.db", &DB);
-    // //Confirmamos que se abre correctamente
-    if (existe != SQLITE_OK)
-    {
-        printf("Error al abrir la base de datos\n");
-        // logger con el error
-    }
-}
-
-void cerrarBD(sqlite3 *DB)
-{
-    sqlite3_close(DB);
-}
-
-char *visualizar_test(sqlite3 *DB, char *errMsg)
-{
-    printf("Visualiza\n");
-    char *data = (char *)malloc(sizeof(char) * 1024);
-    char *sql1 = "SELECT nombre, cant_preg FROM test;";
-    int rc = sqlite3_exec(DB, sql1, callback, (void *)data, &errMsg);
-    if (rc != SQLITE_OK)
-    {
-        fprintf(stderr, "Error en la consulta SQL: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        free(data);
-        return NULL;
-    }
-    strcpy(data, "Geo,3;Mate,4;");
-    printf("Datos de la tabla test:\n%s\n", data);
-    return data;
-}
-
 char *visualizar_tests(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
