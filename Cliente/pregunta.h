@@ -1,12 +1,18 @@
 #ifndef PREGUNTA_H
 #define PREGUNTA_H
 
-typedef struct {
-    char *pregunta;
-    char *tipoPregunta;
-    char *respuesta;
-}Pregunta;
+#include <string>
+#include <vector>
 
-void responderPregunta(Pregunta pregunta);
+class Pregunta {
+public:
+    int idPregunta;
+    std::string tipoPregunta;
+    std::string pregunta;
+    std::vector<std::string> opciones;
+    std::string respuesta;
+
+    Pregunta(int id, std::string tipo, std::string pregunta, std::vector<std::string> opciones, std::string respuesta);
+};
 
 #endif // PREGUNTA_H
