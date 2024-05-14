@@ -1,0 +1,27 @@
+clase encuesta:
+    -id
+    -un nombre
+    -cantPreguntas
+    -una lista de preguntas
+
+
+clase pregunta:
+    -id
+    -la pregunta
+    -tipo pregunta(1, 2, 3)
+
+    subclase1 VF:
+        -respuesta(V o F)
+    
+    subclase2 opciones:
+        -lista de opciones
+        -respuesta(A,B,C)
+
+    subclase3 abierta:
+        -respuesta(frase)
+    
+
+clase respuestaUsuario:
+    -lista de respuestasUsuario
+    -lista comparacion(true o false si son iguales las respuestas del usuario y de la encuesta)
+    -total aciertos
