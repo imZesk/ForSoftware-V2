@@ -99,6 +99,9 @@ int main(int argc, char *argv[])
 	char tipo[10];
 	char pregunta[100];
 	char opciones[100];
+	char opcion1[100];
+	char opcion2[100];
+	char opcion3[100];
 	char respuesta[100];
 	do
 	{
@@ -174,18 +177,34 @@ int main(int argc, char *argv[])
 			cout << "Ingrese la pregunta: ";
 			cin.getline(pregunta, sizeof(pregunta));
 
-			if (strcmp(tipo, "1") == 0)
+			if (strcmp(tipo, "3") == 0)
 			{
 				cout << "Ingrese las opciones (opcional): ";
 				cin.getline(opciones, sizeof(opciones));
 			}
-			else
+			else if(strcmp(tipo, "1") == 0)
 			{
 				do
 				{
-					cout << "Ingrese las opciones: ";
-					cin.getline(opciones, sizeof(opciones));
-				} while (strcmp(opciones, ""));
+					cout << "Ingrese la primera opcion opciones: ";
+					cin.getline(opcion1, sizeof(opcion1));
+				} while (strcmp(opcion1, "")==0);
+				do
+				{
+					cout << "Ingrese la segunda opcion opciones: ";
+					cin.getline(opcion2, sizeof(opcion2));
+				} while (strcmp(opcion2, "")==0);
+				do
+				{
+					cout << "Ingrese la tercera opcion opciones: ";
+					cin.getline(opcion3, sizeof(opcion3));
+				} while (strcmp(opcion3, "")==0);
+
+				strcpy(opciones, opcion1);
+				strcat(opciones, ", ");
+				strcat(opciones, opcion2);
+				strcat(opciones, ", ");
+				strcat(opciones, opcion3);
 			}
 
 			cout << "Ingrese la respuesta: ";
