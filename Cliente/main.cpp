@@ -14,42 +14,42 @@ using namespace std;
 
 void separarPalabras(const char *cadena)
 {
-    stringstream ss(cadena);
-    string grupo;
+	stringstream ss(cadena);
+	string grupo;
 
-    // Iterar sobre cada grupo separado por punto y coma
-    while (getline(ss, grupo, ';'))
-    {
-        stringstream grupo_ss(grupo);
-        string palabra;
-        int id_encuesta = 0;
-        string nombre_encuesta;
-        int cantidad_preguntas = 0;
+	// Iterar sobre cada grupo separado por punto y coma
+	while (getline(ss, grupo, ';'))
+	{
+		stringstream grupo_ss(grupo);
+		string palabra;
+		int id_encuesta = 0;
+		string nombre_encuesta;
+		int cantidad_preguntas = 0;
 
-        int contador = 0;
-        while (getline(grupo_ss, palabra, ','))
-        {
-            if (contador == 0)
-            {
-                id_encuesta = stoi(palabra);
-            }
-            else if (contador == 1)
-            {
-                nombre_encuesta = palabra;
-            }
-            else
-            {
-                cantidad_preguntas = stoi(palabra);
-            }
-            contador++;
-        }
+		int contador = 0;
+		while (getline(grupo_ss, palabra, ','))
+		{
+			if (contador == 0)
+			{
+				id_encuesta = stoi(palabra);
+			}
+			else if (contador == 1)
+			{
+				nombre_encuesta = palabra;
+			}
+			else
+			{
+				cantidad_preguntas = stoi(palabra);
+			}
+			contador++;
+		}
 
-        // Crear una nueva encuesta con los valores obtenidos
-        Encuesta nueva_encuesta(id_encuesta,  cantidad_preguntas, nombre_encuesta);
-        cout<<"Nombre: "<<nueva_encuesta.nombre<<endl;
-		cout<<"Cantidad de preguntas: "<<nueva_encuesta.cantidadPreguntas<<endl;
-		cout<<endl;
-    }
+		// Crear una nueva encuesta con los valores obtenidos
+		Encuesta nueva_encuesta(id_encuesta, cantidad_preguntas, nombre_encuesta);
+		cout << "Nombre: " << nueva_encuesta.nombre << endl;
+		cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
+		cout << endl;
+	}
 }
 
 int main(int argc, char *argv[])
@@ -125,13 +125,36 @@ int main(int argc, char *argv[])
 			break;
 
 		case '2':
-			cout << "Envio del mensaje 1..." << endl;
+			cout << "Realizando test..." << endl;
 			strcpy(sendBuff, "Realizar test.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
-			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
+			while (true)
+			{
+				// Recibir pregunta del servidor
+				recv(s, recvBuff, sizeof(recvBuff), 0);
+				if (strcmp(recvBuff, "No hay preguntas") == 0)
+				{
+					cout << "No hay más preguntas disponibles." << endl;
+					break;
+				}
+				else
+				{
+					cout << "Pregunta recibida: " << recvBuff << endl;
+
+					// Enviar respuesta al servidor
+					string respuesta;
+					cout << "Ingrese su respuesta: ";
+					getline(cin, respuesta);
+					strcpy(sendBuff, respuesta.c_str());
+					send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+					// Recibir resultado del servidor
+					recv(s, recvBuff, sizeof(recvBuff), 0);
+					cout << "Resultado: " << recvBuff << endl;
+				}
+			}
+
 			break;
 
 		case '3':
@@ -186,69 +209,81 @@ int main(int argc, char *argv[])
 			{
 				strcpy(opciones, "Verdadero, Falso");
 			}
-			else if(strcmp(tipo, "1") == 0)
+			else if (strcmp(tipo, "1") == 0)
 			{
 				do
 				{
 					cout << "Ingrese la primera opcion opciones: ";
 					cin.getline(opcion1, sizeof(opcion1));
-				} while (strcmp(opcion1, "")==0);
+				} while (strcmp(opcion1, "") == 0);
 				do
 				{
 					cout << "Ingrese la segunda opcion opciones: ";
 					cin.getline(opcion2, sizeof(opcion2));
-				} while (strcmp(opcion2, "")==0);
+				} while (strcmp(opcion2, "") == 0);
 				do
 				{
 					cout << "Ingrese la tercera opcion opciones: ";
 					cin.getline(opcion3, sizeof(opcion3));
-				} while (strcmp(opcion3, "")==0);
+				} while (strcmp(opcion3, "") == 0);
 
 				strcpy(opciones, opcion1);
 				strcat(opciones, ", ");
 				strcat(opciones, opcion2);
 				strcat(opciones, ", ");
 				strcat(opciones, opcion3);
-			}else{
+			}
+			else
+			{
 				strcpy(opciones, NULL);
 			}
-			
-			if(strcmp(tipo, "3") == 0){
+
+			if (strcmp(tipo, "3") == 0)
+			{
 				cout << "Ingrese la respuesta: ";
 				cin.getline(respuesta, sizeof(respuesta));
 			}
-			else if(strcmp(tipo, "2") == 0){
+			else if (strcmp(tipo, "2") == 0)
+			{
 				do
 				{
-				cout << "Ingrese la respuesta(1 para verdadero o 0 para falso): ";
-				cin.getline(respuesta, sizeof(respuesta));
+					cout << "Ingrese la respuesta(1 para verdadero o 0 para falso): ";
+					cin.getline(respuesta, sizeof(respuesta));
 				} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0);
-				if(strcmp(respuesta,"1")==0){
+				if (strcmp(respuesta, "1") == 0)
+				{
 					strcpy(respuesta, "Verdadero");
-				}else{
+				}
+				else
+				{
 					strcpy(respuesta, "Falso");
 				}
-			}else{
+			}
+			else
+			{
 				do
 				{
-				cout << "Ingrese la respuesta(1, 2, 3): ";
-				cin.getline(respuesta, sizeof(respuesta));
+					cout << "Ingrese la respuesta(1, 2, 3): ";
+					cin.getline(respuesta, sizeof(respuesta));
 				} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0 && strcmp(respuesta, "3") != 0);
-				if(strcmp(respuesta, "1")==0){
+				if (strcmp(respuesta, "1") == 0)
+				{
 					strcpy(respuesta, opcion1);
-				}else if(strcmp(respuesta, "2")==0){
+				}
+				else if (strcmp(respuesta, "2") == 0)
+				{
 					strcpy(respuesta, opcion2);
-				}else{
+				}
+				else
+				{
 					strcpy(respuesta, opcion3);
 				}
-
 			}
 
-
 			send(s, tipo, sizeof(tipo), 0);
-    		send(s, pregunta, sizeof(pregunta), 0);
-    		send(s, opciones, sizeof(opciones), 0);
-    		send(s, respuesta, sizeof(respuesta), 0);
+			send(s, pregunta, sizeof(pregunta), 0);
+			send(s, opciones, sizeof(opciones), 0);
+			send(s, respuesta, sizeof(respuesta), 0);
 
 			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);

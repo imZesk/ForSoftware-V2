@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sqlite3.h" 
+#include "sqlite3.h"
 
 #include <winsock2.h>
 
@@ -99,11 +99,14 @@ void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 
 void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *opciones, char *respuesta)
 {
-    
+
     char sql[512];
-    if(strcmp(opciones, "")){
+    if (strcmp(opciones, ""))
+    {
         sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, NULL, respuesta);
-    }else{
+    }
+    else
+    {
         sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, opciones, respuesta);
     }
     int existe = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
@@ -117,7 +120,77 @@ void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *
     }
 }
 
-void realizarTest(sqlite3 *DB, char *errMsg, char *nombre)
+char *obtenerPregunta(sqlite3 *DB, char *errMsg, int id_p)
+{
+    char *pregunta = malloc(100 * sizeof(char)); // Asignar memoria para la pregunta
+    if (pregunta == NULL)
+    {
+        printf("Error al asignar memoria para la pregunta\n");
+        return NULL;
+    }
+
+    char sql[512];
+    sprintf(sql, "SELECT pregunta FROM pregunta WHERE id_p = %d", id_p);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener la pregunta: %s\n", sqlite3_errmsg(DB));
+        free(pregunta); // Liberar memoria en caso de error
+        return NULL;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        const unsigned char *text = sqlite3_column_text(stmt, 0);
+        strcpy(pregunta, (const char *)text);
+    }
+    else
+    {
+        strcpy(pregunta, "No existe la pregunta");
+    }
+
+    sqlite3_finalize(stmt);
+    return pregunta;
+}
+
+char *obtenerRespuesta(sqlite3 *DB, char *errMsg, int id_p)
+{
+    char *respuesta = malloc(100 * sizeof(char)); // Asignar memoria para la respuesta
+    if (respuesta == NULL)
+    {
+        printf("Error al asignar memoria para la respuesta\n");
+        return NULL;
+    }
+
+    char sql[512];
+    sprintf(sql, "SELECT respuesta FROM pregunta WHERE id_p = %d", id_p);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener la respuesta: %s\n", sqlite3_errmsg(DB));
+        free(respuesta); // Liberar memoria en caso de error
+        return NULL;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        const unsigned char *text = sqlite3_column_text(stmt, 0);
+        strcpy(respuesta, (const char *)text);
+    }
+    else
+    {
+        strcpy(respuesta, "No existe la respuesta");
+    }
+
+    sqlite3_finalize(stmt);
+    return respuesta;
+}
+
+/*void realizarTest(sqlite3 *DB, char *errMsg, char *nombre)
 {
     char sql[512];
     int id_t;
@@ -153,32 +226,16 @@ void realizarTest(sqlite3 *DB, char *errMsg, char *nombre)
         return;
     }
 
-    char sql3[512];
     printf("Preguntas:\n");
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
     {
         int id_p = sqlite3_column_int(stmt, 0);
-        sprintf(sql3, "SELECT pregunta FROM pregunta WHERE id_p = %d", id_p);
-        sqlite3_stmt *stmt2;
-        int rc2 = sqlite3_prepare_v2(DB, sql3, -1, &stmt2, NULL);
-        if (rc2 != SQLITE_OK)
+        char *pregunta = obtenerPregunta(DB, errMsg, id_p);
+        if (pregunta != NULL)
         {
-            printf("Error en la preparación de la consulta SQL para obtener la pregunta: %s\n", sqlite3_errmsg(DB));
-            sqlite3_finalize(stmt);
-            return;
+            printf("%s\n", pregunta);
+            free(pregunta); // Liberar memoria asignada en obtenerPregunta
         }
-
-        rc2 = sqlite3_step(stmt2);
-        if (rc2 == SQLITE_ROW)
-        {
-            printf("%s\n", sqlite3_column_text(stmt2, 0));
-        }
-        else
-        {
-            printf("No se encontró ninguna pregunta con ID %d\n", id_p);
-        }
-
-        sqlite3_finalize(stmt2);
     }
 
     if (rc != SQLITE_DONE)
@@ -187,6 +244,75 @@ void realizarTest(sqlite3 *DB, char *errMsg, char *nombre)
     }
 
     sqlite3_finalize(stmt);
+}*/
+
+int *realizarTest(sqlite3 *DB, char *errMsg, char *nombre, int *num_ids)
+{
+    char sql[512];
+    int id_t;
+    sprintf(sql, "SELECT id_t FROM test WHERE nombre = '%s'", nombre);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener id_t: %s\n", sqlite3_errmsg(DB));
+        *num_ids = 0;
+        return NULL;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        id_t = sqlite3_column_int(stmt, 0);
+    }
+    else
+    {
+        printf("No se encontró ningún ID para el test con nombre %s\n", nombre);
+        sqlite3_finalize(stmt);
+        *num_ids = 0;
+        return NULL;
+    }
+
+    sqlite3_finalize(stmt);
+
+    char sql2[512];
+    sprintf(sql2, "SELECT id_p FROM tiene WHERE id_t = %d", id_t);
+    rc = sqlite3_prepare_v2(DB, sql2, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener las preguntas: %s\n", sqlite3_errmsg(DB));
+        *num_ids = 0;
+        return NULL;
+    }
+
+    int *ids = NULL;
+    int count = 0;
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        int id_p = sqlite3_column_int(stmt, 0);
+        ids = realloc(ids, (count + 1) * sizeof(int));
+        if (ids == NULL)
+        {
+            printf("Error al asignar memoria para los IDs\n");
+            sqlite3_finalize(stmt);
+            *num_ids = 0;
+            return NULL;
+        }
+        ids[count] = id_p;
+        count++;
+    }
+
+    if (rc != SQLITE_DONE)
+    {
+        printf("Error al recuperar las preguntas: %s\n", sqlite3_errmsg(DB));
+        free(ids);
+        *num_ids = 0;
+        ids = NULL;
+    }
+
+    sqlite3_finalize(stmt);
+    *num_ids = count;
+    return ids;
 }
 
 int main(int argc, char *argv[])
@@ -294,13 +420,61 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "Realizar test.") == 0)
             {
+                printf("Solicitando test...\n");
 
-                printf("Enviando respuesta... \n");
-                strcpy(sendBuff, "Hola mundo");
-                realizarTest(DB, errMsg, "geo");
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                printf("Datos enviados: %s \n", sendBuff);
+                int num_ids;
+                int *ids = realizarTest(DB, errMsg, "geo", &num_ids);
+                if (ids != NULL)
+                {
+                    for (int i = 0; i < num_ids; i++)
+                    {
+                        char *pregunta = obtenerPregunta(DB, errMsg, ids[i]);
+                        if (pregunta == NULL)
+                        {
+                            printf("Error al obtener la pregunta\n");
+                            continue;
+                        }
+
+                        send(comm_socket, pregunta, strlen(pregunta) + 1, 0);
+                        printf("Pregunta enviada: %s \n", pregunta);
+
+                        free(pregunta);
+
+                        recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                        printf("Respuesta recibida: %s \n", recvBuff);
+
+                        char *respuesta_correcta = obtenerRespuesta(DB, errMsg, ids[i]);
+                        if (respuesta_correcta == NULL)
+                        {
+                            printf("Error al obtener la respuesta correcta\n");
+                            continue;
+                        }
+
+                        if (strcmp(recvBuff, respuesta_correcta) == 0)
+                        {
+                            send(comm_socket, "Correcto", strlen("Correcto") + 1, 0);
+                            printf("Respuesta enviada: Correcto\n");
+                        }
+                        else
+                        {
+                            send(comm_socket, "Incorrecto", strlen("Incorrecto") + 1, 0);
+                            printf("Respuesta enviada: Incorrecto\n");
+                        }
+
+                        free(respuesta_correcta);
+                    }
+
+                    free(ids);
+                }
+                else
+                {
+                    char respuesta[100];
+                    strcpy(respuesta, "No hay preguntas");
+                    send(comm_socket, respuesta, strlen(respuesta) + 1, 0);
+                    printf("Datos enviados: %s \n", respuesta);
+                }
             }
+
             else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
                 char tipo[10];
@@ -322,7 +496,7 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
-                 visualizado = visualizar_tests(DB);
+                visualizado = visualizar_tests(DB);
                 size_t visualizado_len = strlen(visualizado);
 
                 // Envía solo la cantidad de datos necesarios
