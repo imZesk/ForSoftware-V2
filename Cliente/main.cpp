@@ -6,16 +6,18 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <list>
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
 
 using namespace std;
 
-void separarPalabras(const char *cadena)
+list<string> separarPalabras(const char *cadena)
 {
 	stringstream ss(cadena);
 	string grupo;
+	list<string> nombresEncuestas;
 
 	// Iterar sobre cada grupo separado por punto y coma
 	while (getline(ss, grupo, ';'))
@@ -25,7 +27,6 @@ void separarPalabras(const char *cadena)
 		int id_encuesta = 0;
 		string nombre_encuesta;
 		int cantidad_preguntas = 0;
-
 		int contador = 0;
 		while (getline(grupo_ss, palabra, ','))
 		{
@@ -46,10 +47,12 @@ void separarPalabras(const char *cadena)
 
 		// Crear una nueva encuesta con los valores obtenidos
 		Encuesta nueva_encuesta(id_encuesta, cantidad_preguntas, nombre_encuesta);
+		nombresEncuestas.push_back(nueva_encuesta.nombre);
 		cout << "Nombre: " << nueva_encuesta.nombre << endl;
 		cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
 		cout << endl;
 	}
+	return nombresEncuestas;
 }
 
 int main(int argc, char *argv[])
@@ -108,6 +111,8 @@ int main(int argc, char *argv[])
 	char opcion2[100];
 	char opcion3[100];
 	char respuesta[100];
+	list<string> nombresEncuestas;
+	bool encontrado = false;
 	do
 	{
 		opcion = menuPrincipal();
@@ -201,10 +206,30 @@ int main(int argc, char *argv[])
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
 			cout << "Teses: " << endl;
-			separarPalabras(recvBuff);
-			cout << "Nombre del test a eliminar: ";
-			cin >> eliminar;
-			cout << endl;
+			nombresEncuestas = separarPalabras(recvBuff);
+			do
+			{
+				cout << "Nombre del test a eliminar: ";
+				cin >> eliminar;
+				cout << endl;
+
+				string palabraCompararStr(eliminar);
+				for (const string &nombre : nombresEncuestas)
+				{
+					if (nombre == palabraCompararStr)
+					{
+						encontrado = true;
+						break;
+					}
+				}
+
+				if (!encontrado)
+				{
+					cout << "El nombre '" << eliminar << "' no coincide con ningun nombre de los teses. Inténtalo de nuevo." << endl;
+				}
+			} while (!encontrado);
+
+			memset(recvBuff, 0, sizeof(recvBuff));
 			strcpy(sendBuff, eliminar);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 			cout << "Recepcion del mensaje 2..." << endl;
