@@ -129,29 +129,50 @@ int main(int argc, char *argv[])
 			strcpy(sendBuff, "Realizar test.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			while (true)
+			// Esperar confirmación del servidor
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			if (strcmp(recvBuff, "Listo para recibir nombre del test.") == 0)
 			{
-				// Recibir pregunta del servidor
-				recv(s, recvBuff, sizeof(recvBuff), 0);
-				if (strcmp(recvBuff, "No hay preguntas") == 0)
-				{
-					cout << "No hay más preguntas disponibles." << endl;
-					break;
-				}
-				else
-				{
-					cout << "Pregunta recibida: " << recvBuff << endl;
+				cout << "Que test desea realizar: ";
+				cin.getline(sendBuff, sizeof(sendBuff));
+				send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			}
+			else
+			{
+				cout << "Error: El servidor no está listo para recibir el nombre del test." << endl;
+				break;
+			}
 
-					// Enviar respuesta al servidor
-					string respuesta;
-					cout << "Ingrese su respuesta: ";
-					getline(cin, respuesta);
-					strcpy(sendBuff, respuesta.c_str());
-					send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			recv(s, recvBuff, sizeof(recvBuff), 0);
 
-					// Recibir resultado del servidor
+			if (strcmp(recvBuff, "El test no existe") == 0)
+			{
+				cout << "El test no existe" << endl;
+			}
+			else
+			{
+				while (true)
+				{
+					// Recibir pregunta del servidor
 					recv(s, recvBuff, sizeof(recvBuff), 0);
-					cout << "Resultado: " << recvBuff << endl;
+					if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
+					{
+						cout << "No hay más preguntas disponibles." << endl;
+						break;
+					}
+					else
+					{
+						cout << "Pregunta recibida: " << recvBuff << endl;
+
+						cout << "Ingrese su respuesta: ";
+						cin.getline(respuesta, sizeof(respuesta));
+						strcpy(sendBuff, respuesta);
+						send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+						// Recibir resultado del servidor
+						recv(s, recvBuff, sizeof(recvBuff), 0);
+						cout << "Resultado: " << recvBuff << endl;
+					}
 				}
 			}
 

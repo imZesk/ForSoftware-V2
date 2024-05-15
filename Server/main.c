@@ -422,8 +422,15 @@ int main(int argc, char *argv[])
             {
                 printf("Solicitando test...\n");
 
+                // Enviar confirmación al cliente
+                strcpy(sendBuff, "Listo para recibir nombre del test.");
+                send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
+
+                // Recibir nombre del test del cliente
+                recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+
                 int num_ids;
-                int *ids = realizarTest(DB, errMsg, "geo", &num_ids);
+                int *ids = realizarTest(DB, errMsg, recvBuff, &num_ids);
                 if (ids != NULL)
                 {
                     for (int i = 0; i < num_ids; i++)
@@ -464,12 +471,15 @@ int main(int argc, char *argv[])
                         free(respuesta_correcta);
                     }
 
+                    strcpy(sendBuff, "No hay más preguntas disponibles.");
+                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
+
                     free(ids);
                 }
                 else
                 {
                     char respuesta[100];
-                    strcpy(respuesta, "No hay preguntas");
+                    strcpy(respuesta, "El test no existe");
                     send(comm_socket, respuesta, strlen(respuesta) + 1, 0);
                     printf("Datos enviados: %s \n", respuesta);
                 }
