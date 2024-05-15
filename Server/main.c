@@ -100,9 +100,12 @@ void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *opciones, char *respuesta)
 {
     
-
     char sql[512];
-    sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, opciones, respuesta);
+    if(strcmp(opciones, "")){
+        sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, NULL, respuesta);
+    }else{
+        sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, opciones, respuesta);
+    }
     int existe = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
     if (existe != SQLITE_OK)
     {
