@@ -117,6 +117,78 @@ void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *
     }
 }
 
+void realizarTest(sqlite3 *DB, char *errMsg, char *nombre)
+{
+    char sql[512];
+    int id_t;
+    sprintf(sql, "SELECT id_t FROM test WHERE nombre = '%s'", nombre);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener id_t: %s\n", sqlite3_errmsg(DB));
+        return;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        id_t = sqlite3_column_int(stmt, 0);
+    }
+    else
+    {
+        printf("No se encontró ningún ID para el test con nombre %s\n", nombre);
+        sqlite3_finalize(stmt);
+        return;
+    }
+
+    sqlite3_finalize(stmt);
+
+    char sql2[512];
+    sprintf(sql2, "SELECT id_p FROM tiene WHERE id_t = %d", id_t);
+    rc = sqlite3_prepare_v2(DB, sql2, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener las preguntas: %s\n", sqlite3_errmsg(DB));
+        return;
+    }
+
+    char sql3[512];
+    printf("Preguntas:\n");
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        int id_p = sqlite3_column_int(stmt, 0);
+        sprintf(sql3, "SELECT pregunta FROM pregunta WHERE id_p = %d", id_p);
+        sqlite3_stmt *stmt2;
+        int rc2 = sqlite3_prepare_v2(DB, sql3, -1, &stmt2, NULL);
+        if (rc2 != SQLITE_OK)
+        {
+            printf("Error en la preparación de la consulta SQL para obtener la pregunta: %s\n", sqlite3_errmsg(DB));
+            sqlite3_finalize(stmt);
+            return;
+        }
+
+        rc2 = sqlite3_step(stmt2);
+        if (rc2 == SQLITE_ROW)
+        {
+            printf("%s\n", sqlite3_column_text(stmt2, 0));
+        }
+        else
+        {
+            printf("No se encontró ninguna pregunta con ID %d\n", id_p);
+        }
+
+        sqlite3_finalize(stmt2);
+    }
+
+    if (rc != SQLITE_DONE)
+    {
+        printf("Error al recuperar las preguntas: %s\n", sqlite3_errmsg(DB));
+    }
+
+    sqlite3_finalize(stmt);
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -217,6 +289,15 @@ int main(int argc, char *argv[])
                 visualizado = visualizar_tests(DB);
                 printf("Enviando respuesta... \n");
                 strcpy(sendBuff, visualizado);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
+            }
+            else if (strcmp(recvBuff, "Realizar test.") == 0)
+            {
+
+                printf("Enviando respuesta... \n");
+                strcpy(sendBuff, "Hola mundo");
+                realizarTest(DB, errMsg, "geo");
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }
