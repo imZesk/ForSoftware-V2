@@ -510,6 +510,7 @@ int main(int argc, char *argv[])
 
                 eliminar_test(recvBuff, DB, errMsg);
 
+
                 strcpy(sendBuff, "Test eliminado correctamente");
                 strcat(sendBuff, "\0"); // Añade un carácter nulo al final de la cadena
 
