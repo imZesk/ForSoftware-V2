@@ -1,21 +1,21 @@
-#ifndef PREGUNTAABIERTA_H
-#define PREGUNTAABIERTA_H
+#ifndef PreguntaAbierta_H
+#define PreguntaAbierta_H
 
 #include "Pregunta/Pregunta.h"
 
 class PreguntaAbierta : public Pregunta {
+private:
     char *respuesta;
+
 public:
     PreguntaAbierta();
-    PreguntaAbierta()
+    PreguntaAbierta(char *i, char *nom, char *r);
+    PreguntaAbierta(const PreguntaAbierta &other);
 
-    PreguntaAbierta(int id, std::string pregunta, std::string respuesta);
+    char* getRespuesta() const;
+    void setRespuesta(char *r);
 
-    std::string obtenerTipo() const override;
-    std::string obtenerRespuesta() const;
-
-private:
-    std::string respuesta;
+    virtual ~PreguntaAbierta();
 };
 
-#endif // PREGUNTAVERDADEROFALSO_H
+#endif // PreguntaAbierta_H

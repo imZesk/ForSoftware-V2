@@ -135,14 +135,13 @@ int main(int argc, char *argv[])
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Que test desea realizar: ";
-			memset(sendBuff, 0, sizeof(sendBuff));
-			cin.getline(sendBuff, sizeof(sendBuff));
-			send(s, "geo", strlen("geo") + 1, 0);
+			cin>>sendBuff;
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			while (true)
 			{
 				// Recibir pregunta y opciones del servidor
-				recv(s, recvBuff, sizeof(recvBuff), 0);
+				recv(s, recvBuff, sizeof(recvBuff)+1, 0);
 
 				if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
 				{
@@ -159,7 +158,7 @@ int main(int argc, char *argv[])
 					cout << recvBuff << endl; // Mostrar la pregunta y las opciones
 
 					cout << "Ingrese su respuesta: ";
-					cin.getline(respuesta, sizeof(respuesta));
+					cin>>respuesta;
 					strcpy(sendBuff, respuesta);
 					send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
@@ -236,13 +235,13 @@ int main(int argc, char *argv[])
 			do
 			{
 				cout << "Ingrese el tipo de pregunta\n1: pregunta con 3 opciones\n2: Verdadero o Falso\n3: Pregunta abierta\n0 si no quieres añadir ninguna pregunta: ";
-				cin.getline(tipo, sizeof(tipo));
+				cin>>tipo;
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 
 			if (strcmp(tipo, "0") != 0)
 			{
 				cout << "Ingrese la pregunta: ";
-				cin.getline(pregunta, sizeof(pregunta));
+				cin>>pregunta;
 
 				if (strcmp(tipo, "2") == 0)
 				{
@@ -253,17 +252,17 @@ int main(int argc, char *argv[])
 					do
 					{
 						cout << "Ingrese la primera opcion: ";
-						cin.getline(opcion1, sizeof(opcion1));
+						cin>>opcion1;
 					} while (strcmp(opcion1, "") == 0);
 					do
 					{
 						cout << "Ingrese la segunda opcion: ";
-						cin.getline(opcion2, sizeof(opcion2));
+						cin>>opcion2;
 					} while (strcmp(opcion2, "") == 0);
 					do
 					{
 						cout << "Ingrese la tercera opcion: ";
-						cin.getline(opcion3, sizeof(opcion3));
+						cin>>opcion3;
 					} while (strcmp(opcion3, "") == 0);
 
 					strcpy(opciones, opcion1);
@@ -280,14 +279,14 @@ int main(int argc, char *argv[])
 				if (strcmp(tipo, "3") == 0)
 				{
 					cout << "Ingrese la respuesta: ";
-					cin.getline(respuesta, sizeof(respuesta));
+					cin>>respuesta;
 				}
 				else if (strcmp(tipo, "2") == 0)
 				{
 					do
 					{
 						cout << "Ingrese la respuesta (1 para verdadero o 0 para falso): ";
-						cin.getline(respuesta, sizeof(respuesta));
+						cin>>respuesta;
 					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "0") != 0);
 					if (strcmp(respuesta, "1") == 0)
 					{
@@ -303,7 +302,7 @@ int main(int argc, char *argv[])
 					do
 					{
 						cout << "Ingrese la respuesta (1, 2, 3): ";
-						cin.getline(respuesta, sizeof(respuesta));
+						cin>>respuesta;
 					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0 && strcmp(respuesta, "3") != 0);
 					if (strcmp(respuesta, "1") == 0)
 					{
