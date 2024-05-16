@@ -81,7 +81,6 @@ char *visualizar_tests(sqlite3 *db)
 
 void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 {
-    printf("Elimina\n");
     char sql[100];
     sprintf(sql, "DELETE FROM test WHERE nombre = '%s';", eliminar);
 
@@ -512,17 +511,27 @@ int main(int argc, char *argv[])
                 memset(recvBuff, 0, sizeof(recvBuff));
 
                 recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-                printf("Datos recibidos: %s \n", recvBuff);
+                if (strcmp(recvBuff, "0") == 0)
+                {
+                    printf("Datos recibidos: %s \n", recvBuff);
+                    strcpy(sendBuff, "No se desea eliminar ningun test.");
+                    strcat(sendBuff, "\0");
+                    send(comm_socket, sendBuff, strlen(sendBuff), 0);
+                    printf("Datos enviados: %s \n", sendBuff);
+                }
+                else
+                {
+                    printf("Datos recibidos: %s \n", recvBuff);
 
-                eliminar_test(recvBuff, DB, errMsg);
+                    eliminar_test(recvBuff, DB, errMsg);
 
+                    strcpy(sendBuff, "Test eliminado correctamente");
+                    strcat(sendBuff, "\0"); // Añade un carácter nulo al final de la cadena
 
-                strcpy(sendBuff, "Test eliminado correctamente");
-                strcat(sendBuff, "\0"); // Añade un carácter nulo al final de la cadena
-
-                // Envía solo la cantidad de datos necesarios
-                send(comm_socket, sendBuff, strlen(sendBuff), 0);
-                printf("Datos enviados: %s \n", sendBuff);
+                    // Envía solo la cantidad de datos necesarios
+                    send(comm_socket, sendBuff, strlen(sendBuff), 0);
+                    printf("Datos enviados: %s \n", sendBuff);
+                }
             }
             else if (strcmp(recvBuff, "Fin") == 0)
             {

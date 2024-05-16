@@ -220,11 +220,10 @@ int main(int argc, char *argv[])
 				}
 				else if (!encontrado)
 				{
-					cout << "El nombre '" << eliminar << "' no coincide con ningun nombre de los teses. Inténtalo de nuevo." << endl;
+					cout << "El nombre '" << eliminar << "' no coincide con ningun nombre de los teses. Intentalo de nuevo." << endl;
 				}
 			} while (!encontrado);
 
-			cout<<"llegue"<<endl;
 			memset(recvBuff, 0, sizeof(recvBuff));
 			strcpy(sendBuff, eliminar);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
