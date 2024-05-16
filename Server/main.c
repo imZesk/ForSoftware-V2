@@ -154,6 +154,94 @@ char *obtenerPregunta(sqlite3 *DB, char *errMsg, int id_p)
     return pregunta;
 }
 
+int obtenerTipo(sqlite3 *DB, char *errMsg, int id_p, int *tipo)
+{
+    char sql[512];
+    sprintf(sql, "SELECT tipo_preg FROM pregunta WHERE id_p = %d", id_p);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener el tipo: %s\n", sqlite3_errmsg(DB));
+        return -1; // Retornar un código de error
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW)
+    {
+        *tipo = sqlite3_column_int(stmt, 0); // Obtener el valor entero de la columna
+    }
+    else
+    {
+        printf("No existe el tipo para el id_p dado\n");
+        sqlite3_finalize(stmt);
+        return -1; // Retornar un código de error
+    }
+
+    sqlite3_finalize(stmt);
+    return 0;
+}
+
+char **obtenerRespuestas(sqlite3 *DB, char *errMsg, int id_p, int *num_respuestas)
+{
+    char sql[512];
+    sprintf(sql, "SELECT respuesta FROM respuesta WHERE id_p = %d", id_p);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener las respuestas: %s\n", sqlite3_errmsg(DB));
+        return NULL;
+    }
+
+    // Contar cuántas respuestas hay
+    *num_respuestas = 0;
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        (*num_respuestas)++;
+    }
+    sqlite3_reset(stmt);
+
+    if (*num_respuestas == 0)
+    {
+        sqlite3_finalize(stmt);
+        return NULL; // No hay respuestas
+    }
+
+    // Asignar memoria para las respuestas
+    char **respuestas = malloc(*num_respuestas * sizeof(char *));
+    if (respuestas == NULL)
+    {
+        printf("Error al asignar memoria para las respuestas\n");
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+
+    // Recuperar las respuestas
+    int index = 0;
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+    {
+        const unsigned char *text = sqlite3_column_text(stmt, 0);
+        respuestas[index] = malloc((strlen((const char *)text) + 1) * sizeof(char));
+        if (respuestas[index] == NULL)
+        {
+            printf("Error al asignar memoria para una respuesta\n");
+            for (int i = 0; i < index; i++)
+            {
+                free(respuestas[i]);
+            }
+            free(respuestas);
+            sqlite3_finalize(stmt);
+            return NULL;
+        }
+        strcpy(respuestas[index], (const char *)text);
+        index++;
+    }
+
+    sqlite3_finalize(stmt);
+    return respuestas;
+}
+
 char *obtenerRespuesta(sqlite3 *DB, char *errMsg, int id_p)
 {
     char *respuesta = malloc(100 * sizeof(char)); // Asignar memoria para la respuesta
@@ -437,8 +525,43 @@ int main(int argc, char *argv[])
                             continue;
                         }
 
-                        send(comm_socket, pregunta, strlen(pregunta) + 1, 0);
-                        printf("Pregunta enviada: %s \n", pregunta);
+                        int tipo;
+                        if (obtenerTipo(DB, errMsg, ids[i], &tipo) != 0)
+                        {
+                            printf("Error al obtener el tipo de la pregunta\n");
+                            free(pregunta);
+                            continue;
+                        }
+
+                        char frase[512];
+                        sprintf(frase, "Pregunta: %s, y sus opciones son:\n", pregunta);
+
+                        if (tipo == 1)
+                        {
+                            int num_respuestas;
+                            char **respuestas = obtenerRespuestas(DB, errMsg, ids[i], &num_respuestas);
+                            if (respuestas != NULL)
+                            {
+                                for (int j = 0; j < num_respuestas; j++)
+                                {
+                                    strcat(frase, respuestas[j]);
+                                    strcat(frase, "\n");
+                                    free(respuestas[j]);
+                                }
+                                free(respuestas);
+                            }
+                        }
+                        else if (tipo == 2)
+                        {
+                            strcat(frase, "Verdadero\nFalso\n");
+                        }
+                        else if (tipo == 3)
+                        {
+                            strcat(frase, "Pregunta abierta sin opciones.\n");
+                        }
+
+                        send(comm_socket, frase, strlen(frase) + 1, 0);
+                        printf("Frase enviada: %s \n", frase);
 
                         free(pregunta);
 

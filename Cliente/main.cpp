@@ -137,42 +137,37 @@ int main(int argc, char *argv[])
 			cout << "Que test desea realizar: ";
 			memset(sendBuff, 0, sizeof(sendBuff));
 			cin.getline(sendBuff, sizeof(sendBuff));
-			send(s, sendBuff, strlen(sendBuff) + 1, 0);
-			
+			send(s, "geo", strlen("geo") + 1, 0);
 
-			recv(s, recvBuff, sizeof(recvBuff), 0);
+			while (true)
+			{
+				// Recibir pregunta y opciones del servidor
+				recv(s, recvBuff, sizeof(recvBuff), 0);
 
-			if (strcmp(recvBuff, "El test no existe") == 0)
-			{
-				cout << "El test no existe" << endl;
-			}
-			else
-			{
-				while (true)
+				if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
 				{
-					// Recibir pregunta del servidor
+					cout << "No hay más preguntas disponibles." << endl;
+					break;
+				}
+				else if (strcmp(recvBuff, "El test no existe") == 0)
+				{
+					cout << "El test no existe" << endl;
+					break;
+				}
+				else
+				{
+					cout << recvBuff << endl; // Mostrar la pregunta y las opciones
+
+					cout << "Ingrese su respuesta: ";
+					cin.getline(respuesta, sizeof(respuesta));
+					strcpy(sendBuff, respuesta);
+					send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+					// Recibir resultado del servidor
 					recv(s, recvBuff, sizeof(recvBuff), 0);
-					if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
-					{
-						cout << "No hay más preguntas disponibles." << endl;
-						break;
-					}
-					else
-					{
-						cout << "Pregunta recibida: " << recvBuff << endl;
-
-						cout << "Ingrese su respuesta: ";
-						cin.getline(respuesta, sizeof(respuesta));
-						strcpy(sendBuff, respuesta);
-						send(s, sendBuff, strlen(sendBuff) + 1, 0);
-
-						// Recibir resultado del servidor
-						recv(s, recvBuff, sizeof(recvBuff), 0);
-						cout << "Resultado: " << recvBuff << endl;
-					}
+					cout << "Resultado: " << recvBuff << endl;
 				}
 			}
-
 			break;
 
 		case '3':
@@ -214,8 +209,9 @@ int main(int argc, char *argv[])
 						break;
 					}
 				}
-				if(strcmp(eliminar, "0") == 0){
-					cout<<"No se desea eliminar ningun test."<<endl;
+				if (strcmp(eliminar, "0") == 0)
+				{
+					cout << "No se desea eliminar ningun test." << endl;
 					break;
 				}
 				else if (!encontrado)
