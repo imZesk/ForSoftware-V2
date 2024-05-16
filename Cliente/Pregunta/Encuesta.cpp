@@ -44,10 +44,3 @@ char* Encuesta::getNombre(){
 int Encuesta::getCantidadPreguntas(){
 	return cantidadPreguntas;
 }
-
-Encuesta crearEncuesta(char *nombre, int cantidadPreguntas){
-	Encuesta encuesta;
-	encuesta.setNombre(nombre);
-	encuesta.setCantidadPreguntas(cantidadPreguntas);
-	return encuesta;
-}

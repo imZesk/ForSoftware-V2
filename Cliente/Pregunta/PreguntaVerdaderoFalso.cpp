@@ -23,3 +23,7 @@ using namespace std;
     PreguntaVerdaderoFalso:: ~PreguntaVerdaderoFalso(){
 
     }
+
+    int PreguntaVerdaderoFalso::getTipo(){
+        return 3;
+    }

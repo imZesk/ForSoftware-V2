@@ -15,6 +15,8 @@ public:
     char getRespuesta() const;
     void setRespuesta(char r);
 
+    int getTipo();
+
     virtual ~PreguntaVerdaderoFalso();
 };
 

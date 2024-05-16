@@ -17,3 +17,7 @@ using namespace std;
 
     }
 
+    int PreguntaOpcionMultiple::getTipo(){
+        return 2;
+    }
+

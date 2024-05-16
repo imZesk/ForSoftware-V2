@@ -13,6 +13,8 @@ public:
     PreguntaOpcionMultiple();
     void anyadirOpcion(char *opcion, int pos);
 
+    int getTipo();
+
     virtual ~PreguntaOpcionMultiple();
 };
 

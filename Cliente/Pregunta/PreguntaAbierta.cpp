@@ -23,3 +23,7 @@ using namespace std;
     PreguntaAbierta:: ~PreguntaAbierta(){
 
     }
+
+    int PreguntaAbierta::getTipo(){
+        return 1;
+    }

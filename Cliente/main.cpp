@@ -2,7 +2,7 @@
 #include <winsock2.h>
 #include <cstring>
 #include "menus.h"
-#include "Encuesta.h"
+#include "Pregunta/Encuesta.h"
 #include <limits>
 #include <sstream>
 #include <string>
@@ -46,11 +46,11 @@ list<string> separarPalabras(const char *cadena)
 		}
 
 		// Crear una nueva encuesta con los valores obtenidos
-		Encuesta nueva_encuesta(id_encuesta, cantidad_preguntas, nombre_encuesta);
-		nombresEncuestas.push_back(nueva_encuesta.nombre);
-		cout << "Nombre: " << nueva_encuesta.nombre << endl;
-		cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
-		cout << endl;
+		// Encuesta nueva_encuesta(id_encuesta, cantidad_preguntas, nombre_encuesta);
+		// nombresEncuestas.push_back(nueva_encuesta.nombre);
+		// cout << "Nombre: " << nueva_encuesta.nombre << endl;
+		// cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
+		// cout << endl;
 	}
 	return nombresEncuestas;
 }
@@ -157,6 +157,8 @@ int main(int argc, char *argv[])
 		switch (opcion)
 		{
 		case '1':
+
+			char nombreEncuesta[100];
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Crear test.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
@@ -164,6 +166,18 @@ int main(int argc, char *argv[])
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
+			fflush(stdout);
+			fflush(stdin);
+			cout << "Introduce el nombre de la encuesta: ";
+			fflush(stdout);
+			fflush(stdin);
+			cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
+			fflush(stdout);
+			fflush(stdin);
+			cout << "Ingresaste: " << nombreEncuesta << endl;
+			fflush(stdout);
+			fflush(stdin);
+
 			break;
 
 		case '2':

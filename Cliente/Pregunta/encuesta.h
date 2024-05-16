@@ -24,8 +24,6 @@ public:
     
     Pregunta& operator=(const Pregunta &p);
 
-    Encuesta crearEncuesta(char *nombre, int cantidadPreguntas);
-
     virtual ~Encuesta();
 };
 
