@@ -4,16 +4,18 @@
 #include "Pregunta/Pregunta.h"
 
 class PreguntaVerdaderoFalso : public Pregunta {
-public:
-    enum Respuesta { Verdadero, Falso };
-
-    PreguntaVerdaderoFalso(int id, std::string pregunta, Respuesta respuesta);
-
-    std::string obtenerTipo() const override;
-    Respuesta obtenerRespuesta() const;
-
 private:
-    Respuesta respuesta;
+    char respuesta;
+
+public:
+    PreguntaVerdaderoFalso();
+    PreguntaVerdaderoFalso(char *i, char *nom, char r);
+    PreguntaVerdaderoFalso(const PreguntaVerdaderoFalso &other);
+
+    char getRespuesta() const;
+    void setRespuesta(char r);
+
+    virtual ~PreguntaVerdaderoFalso();
 };
 
 #endif // PREGUNTAVERDADEROFALSO_H

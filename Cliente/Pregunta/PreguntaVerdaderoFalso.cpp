@@ -1,11 +1,25 @@
 #include "PreguntaVerdaderoFalso.h"
+#include <string.h>
+#include <iostream>
+using namespace std;
 
-PreguntaVerdaderoFalso::PreguntaVerdaderoFalso(int id, std::string pregunta, Respuesta respuesta) : Pregunta(id, pregunta), respuesta(respuesta) {}
+    PreguntaVerdaderoFalso::PreguntaVerdaderoFalso() :Pregunta(){
+        respuesta = 'F';
+    }
+    PreguntaVerdaderoFalso::PreguntaVerdaderoFalso(char *i, char *nom, char r) :Pregunta(i,nom){
+        respuesta = r;
+    }
+    PreguntaVerdaderoFalso::PreguntaVerdaderoFalso(const PreguntaVerdaderoFalso &other): Pregunta(other){
+        respuesta = other.respuesta;
+    }
 
-std::string PreguntaVerdaderoFalso::obtenerTipo() const {
-    return "Verdadero o Falso";
-}
+    char PreguntaVerdaderoFalso::getRespuesta() const{
+        return respuesta;
+    }
+    void PreguntaVerdaderoFalso::setRespuesta(char r){
+        respuesta = r;
+    }
 
-PreguntaVerdaderoFalso::Respuesta PreguntaVerdaderoFalso::obtenerRespuesta() const {
-    return respuesta;
-}
+    PreguntaVerdaderoFalso:: ~PreguntaVerdaderoFalso(){
+
+    }
