@@ -18,11 +18,6 @@ public:
     void setId(char *Id);
     void setNom(char *nom);
 
-
-
-    // Método virtual puro que debe ser implementado por las subclases
-    virtual std::string obtenerTipo() const = 0;
-
     virtual ~Pregunta();
 };
 
