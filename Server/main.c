@@ -105,8 +105,8 @@ char *resultado_teses(sqlite3 *db)
     memset(resultado, 0, MAX_BUFFER_SIZE);
 
     char nombre[100];
-    int cant_preg;
-    int id;
+    int preg_reali;
+    int respuestas_correct;
     int first_row = 1;
 
     printf("\n");
@@ -117,17 +117,17 @@ char *resultado_teses(sqlite3 *db)
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW)
         {
-            id = sqlite3_column_int(stmt, 0);
-            strcpy(nombre, (char *)sqlite3_column_text(stmt, 1));
-            cant_preg = sqlite3_column_int(stmt, 2);
+            strcpy(nombre, (char *)sqlite3_column_text(stmt, 0));
+            preg_reali = sqlite3_column_int(stmt, 1);
+            respuestas_correct = sqlite3_column_int(stmt, 2);
             if (first_row)
             {
-                sprintf(resultado, "%d,%s,%d", id, nombre, cant_preg);
+                sprintf(resultado, "%s,%d,%d", nombre, preg_reali,respuestas_correct);
                 first_row = 0;
             }
             else
             {
-                sprintf(resultado, "%s;%d,%s,%d", resultado, id, nombre, cant_preg);
+                sprintf(resultado, "%s;%s,%d,%d", resultado, nombre, preg_reali,respuestas_correct);
             }
         }
     } while (result == SQLITE_ROW);
@@ -681,15 +681,12 @@ int main(int argc, char *argv[])
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
-            else if (strcmp(recvBuff, "resultado teses.") == 0)
+            else if (strcmp(recvBuff, "resultado teses") == 0)
             {
                 resultados=resultado_teses(DB);
                 memset(sendBuff, 0, sizeof(sendBuff));
-                strcpy(sendBuff, "ACK -> ");
-                strcat(sendBuff, recvBuff);
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                send(comm_socket, resultados, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
-                sqlite3_close(DB);
                 break;
             }
             else if (strcmp(recvBuff, "Fin") == 0)
