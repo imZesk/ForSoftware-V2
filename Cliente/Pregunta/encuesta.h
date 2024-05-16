@@ -15,6 +15,14 @@ public:
     Encuesta();
     void agregarPregunta(const Pregunta &p);
 
+    void setNombre(char* nombre);
+    void setCantidadPreguntas(int cantidadPreguntas);
+    char* getNombre();
+    int getCantidadPreguntas();
+    
+    Encuesta crearEncuesta(char *nombre, int cantidadPreguntas);
+
+
     virtual ~Encuesta();
 };
 
