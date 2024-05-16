@@ -239,96 +239,98 @@ int main(int argc, char *argv[])
 				cin.getline(tipo, sizeof(tipo));
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 
-			if (strcmp(tipo, "0") == 0)
+			if (strcmp(tipo, "0") != 0)
+			{
+				cout << "Ingrese la pregunta: ";
+				cin.getline(pregunta, sizeof(pregunta));
+
+				if (strcmp(tipo, "2") == 0)
+				{
+					strcpy(opciones, "Verdadero, Falso");
+				}
+				else if (strcmp(tipo, "1") == 0)
+				{
+					do
+					{
+						cout << "Ingrese la primera opcion: ";
+						cin.getline(opcion1, sizeof(opcion1));
+					} while (strcmp(opcion1, "") == 0);
+					do
+					{
+						cout << "Ingrese la segunda opcion: ";
+						cin.getline(opcion2, sizeof(opcion2));
+					} while (strcmp(opcion2, "") == 0);
+					do
+					{
+						cout << "Ingrese la tercera opcion: ";
+						cin.getline(opcion3, sizeof(opcion3));
+					} while (strcmp(opcion3, "") == 0);
+
+					strcpy(opciones, opcion1);
+					strcat(opciones, ", ");
+					strcat(opciones, opcion2);
+					strcat(opciones, ", ");
+					strcat(opciones, opcion3);
+				}
+				else
+				{
+					strcpy(opciones, "");
+				}
+
+				if (strcmp(tipo, "3") == 0)
+				{
+					cout << "Ingrese la respuesta: ";
+					cin.getline(respuesta, sizeof(respuesta));
+				}
+				else if (strcmp(tipo, "2") == 0)
+				{
+					do
+					{
+						cout << "Ingrese la respuesta (1 para verdadero o 0 para falso): ";
+						cin.getline(respuesta, sizeof(respuesta));
+					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "0") != 0);
+					if (strcmp(respuesta, "1") == 0)
+					{
+						strcpy(respuesta, "Verdadero");
+					}
+					else
+					{
+						strcpy(respuesta, "Falso");
+					}
+				}
+				else
+				{
+					do
+					{
+						cout << "Ingrese la respuesta (1, 2, 3): ";
+						cin.getline(respuesta, sizeof(respuesta));
+					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0 && strcmp(respuesta, "3") != 0);
+					if (strcmp(respuesta, "1") == 0)
+					{
+						strcpy(respuesta, opcion1);
+					}
+					else if (strcmp(respuesta, "2") == 0)
+					{
+						strcpy(respuesta, opcion2);
+					}
+					else
+					{
+						strcpy(respuesta, opcion3);
+					}
+				}
+
+				send(s, tipo, sizeof(tipo), 0);
+				send(s, pregunta, sizeof(pregunta), 0);
+				send(s, opciones, sizeof(opciones), 0);
+				send(s, respuesta, sizeof(respuesta), 0);
+			}
+			else
 			{
 				cout << "No se van a añadir preguntas." << endl;
 				strcpy(sendBuff, "Retroceder.");
 				send(s, sendBuff, strlen(sendBuff) + 1, 0);
-				break; // Termina la ejecución del case '5'
+				break;
 			}
-
-			cout << "Ingrese la pregunta: ";
-			cin.getline(pregunta, sizeof(pregunta));
-
-			if (strcmp(tipo, "2") == 0)
-			{
-				strcpy(opciones, "Verdadero, Falso");
-			}
-			else if (strcmp(tipo, "1") == 0)
-			{
-				do
-				{
-					cout << "Ingrese la primera opcion: ";
-					cin.getline(opcion1, sizeof(opcion1));
-				} while (strcmp(opcion1, "") == 0);
-				do
-				{
-					cout << "Ingrese la segunda opcion: ";
-					cin.getline(opcion2, sizeof(opcion2));
-				} while (strcmp(opcion2, "") == 0);
-				do
-				{
-					cout << "Ingrese la tercera opcion: ";
-					cin.getline(opcion3, sizeof(opcion3));
-				} while (strcmp(opcion3, "") == 0);
-
-				strcpy(opciones, opcion1);
-				strcat(opciones, ", ");
-				strcat(opciones, opcion2);
-				strcat(opciones, ", ");
-				strcat(opciones, opcion3);
-			}
-			else
-			{
-				strcpy(opciones, "");
-			}
-
-			if (strcmp(tipo, "3") == 0)
-			{
-				cout << "Ingrese la respuesta: ";
-				cin.getline(respuesta, sizeof(respuesta));
-			}
-			else if (strcmp(tipo, "2") == 0)
-			{
-				do
-				{
-					cout << "Ingrese la respuesta (1 para verdadero o 0 para falso): ";
-					cin.getline(respuesta, sizeof(respuesta));
-				} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "0") != 0);
-				if (strcmp(respuesta, "1") == 0)
-				{
-					strcpy(respuesta, "Verdadero");
-				}
-				else
-				{
-					strcpy(respuesta, "Falso");
-				}
-			}
-			else
-			{
-				do
-				{
-					cout << "Ingrese la respuesta (1, 2, 3): ";
-					cin.getline(respuesta, sizeof(respuesta));
-				} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0 && strcmp(respuesta, "3") != 0);
-				if (strcmp(respuesta, "1") == 0)
-				{
-					strcpy(respuesta, opcion1);
-				}
-				else if (strcmp(respuesta, "2") == 0)
-				{
-					strcpy(respuesta, opcion2);
-				}
-				else
-				{
-					strcpy(respuesta, opcion3);
-				}
-			}
-
-			send(s, tipo, sizeof(tipo), 0);
-			send(s, pregunta, sizeof(pregunta), 0);
-			send(s, opciones, sizeof(opciones), 0);
-			send(s, respuesta, sizeof(respuesta), 0);
 
 			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
