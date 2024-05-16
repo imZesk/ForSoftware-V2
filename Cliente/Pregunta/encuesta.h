@@ -14,6 +14,7 @@ private:
 
 public:
     Encuesta();
+    Encuesta(int cantPreg);
     void agregarPregunta(const Pregunta &p);
 
     void setNombre(char* nombre);
@@ -21,8 +22,9 @@ public:
     char* getNombre();
     int getCantidadPreguntas();
     
-    Encuesta crearEncuesta(char *nombre, int cantidadPreguntas);
+    Pregunta& operator=(const Pregunta &p);
 
+    Encuesta crearEncuesta(char *nombre, int cantidadPreguntas);
 
     virtual ~Encuesta();
 };
