@@ -5,16 +5,15 @@
 #include <vector>
 
 class PreguntaOpcionMultiple : public Pregunta {
-public:
-    PreguntaOpcionMultiple(int id, std::string pregunta, std::vector<std::string> opciones, int opcionCorrecta);
-
-    std::string obtenerTipo() const override;
-    std::vector<std::string> obtenerOpciones() const;
-    int obtenerOpcionCorrecta() const;
-
 private:
-    std::vector<std::string> opciones;
-    int opcionCorrecta;
+    char* opciones[3];
+    char* respuesta;
+public:
+    PreguntaOpcionMultiple();
+    PreguntaOpcionMultiple(char *i, char *nom, char **opciones);
+    PreguntaOpcionMultiple();
+
+
 };
 
 #endif // PREGUNTAOPCIONMULTIPLE_H
