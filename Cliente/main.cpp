@@ -55,6 +55,43 @@ list<string> separarPalabras(const char *cadena)
 	return nombresEncuestas;
 }
 
+void separarResultado(const char *cadena)
+{
+	stringstream ss(cadena);
+	string grupo;
+
+	// Iterar sobre cada grupo separado por punto y coma
+	while (getline(ss, grupo, ';'))
+	{
+		stringstream grupo_ss(grupo);
+		string palabra;
+		string nombre_encuesta;
+		int preg_realiza = 0;
+		int respuestas_c = 0;
+		int contador = 0;
+		while (getline(grupo_ss, palabra, ','))
+		{
+			if (contador == 0)
+			{
+				nombre_encuesta = palabra;
+			}
+			else if (contador == 1)
+			{
+				preg_realiza = stoi(palabra);
+			}
+			else
+			{
+				respuestas_c = stoi(palabra);
+			}
+			contador++;
+		}
+
+		// Crear una nueva encuesta con los valores obtenidos
+		cout << "Nombre: " << nombre_encuesta << respuestas_c << "/" << preg_realiza << endl;
+		cout << endl;
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	WSADATA wsaData;
@@ -338,15 +375,15 @@ int main(int argc, char *argv[])
 
 		case '6':
 			cout << "Envio del mensaje 1..." << endl;
-			strcpy(sendBuff, "resultado teses.");
+			strcpy(sendBuff, "resultado teses");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
-			cout << "Teses: " << endl;
-			separarPalabras(recvBuff);
+			cout << "Resultados: " << endl;
+			separarResultado(recvBuff);
 			break;
 
 		case '0':

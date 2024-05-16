@@ -681,7 +681,7 @@ int main(int argc, char *argv[])
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
-            else if (strcmp(recvBuff, "resultado teses.") == 0)
+            else if (strcmp(recvBuff, "resultado teses") == 0)
             {
                 resultados=resultado_teses(DB);
                 memset(sendBuff, 0, sizeof(sendBuff));
