@@ -190,6 +190,64 @@ void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *
     }
 }
 
+void anadirPregunta(sqlite3 *DB, char *errMsg, char * test, char *tipo, char *pregunta, char *opciones, char *respuesta){
+    char sql[512];
+    sprintf(sql, "SELECT id_t, cant_preg FROM test WHERE nombre = '%s'", test);
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error en la preparación de la consulta SQL para obtener id_t y cant_preg: %s\n", sqlite3_errmsg(DB));
+        return;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_ROW)
+    {
+        printf("No se encontró ningún test con el nombre proporcionado: %s\n", test);
+        sqlite3_finalize(stmt);
+        return;
+    }
+
+    int id_t = sqlite3_column_int(stmt, 0);
+    int cant_preg = sqlite3_column_int(stmt, 1);
+    sqlite3_finalize(stmt);
+
+    // Paso 2: Incrementar la cantidad de preguntas del test
+    cant_preg++;
+
+    // Actualizar la cantidad de preguntas en la base de datos
+    sprintf(sql, "UPDATE test SET cant_preg = %d WHERE id_t = %d", cant_preg, id_t);
+    rc = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error al actualizar la cantidad de preguntas del test: %s\n", errMsg);
+        return;
+    }
+
+    // Paso 3: Llamar a la función crearPregunta para agregar la pregunta
+    crearPregunta(DB, errMsg, tipo, pregunta, opciones, respuesta);
+    if (errMsg != NULL)
+    {
+        printf("Error al crear la pregunta: %s\n", errMsg);
+        return;
+    }
+
+    // Paso 4: Obtener el id_p de la pregunta recién creada
+    int id_p = sqlite3_last_insert_rowid(DB);
+
+    // Paso 5: Añadir una entrada en la tabla tiene para vincular la pregunta con el test
+    sprintf(sql, "INSERT INTO tiene (id_t, id_p) VALUES (%d, %d)", id_t, id_p);
+    rc = sqlite3_exec(DB, sql, NULL, 0, &errMsg);
+    if (rc != SQLITE_OK)
+    {
+        printf("Error al añadir la pregunta al test en la tabla 'tiene': %s\n", errMsg);
+        return;
+    }
+
+    printf("Pregunta añadida exitosamente al test %s.\n", test);
+}
+
 char *obtenerPregunta(sqlite3 *DB, char *errMsg, int id_p)
 {
     char *pregunta = malloc(100 * sizeof(char)); // Asignar memoria para la pregunta
@@ -621,7 +679,10 @@ int main(int argc, char *argv[])
 
             else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
+                char test[100];
                 char tipo[20];
+
+                recv(comm_socket, test, sizeof(test), 0);
 
                 recv(comm_socket, tipo, sizeof(tipo), 0);
                 if (strcmp(tipo, "Retroceder.") != 0)
@@ -633,10 +694,9 @@ int main(int argc, char *argv[])
                     recv(comm_socket, opciones, sizeof(opciones), 0);
                     recv(comm_socket, respuesta, sizeof(respuesta), 0);
 
-                    // Llamar a la función crearPregunta con los datos recibidos
-                    crearPregunta(DB, errMsg, tipo, pregunta, opciones, respuesta);
+                    anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
 
-                    strcpy(sendBuff, "Pregunta creada exitosamente.");
+                    strcpy(sendBuff, "Pregunta agregada exitosamente.");
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
 

@@ -148,6 +148,7 @@ int main(int argc, char *argv[])
 	char opcion2[100];
 	char opcion3[100];
 	char respuesta[100];
+	char test[100];
 	list<string> nombresEncuestas;
 	bool encontrado = false;
 	do
@@ -368,6 +369,11 @@ int main(int argc, char *argv[])
 						strcpy(respuesta, opcion3);
 					}
 				}
+
+				cout << "Ingrese el test para agregar la pregunta: ";
+				cin>>test;
+
+				send(s, test, sizeof(test), 0);
 
 				send(s, tipo, sizeof(tipo), 0);
 				send(s, pregunta, sizeof(pregunta), 0);
