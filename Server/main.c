@@ -535,6 +535,7 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "Fin") == 0)
             {
+                memset(sendBuff, 0, sizeof(sendBuff));
                 strcpy(sendBuff, "ACK -> ");
                 strcat(sendBuff, recvBuff);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);

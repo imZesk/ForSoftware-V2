@@ -335,6 +335,7 @@ int main(int argc, char *argv[])
 			strcpy(sendBuff, "Fin");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
+			memset(recvBuff, 0, sizeof(recvBuff));
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
