@@ -8,6 +8,7 @@ class Encuesta {
 private:
     int id;
     int cantidadPreguntas;
+    int numPreg;
     char* nombre;
     Pregunta *preguntas;
 
