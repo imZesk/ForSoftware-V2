@@ -8,12 +8,12 @@ class PreguntaOpcionMultiple : public Pregunta {
 private:
     char* opciones[3];
     char* respuesta;
+    int numOp;
 public:
     PreguntaOpcionMultiple();
-    PreguntaOpcionMultiple(char *i, char *nom, char **opciones);
-    PreguntaOpcionMultiple();
+    void anyadirOpcion(char *opcion, int pos);
 
-
+    virtual ~PreguntaOpcionMultiple();
 };
 
 #endif // PREGUNTAOPCIONMULTIPLE_H

@@ -1,15 +1,19 @@
 #include "PreguntaOpcionMultiple.h"
+#include <iostream>
+using namespace std;
 
-PreguntaOpcionMultiple::PreguntaOpcionMultiple(int id, std::string pregunta, std::vector<std::string> opciones, int opcionCorrecta) : Pregunta(id, pregunta), opciones(opciones), opcionCorrecta(opcionCorrecta) {}
+    PreguntaOpcionMultiple::PreguntaOpcionMultiple(){
+        numOp = 0;
+        respuesta = '\0';
+    }
 
-std::string PreguntaOpcionMultiple::obtenerTipo() const {
-    return "Opcion Multiple";
-}
+    void PreguntaOpcionMultiple::anyadirOpcion(char *opcion, int pos) {
+        if (pos >= 0 && pos < 3) {
+            opciones[pos] = opcion;
+        }
+    }
 
-std::vector<std::string> PreguntaOpcionMultiple::obtenerOpciones() const {
-    return opciones;
-}
+    PreguntaOpcionMultiple::~PreguntaOpcionMultiple(){
 
-int PreguntaOpcionMultiple::obtenerOpcionCorrecta() const {
-    return opcionCorrecta;
-}
+    }
+
