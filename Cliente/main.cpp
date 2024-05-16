@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 			nombresEncuestas = separarPalabras(recvBuff);
 			do
 			{
-				cout << "Nombre del test a eliminar: ";
+				cout << "Nombre del test a eliminar (0 si no quieres eliminar): ";
 				cin >> eliminar;
 				cout << endl;
 
@@ -214,13 +214,17 @@ int main(int argc, char *argv[])
 						break;
 					}
 				}
-
-				if (!encontrado)
+				if(strcmp(eliminar, "0") == 0){
+					cout<<"No se desea eliminar ningun test."<<endl;
+					break;
+				}
+				else if (!encontrado)
 				{
 					cout << "El nombre '" << eliminar << "' no coincide con ningun nombre de los teses. Inténtalo de nuevo." << endl;
 				}
 			} while (!encontrado);
 
+			cout<<"llegue"<<endl;
 			memset(recvBuff, 0, sizeof(recvBuff));
 			strcpy(sendBuff, eliminar);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
