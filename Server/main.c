@@ -422,10 +422,6 @@ int main(int argc, char *argv[])
             {
                 printf("Solicitando test...\n");
 
-                // Enviar confirmación al cliente
-                strcpy(sendBuff, "Listo para recibir nombre del test.");
-                send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
-
                 // Recibir nombre del test del cliente
                 recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 

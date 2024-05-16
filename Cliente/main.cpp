@@ -134,19 +134,11 @@ int main(int argc, char *argv[])
 			strcpy(sendBuff, "Realizar test.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			// Esperar confirmación del servidor
-			recv(s, recvBuff, sizeof(recvBuff), 0);
-			if (strcmp(recvBuff, "Listo para recibir nombre del test.") == 0)
-			{
-				cout << "Que test desea realizar: ";
-				cin.getline(sendBuff, sizeof(sendBuff));
-				send(s, sendBuff, strlen(sendBuff) + 1, 0);
-			}
-			else
-			{
-				cout << "Error: El servidor no está listo para recibir el nombre del test." << endl;
-				break;
-			}
+			cout << "Que test desea realizar: ";
+			memset(sendBuff, 0, sizeof(sendBuff));
+			cin.getline(sendBuff, sizeof(sendBuff));
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+			
 
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 
