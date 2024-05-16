@@ -611,6 +611,14 @@ int main(int argc, char *argv[])
                 char respuesta[100];
 
                 recv(comm_socket, tipo, sizeof(tipo), 0);
+                if (strcmp(tipo, "0") == 0)
+                {
+                    strcpy(sendBuff, "Retroceder.");
+                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                    printf("Datos enviados: %s \n", sendBuff);
+                    break;
+                }
+
                 recv(comm_socket, pregunta, sizeof(pregunta), 0);
                 recv(comm_socket, opciones, sizeof(opciones), 0);
                 recv(comm_socket, respuesta, sizeof(respuesta), 0);
@@ -622,6 +630,7 @@ int main(int argc, char *argv[])
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
             }
+
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
                 visualizado = visualizar_tests(DB);
