@@ -685,11 +685,8 @@ int main(int argc, char *argv[])
             {
                 resultados=resultado_teses(DB);
                 memset(sendBuff, 0, sizeof(sendBuff));
-                strcpy(sendBuff, "ACK -> ");
-                strcat(sendBuff, recvBuff);
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                send(comm_socket, resultados, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
-                sqlite3_close(DB);
                 break;
             }
             else if (strcmp(recvBuff, "Fin") == 0)
