@@ -336,6 +336,19 @@ int main(int argc, char *argv[])
 			cout << "Datos recibidos: " << recvBuff << endl;
 			break;
 
+		case '6':
+			cout << "Envio del mensaje 1..." << endl;
+			strcpy(sendBuff, "resultado teses.");
+			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+			cout << "Recepcion del mensaje 1..." << endl;
+			recv(s, recvBuff, sizeof(recvBuff), 0);
+			cout << "Datos recibidos: " << recvBuff << endl;
+			cout << endl;
+			cout << "Teses: " << endl;
+			separarPalabras(recvBuff);
+			break;
+
 		case '0':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Fin");

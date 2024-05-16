@@ -79,6 +79,77 @@ char *visualizar_tests(sqlite3 *db)
     return teses;
 }
 
+
+char *resultado_teses(sqlite3 *db)
+{
+    sqlite3_stmt *stmt;
+
+    char sql[] = "SELECT id_t, nombre, cant_preg FROM test";
+
+    int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (result != SQLITE_OK)
+    {
+        printf("Error preparing statement (SELECT)\n");
+        printf("%s\n", sqlite3_errmsg(db));
+        return "Error preparando la declaracion\n";
+    }
+
+    printf("SQL query prepared (SELECT)\n");
+
+    char *teses = (char *)malloc(MAX_BUFFER_SIZE);
+    if (teses == NULL)
+    {
+        printf("Error: Unable to allocate memory for teses\n");
+        return NULL;
+    }
+    memset(teses, 0, MAX_BUFFER_SIZE);
+
+    char nombre[100];
+    int cant_preg;
+    int id;
+    int first_row = 1;
+
+    printf("\n");
+    printf("\n");
+    printf("Mostrando tests:\n");
+    do
+    {
+        result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW)
+        {
+            id = sqlite3_column_int(stmt, 0);
+            strcpy(nombre, (char *)sqlite3_column_text(stmt, 1));
+            cant_preg = sqlite3_column_int(stmt, 2);
+            if (first_row)
+            {
+                sprintf(teses, "%d,%s,%d", id, nombre, cant_preg);
+                first_row = 0;
+            }
+            else
+            {
+                sprintf(teses, "%s;%d,%s,%d", teses, id, nombre, cant_preg);
+            }
+        }
+    } while (result == SQLITE_ROW);
+
+    printf("Teses: %s\n", teses);
+
+    result = sqlite3_finalize(stmt);
+    if (result != SQLITE_OK)
+    {
+        printf("Error finalizing statement (SELECT)\n");
+        printf("%s\n", sqlite3_errmsg(db));
+        free(teses);
+        return NULL;
+    }
+
+    printf("Prepared statement finalized (SELECT)\n");
+
+    return teses;
+}
+
+
+
 void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 {
     char sql[100];
@@ -421,6 +492,7 @@ int main(int argc, char *argv[])
     sqlite3 *DB;
     char *errMsg = 0;
     char *visualizado;
+    char *resultados;
 
     int existe = sqlite3_open("../lib/servidor.db", &DB);
     // //Confirmamos que se abre correctamente
@@ -608,6 +680,17 @@ int main(int argc, char *argv[])
                     send(comm_socket, sendBuff, strlen(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
+            }
+            else if (strcmp(recvBuff, "resultado teses.") == 0)
+            {
+                resultados=resultado_teses(DB);
+                memset(sendBuff, 0, sizeof(sendBuff));
+                strcpy(sendBuff, "ACK -> ");
+                strcat(sendBuff, recvBuff);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                printf("Datos enviados: %s \n", sendBuff);
+                sqlite3_close(DB);
+                break;
             }
             else if (strcmp(recvBuff, "Fin") == 0)
             {
