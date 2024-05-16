@@ -84,7 +84,7 @@ char *resultado_teses(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
 
-    char sql[] = "SELECT id_t, nombre, cant_preg FROM test";
+    char sql[] = "SELECT test.nombre,test.id_t,(SELECT resultado.id_r FROM resultado WHERE resultado.id_t = test.id_t) AS id_r,(SELECT resultado.pregs_realiz FROM resultado WHERE resultado.id_t = test.id_t) AS pregs_realiz,(SELECT resultado.respuestas_c FROM resultado WHERE resultado.id_t = test.id_t) AS respuestas_c FROM test;";
 
     int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (result != SQLITE_OK)
@@ -96,13 +96,13 @@ char *resultado_teses(sqlite3 *db)
 
     printf("SQL query prepared (SELECT)\n");
 
-    char *teses = (char *)malloc(MAX_BUFFER_SIZE);
-    if (teses == NULL)
+    char *resultado = (char *)malloc(MAX_BUFFER_SIZE);
+    if (resultado == NULL)
     {
         printf("Error: Unable to allocate memory for teses\n");
         return NULL;
     }
-    memset(teses, 0, MAX_BUFFER_SIZE);
+    memset(resultado, 0, MAX_BUFFER_SIZE);
 
     char nombre[100];
     int cant_preg;
@@ -122,30 +122,30 @@ char *resultado_teses(sqlite3 *db)
             cant_preg = sqlite3_column_int(stmt, 2);
             if (first_row)
             {
-                sprintf(teses, "%d,%s,%d", id, nombre, cant_preg);
+                sprintf(resultado, "%d,%s,%d", id, nombre, cant_preg);
                 first_row = 0;
             }
             else
             {
-                sprintf(teses, "%s;%d,%s,%d", teses, id, nombre, cant_preg);
+                sprintf(resultado, "%s;%d,%s,%d", resultado, id, nombre, cant_preg);
             }
         }
     } while (result == SQLITE_ROW);
 
-    printf("Teses: %s\n", teses);
+    printf("Resultados: %s\n", resultado);
 
     result = sqlite3_finalize(stmt);
     if (result != SQLITE_OK)
     {
         printf("Error finalizing statement (SELECT)\n");
         printf("%s\n", sqlite3_errmsg(db));
-        free(teses);
+        free(resultado);
         return NULL;
     }
 
     printf("Prepared statement finalized (SELECT)\n");
 
-    return teses;
+    return resultado;
 }
 
 
