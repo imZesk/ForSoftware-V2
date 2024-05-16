@@ -534,7 +534,7 @@ int main(int argc, char *argv[])
                     }
 
                     strcpy(sendBuff, "No hay más preguntas disponibles.");
-                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
+                    send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
 
                     free(ids);
                 }
