@@ -157,8 +157,6 @@ int main(int argc, char *argv[])
 	do
 	{
 		opcion = menuPrincipal();
-		//fflush(stdout);
-		fflush(stdin);
 
 		switch (opcion)
 		{
