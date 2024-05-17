@@ -45,11 +45,11 @@ list<string> separarPalabras(const char *cadena)
 			}
 			contador++;
 		}
-		
-		nombre=nombre_encuesta.c_str();
+
+		nombre = nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
 		Encuesta nueva_encuesta(cantidad_preguntas);
-		//nueva_encuesta.setNombre(nombre);
+		// nueva_encuesta.setNombre(nombre);
 		nueva_encuesta.setId(id_encuesta);
 		// nombresEncuestas.push_back(nueva_encuesta.nombre);
 		cout << "Nombre: " << nueva_encuesta.getNombre() << endl;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 	char opcion;
 	char eliminar[100];
 	char hacer[100];
-	char tipo[10];
+	char tipo;
 	char pregunta[100];
 	char opciones[100];
 	char opcion1[100];
@@ -191,13 +191,13 @@ int main(int argc, char *argv[])
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Que test desea realizar: ";
-			cin>>sendBuff;
+			cin >> sendBuff;
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			while (true)
 			{
 				// Recibir pregunta y opciones del servidor
-				recv(s, recvBuff, sizeof(recvBuff)+1, 0);
+				recv(s, recvBuff, sizeof(recvBuff) + 1, 0);
 
 				if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
 				{
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 					cout << recvBuff << endl; // Mostrar la pregunta y las opciones
 
 					cout << "Ingrese su respuesta: ";
-					cin>>respuesta;
+					cin >> respuesta;
 					strcpy(sendBuff, respuesta);
 					send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
@@ -291,34 +291,43 @@ int main(int argc, char *argv[])
 			do
 			{
 				cout << "Ingrese el tipo de pregunta\n1: pregunta con 3 opciones\n2: Verdadero o Falso\n3: Pregunta abierta\n0 si no quieres añadir ninguna pregunta: ";
-				cin>>tipo;
-			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
+				cin >> tipo;
+			} while (tipo != '1' && tipo != '2' && tipo != '3' && tipo != '0');
 
-			if (strcmp(tipo, "0") != 0)
+			if (tipo != '0')
 			{
 				cout << "Ingrese la pregunta: ";
-				cin>>pregunta;
+				cin.ignore();
+				string pregunta;
+				getline(cin, pregunta);
 
-				if (strcmp(tipo, "2") == 0)
+				char preg[512];
+				strcpy(preg, pregunta.c_str());
+
+				cout << preg << endl;
+
+				char opciones[512] = "";
+				char opcion1[100], opcion2[100], opcion3[100];
+				if (tipo == '2')
 				{
 					strcpy(opciones, "Verdadero, Falso");
 				}
-				else if (strcmp(tipo, "1") == 0)
+				else if (tipo == '1')
 				{
 					do
 					{
 						cout << "Ingrese la primera opcion: ";
-						cin>>opcion1;
+						cin >> opcion1;
 					} while (strcmp(opcion1, "") == 0);
 					do
 					{
 						cout << "Ingrese la segunda opcion: ";
-						cin>>opcion2;
+						cin >> opcion2;
 					} while (strcmp(opcion2, "") == 0);
 					do
 					{
 						cout << "Ingrese la tercera opcion: ";
-						cin>>opcion3;
+						cin >> opcion3;
 					} while (strcmp(opcion3, "") == 0);
 
 					strcpy(opciones, opcion1);
@@ -327,22 +336,19 @@ int main(int argc, char *argv[])
 					strcat(opciones, ", ");
 					strcat(opciones, opcion3);
 				}
-				else
-				{
-					strcpy(opciones, "");
-				}
 
-				if (strcmp(tipo, "3") == 0)
+				char respuesta[100];
+				if (tipo == '3')
 				{
 					cout << "Ingrese la respuesta: ";
-					cin>>respuesta;
+					cin >> respuesta;
 				}
-				else if (strcmp(tipo, "2") == 0)
+				else if (tipo == '2')
 				{
 					do
 					{
 						cout << "Ingrese la respuesta (1 para verdadero o 0 para falso): ";
-						cin>>respuesta;
+						cin >> respuesta;
 					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "0") != 0);
 					if (strcmp(respuesta, "1") == 0)
 					{
@@ -358,7 +364,7 @@ int main(int argc, char *argv[])
 					do
 					{
 						cout << "Ingrese la respuesta (1, 2, 3): ";
-						cin>>respuesta;
+						cin >> respuesta;
 					} while (strcmp(respuesta, "1") != 0 && strcmp(respuesta, "2") != 0 && strcmp(respuesta, "3") != 0);
 					if (strcmp(respuesta, "1") == 0)
 					{
@@ -375,14 +381,13 @@ int main(int argc, char *argv[])
 				}
 
 				cout << "Ingrese el test para agregar la pregunta: ";
-				cin>>test;
+				cin >> test;
 
-				send(s, test, sizeof(test), 0);
-
-				send(s, tipo, sizeof(tipo), 0);
-				send(s, pregunta, sizeof(pregunta), 0);
-				send(s, opciones, sizeof(opciones), 0);
-				send(s, respuesta, sizeof(respuesta), 0);
+				send(s, test, strlen(test) + 1, 0);
+				send(s, &tipo, sizeof(tipo), 0);
+				send(s, preg, strlen(preg) + 1, 0);
+				send(s, opciones, strlen(opciones) + 1, 0);
+				send(s, respuesta, strlen(respuesta) + 1, 0);
 			}
 			else
 			{

@@ -79,7 +79,6 @@ char *visualizar_tests(sqlite3 *db)
     return teses;
 }
 
-
 char *resultado_teses(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
@@ -122,12 +121,12 @@ char *resultado_teses(sqlite3 *db)
             respuestas_correct = sqlite3_column_int(stmt, 2);
             if (first_row)
             {
-                sprintf(resultado, "%s,%d,%d", nombre, preg_reali,respuestas_correct);
+                sprintf(resultado, "%s,%d,%d", nombre, preg_reali, respuestas_correct);
                 first_row = 0;
             }
             else
             {
-                sprintf(resultado, "%s;%s,%d,%d", resultado, nombre, preg_reali,respuestas_correct);
+                sprintf(resultado, "%s;%s,%d,%d", resultado, nombre, preg_reali, respuestas_correct);
             }
         }
     } while (result == SQLITE_ROW);
@@ -147,8 +146,6 @@ char *resultado_teses(sqlite3 *db)
 
     return resultado;
 }
-
-
 
 void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 {
@@ -190,7 +187,8 @@ void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *
     }
 }
 
-void anadirPregunta(sqlite3 *DB, char *errMsg, char * test, char *tipo, char *pregunta, char *opciones, char *respuesta){
+void anadirPregunta(sqlite3 *DB, char *errMsg, char *test, char *tipo, char *pregunta, char *opciones, char *respuesta)
+{
     char sql[512];
     sprintf(sql, "SELECT id_t, cant_preg FROM test WHERE nombre = '%s'", test);
     sqlite3_stmt *stmt;
@@ -680,29 +678,32 @@ int main(int argc, char *argv[])
             else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
                 char test[100];
-                char tipo[20];
+                char tipo;
 
                 recv(comm_socket, test, sizeof(test), 0);
+                recv(comm_socket, &tipo, sizeof(tipo), 0);
 
-                recv(comm_socket, tipo, sizeof(tipo), 0);
-                if (strcmp(tipo, "Retroceder.") != 0)
+                if (tipo != '0')
                 {
-                    char pregunta[100];
-                    char opciones[100];
-                    char respuesta[100];
+                    char pregunta[512];
+                    char opciones[512];
+                    char respuesta[512];
+
                     recv(comm_socket, pregunta, sizeof(pregunta), 0);
                     recv(comm_socket, opciones, sizeof(opciones), 0);
                     recv(comm_socket, respuesta, sizeof(respuesta), 0);
 
-                    anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
+                    anadirPregunta(DB, errMsg, test, &tipo, pregunta, opciones, respuesta);
+                    printf("Pregunta creada");
 
                     strcpy(sendBuff, "Pregunta agregada exitosamente.");
-                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
                     printf("Datos enviados: %s \n", sendBuff);
-
-                }else{
+                }
+                else
+                {
                     strcpy(sendBuff, "Retroceder.");
-                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
@@ -743,7 +744,7 @@ int main(int argc, char *argv[])
             }
             else if (strcmp(recvBuff, "resultado teses") == 0)
             {
-                resultados=resultado_teses(DB);
+                resultados = resultado_teses(DB);
                 memset(sendBuff, 0, sizeof(sendBuff));
                 send(comm_socket, resultados, sizeof(sendBuff), 0);
                 printf("Datos enviados: %s \n", sendBuff);
