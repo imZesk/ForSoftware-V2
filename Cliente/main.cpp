@@ -26,6 +26,7 @@ list<string> separarPalabras(const char *cadena)
 		string palabra;
 		int id_encuesta = 0;
 		string nombre_encuesta;
+		const char *nombre;
 		int cantidad_preguntas = 0;
 		int contador = 0;
 		while (getline(grupo_ss, palabra, ','))
@@ -44,9 +45,11 @@ list<string> separarPalabras(const char *cadena)
 			}
 			contador++;
 		}
-
+		
+		nombre=nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
-		// Encuesta nueva_encuesta(id_encuesta, cantidad_preguntas, nombre_encuesta);
+		Encuesta nueva_encuesta(cantidad_preguntas);
+		nueva_encuesta.setNombre(nombre);
 		// nombresEncuestas.push_back(nueva_encuesta.nombre);
 		// cout << "Nombre: " << nueva_encuesta.nombre << endl;
 		// cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
