@@ -1,4 +1,4 @@
-#include "Encuesta.h"
+#include "encuesta.h"
 #include <iostream>
 #include <string.h>
 using namespace std;
@@ -28,7 +28,7 @@ Encuesta::~Encuesta(){
 	}
 }
 
-void Encuesta::setNombre(const char* nombre){
+void Encuesta::setNombre(char* nombre){
 	this->nombre = new char[strlen(nombre) + 1];
 	strcpy(this->nombre, nombre);
 }

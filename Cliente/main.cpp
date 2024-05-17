@@ -2,7 +2,7 @@
 #include <winsock2.h>
 #include <cstring>
 #include "menus.h"
-#include "Pregunta/Encuesta.h"
+#include "Pregunta/encuesta.h"
 #include <limits>
 #include <sstream>
 #include <string>
@@ -49,11 +49,12 @@ list<string> separarPalabras(const char *cadena)
 		nombre=nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
 		Encuesta nueva_encuesta(cantidad_preguntas);
-		nueva_encuesta.setNombre(nombre);
+		//nueva_encuesta.setNombre(nombre);
+		nueva_encuesta.setId(id_encuesta);
 		// nombresEncuestas.push_back(nueva_encuesta.nombre);
-		// cout << "Nombre: " << nueva_encuesta.nombre << endl;
-		// cout << "Cantidad de preguntas: " << nueva_encuesta.cantidadPreguntas << endl;
-		// cout << endl;
+		cout << "Nombre: " << nueva_encuesta.getNombre() << endl;
+		cout << "Cantidad de preguntas: " << nueva_encuesta.getCantidadPreguntas() << endl;
+		cout << endl;
 	}
 	return nombresEncuestas;
 }
