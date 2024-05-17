@@ -8,14 +8,13 @@ class Encuesta {
 private:
     int id;
     int cantidadPreguntas;
-    int numPreg;
     char* nombre;
     Pregunta *preguntas;
 
 public:
     Encuesta();
     Encuesta(int cantPreg);
-    void agregarPregunta(const Pregunta &p);
+    Encuesta agregarPregunta(Encuesta e, Pregunta p);
 
     void setNombre(char* nombre);
     void setCantidadPreguntas(int cantidadPreguntas);

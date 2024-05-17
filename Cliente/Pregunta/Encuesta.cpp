@@ -5,21 +5,21 @@ using namespace std;
 
 Encuesta::Encuesta(){
     cantidadPreguntas = 0;
-    numPreg = 0;
     preguntas = NULL;
 }
 
 Encuesta::Encuesta(int cantPreg){
     cantidadPreguntas = cantPreg;
-    numPreg = 0;
     preguntas = new Pregunta[cantidadPreguntas];
 }
 
-void Encuesta::agregarPregunta(const Pregunta &p){
-    if(numPreg < cantidadPreguntas){
-		preguntas[numPreg] = p; 
-		numPreg++;
+Encuesta Encuesta::agregarPregunta(Encuesta e, Pregunta p){
+    Encuesta aux(e.getCantidadPreguntas() + 1);
+    for(int i = 0; i < e.getCantidadPreguntas(); i++){
+        aux.preguntas[i] = e.preguntas[i];
     }
+    aux.preguntas[e.getCantidadPreguntas()] = p;
+    return aux;
 }
 
 Encuesta::~Encuesta(){
