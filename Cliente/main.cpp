@@ -138,7 +138,6 @@ int main(int argc, char *argv[])
 	cout << "Conexion establecida con: " << inet_ntoa(server.sin_addr) << " ("
 		 << ntohs(server.sin_port) << ")" << endl;
 
-	menuPrincipal();
 
 	// Menu:
 	int contador;
@@ -158,6 +157,8 @@ int main(int argc, char *argv[])
 	do
 	{
 		opcion = menuPrincipal();
+		//fflush(stdout);
+		fflush(stdin);
 
 		switch (opcion)
 		{
