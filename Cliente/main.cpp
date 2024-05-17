@@ -73,6 +73,7 @@ void separarResultado(const char *cadena)
 		int preg_realiza = 0;
 		int respuestas_c = 0;
 		int contador = 0;
+		const char *nombre;
 		while (getline(grupo_ss, palabra, ','))
 		{
 			if (contador == 0)
@@ -90,8 +91,12 @@ void separarResultado(const char *cadena)
 			contador++;
 		}
 
+		nombre = nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
-		cout << "Nombre: " << nombre_encuesta << respuestas_c << "/" << preg_realiza << endl;
+		Encuesta nueva_encuesta(preg_realiza);
+		nueva_encuesta.setNombre(nombre);
+		nueva_encuesta.setNota(respuestas_c);
+		cout << "Nombre: " << nueva_encuesta.getNombre() << nueva_encuesta.getNota() << "/" << nueva_encuesta.getCantidadPreguntas() << endl;
 		cout << endl;
 	}
 }
