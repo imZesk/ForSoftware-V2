@@ -6,6 +6,7 @@ using namespace std;
 Encuesta::Encuesta(){
     cantidadPreguntas = 0;
     preguntas = NULL;
+    notaU = 0;
 }
 
 Encuesta::Encuesta(int cantPreg){
@@ -37,6 +38,10 @@ void Encuesta::setId(int i){
     id = i;
 }
 
+void Encuesta::setNota(int n){
+    notaU = n;
+}
+
 void Encuesta::setCantidadPreguntas(int cantidadPreguntas){
 	this->cantidadPreguntas = cantidadPreguntas;
 }
@@ -47,6 +52,10 @@ char* Encuesta::getNombre(){
 
 int Encuesta::getId(){
     return id;
+}
+
+int Encuesta::getNota(){
+    return notaU;
 }
 
 int Encuesta::getCantidadPreguntas(){

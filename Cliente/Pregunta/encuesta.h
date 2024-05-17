@@ -10,6 +10,7 @@ private:
     int cantidadPreguntas;
     char* nombre;
     Pregunta *preguntas;
+    int notaU;
 
 public:
     Encuesta();
@@ -18,9 +19,11 @@ public:
 
     void setNombre(const char* nombre);
     void setId(int i);
+    void setNota(int n);
     void setCantidadPreguntas(int cantidadPreguntas);
     char* getNombre();
     int getId();
+    int getNota();
     int getCantidadPreguntas();
     
     Pregunta& operator=(const Pregunta &p);
