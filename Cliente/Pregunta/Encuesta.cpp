@@ -28,9 +28,13 @@ Encuesta::~Encuesta(){
 	}
 }
 
-void Encuesta::setNombre(char* nombre){
+void Encuesta::setNombre(const char* nombre){
 	this->nombre = new char[strlen(nombre) + 1];
 	strcpy(this->nombre, nombre);
+}
+
+void Encuesta::setId(int i){
+    id = i;
 }
 
 void Encuesta::setCantidadPreguntas(int cantidadPreguntas){
@@ -39,6 +43,10 @@ void Encuesta::setCantidadPreguntas(int cantidadPreguntas){
 
 char* Encuesta::getNombre(){
 	return nombre;
+}
+
+int Encuesta::getId(){
+    return id;
 }
 
 int Encuesta::getCantidadPreguntas(){

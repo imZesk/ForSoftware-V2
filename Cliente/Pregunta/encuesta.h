@@ -17,8 +17,10 @@ public:
     Encuesta agregarPregunta(Encuesta e, Pregunta p);
 
     void setNombre(const char* nombre);
+    void setId(int i);
     void setCantidadPreguntas(int cantidadPreguntas);
     char* getNombre();
+    int getId();
     int getCantidadPreguntas();
     
     Pregunta& operator=(const Pregunta &p);
