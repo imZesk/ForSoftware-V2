@@ -298,6 +298,8 @@ int main(int argc, char *argv[])
 				cin>>tipo;
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 
+			send(s, tipo, strlen(tipo) + 1, 0);
+
 			if (strcmp(tipo, "0") != 0)
 			{
 				cout << "Ingrese la pregunta: ";
@@ -309,6 +311,8 @@ int main(int argc, char *argv[])
 				strcpy(preg, pregunta.c_str());
 
 				cout<<preg<<endl;
+
+				send(s, preg, strlen(preg) + 1, 0);
 
 				if (strcmp(tipo, "2") == 0)
 				{
@@ -340,8 +344,10 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					strcpy(opciones, "");
+					strcpy(opciones, "NULL");
 				}
+
+				send(s, opciones, strlen(opciones) + 1, 0);
 
 				if (strcmp(tipo, "3") == 0)
 				{
@@ -385,15 +391,18 @@ int main(int argc, char *argv[])
 					}
 				}
 
+				send(s, respuesta, strlen(respuesta) + 1, 0);
+
 				cout << "Ingrese el test para agregar la pregunta: ";
 				cin>>test;
+				cout << "test: " << test << endl;
+				cout << "pregunta: " << pregunta << endl;
+				cout << "respuesta: " << respuesta << endl;
+				cout << "tipo: " << tipo << endl;
+				cout << "opciones: " << opciones << endl;
 
-				send(s, test, sizeof(test), 0);
-
-				send(s, tipo, sizeof(tipo), 0);
-				send(s, preg, sizeof(preg), 0);
-				send(s, opciones, sizeof(opciones), 0);
-				send(s, respuesta, sizeof(respuesta), 0);
+				send(s, test, strlen(test) + 1, 0);
+				
 			}
 			else
 			{

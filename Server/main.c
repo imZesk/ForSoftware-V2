@@ -679,18 +679,26 @@ int main(int argc, char *argv[])
             {
                 char test[100];
                 char tipo[20];
-
-                recv(comm_socket, test, sizeof(test), 0);
+                char pregunta[512];
+                char opciones[512];
+                char respuesta[512];
 
                 recv(comm_socket, tipo, sizeof(tipo), 0);
+                printf("tipo: %s\n",tipo);
+                recv(comm_socket, pregunta, sizeof(pregunta), 0);
+                printf("pregunta: %s\n", pregunta);
+                recv(comm_socket, opciones, sizeof(opciones), 0);
+                printf("opciones: %s\n", opciones);
+                recv(comm_socket, respuesta, sizeof(respuesta), 0);
+                printf("pregunta: %s, respuesta: %s, opciones: %s\n", pregunta, respuesta, opciones);
+
+                recv(comm_socket, test, sizeof(test), 0);
+                printf("test: %s\n",test);
+
+
                 if (strcmp(tipo, "Retroceder.") != 0)
                 {
-                    char pregunta[512];
-                    char opciones[512];
-                    char respuesta[512];
-                    recv(comm_socket, pregunta, sizeof(pregunta), 0);
-                    recv(comm_socket, opciones, sizeof(opciones), 0);
-                    recv(comm_socket, respuesta, sizeof(respuesta), 0);
+                    printf("LLega\n");
 
                     anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
                     printf("Pregunta creada");
@@ -698,8 +706,9 @@ int main(int argc, char *argv[])
                     strcpy(sendBuff, "Pregunta agregada exitosamente.");
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
-
-                }else{
+                }
+                else
+                {
                     strcpy(sendBuff, "Retroceder.");
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
