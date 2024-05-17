@@ -678,32 +678,65 @@ int main(int argc, char *argv[])
             else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
             {
                 char test[100];
-                char tipo;
+                char tipo[20];
 
                 recv(comm_socket, test, sizeof(test), 0);
-                recv(comm_socket, &tipo, sizeof(tipo), 0);
 
-                if (tipo != '0')
+                recv(comm_socket, tipo, sizeof(tipo), 0);
+                if (strcmp(tipo, "Retroceder.") != 0)
                 {
                     char pregunta[512];
                     char opciones[512];
                     char respuesta[512];
-
                     recv(comm_socket, pregunta, sizeof(pregunta), 0);
                     recv(comm_socket, opciones, sizeof(opciones), 0);
                     recv(comm_socket, respuesta, sizeof(respuesta), 0);
 
-                    anadirPregunta(DB, errMsg, test, &tipo, pregunta, opciones, respuesta);
+                    anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
                     printf("Pregunta creada");
 
                     strcpy(sendBuff, "Pregunta agregada exitosamente.");
-                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
+                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                    printf("Datos enviados: %s \n", sendBuff);
+
+                }else{
+                    strcpy(sendBuff, "Retroceder.");
+                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                    printf("Datos enviados: %s \n", sendBuff);
+                }
+            }
+
+            else if (strcmp(recvBuff, "Eliminar test.") == 0)
+            {
+                visualizado = visualizar_tests(DB);
+                size_t visualizado_len = strlen(visualizado);
+
+                // Envía solo la cantidad de datos necesarios
+                send(comm_socket, visualizado, visualizado_len, 0);
+                printf("Datos enviados: %s \n", visualizado);
+
+                memset(recvBuff, 0, sizeof(recvBuff));
+
+                recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                if (strcmp(recvBuff, "0") == 0)
+                {
+                    printf("Datos recibidos: %s \n", recvBuff);
+                    strcpy(sendBuff, "No se desea eliminar ningun test.");
+                    strcat(sendBuff, "\0");
+                    send(comm_socket, sendBuff, strlen(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
                 else
                 {
-                    strcpy(sendBuff, "Retroceder.");
-                    send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
+                    printf("Datos recibidos: %s \n", recvBuff);
+
+                    eliminar_test(recvBuff, DB, errMsg);
+
+                    strcpy(sendBuff, "Test eliminado correctamente");
+                    strcat(sendBuff, "\0"); // Añade un carácter nulo al final de la cadena
+
+                    // Envía solo la cantidad de datos necesarios
+                    send(comm_socket, sendBuff, strlen(sendBuff), 0);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
