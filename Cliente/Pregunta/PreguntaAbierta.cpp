@@ -4,7 +4,7 @@
 using namespace std;
 
     PreguntaAbierta::PreguntaAbierta() :Pregunta(){
-        respuesta = "";
+        respuesta = new char[512];
     }
     PreguntaAbierta::PreguntaAbierta(char *i, char *nom, char *r) :Pregunta(i,nom){
         respuesta = r;

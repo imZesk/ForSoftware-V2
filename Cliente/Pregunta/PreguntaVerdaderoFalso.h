@@ -1,7 +1,7 @@
 #ifndef PREGUNTAVERDADEROFALSO_H
 #define PREGUNTAVERDADEROFALSO_H
 
-#include "Pregunta/Pregunta.h"
+#include "Pregunta.h"
 
 class PreguntaVerdaderoFalso : public Pregunta {
 private:

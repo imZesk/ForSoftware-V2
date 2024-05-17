@@ -1,4 +1,4 @@
-#include "Pregunta/Pregunta.h"
+#include "Pregunta.h"
 #include <string.h>
 #include <iostream>
 using namespace std;

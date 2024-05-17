@@ -1,7 +1,7 @@
 #ifndef PreguntaAbierta_H
 #define PreguntaAbierta_H
 
-#include "Pregunta/Pregunta.h"
+#include "Pregunta.h"
 
 class PreguntaAbierta : public Pregunta {
 private:
