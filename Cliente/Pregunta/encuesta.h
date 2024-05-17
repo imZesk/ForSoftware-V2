@@ -16,7 +16,7 @@ public:
     Encuesta(int cantPreg);
     Encuesta agregarPregunta(Encuesta e, Pregunta p);
 
-    void setNombre(char* nombre);
+    void setNombre(const char* nombre);
     void setId(int i);
     void setCantidadPreguntas(int cantidadPreguntas);
     char* getNombre();
