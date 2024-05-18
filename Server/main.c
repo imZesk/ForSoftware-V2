@@ -166,9 +166,8 @@ void eliminar_test(char *eliminar, sqlite3 *DB, char *errMsg)
 
 void crearPregunta(sqlite3 *DB, char *errMsg, char *tipo, char *pregunta, char *opciones, char *respuesta)
 {
-
     char sql[512];
-    if (strcmp(opciones, ""))
+    if (strcmp(opciones, "NULL")==0)
     {
         sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES ('%s', '%s', '%s', '%s');", tipo, pregunta, NULL, respuesta);
     }
