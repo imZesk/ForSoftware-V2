@@ -473,7 +473,8 @@ int *realizarTest(sqlite3 *DB, char *errMsg, char *nombre, int *num_ids)
     return ids;
 }
 
-void escribir_con_hora(FILE *file, const char *mensaje) {
+void escribir_con_hora(FILE *file, const char *mensaje)
+{
     time_t hora = time(NULL);
     struct tm tm = *localtime(&hora);
     fprintf(file, "[%02d:%02d:%02d] %s\n", tm.tm_hour, tm.tm_min, tm.tm_sec, mensaje);
@@ -492,7 +493,8 @@ int main(int argc, char *argv[])
     char sendBuff[1000], recvBuff[1000];
     FILE *file;
     file = fopen("../lib/Log.txt", "w");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Error al abrir el fichero");
         return 1;
     }
@@ -504,24 +506,24 @@ int main(int argc, char *argv[])
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
         printf("Fallo. Codigo de error : %d", WSAGetLastError());
-        escribir_con_hora(file,"[Servidor] Fallo al inicializar Winsock.\n");
+        escribir_con_hora(file, "[Servidor] Fallo al inicializar Winsock.\n");
         return -1;
     }
 
     printf("Inicializado.\n");
-    escribir_con_hora(file,"[Servidor] Winsock inicializado.\n");
+    escribir_con_hora(file, "[Servidor] Winsock inicializado.\n");
 
     // SOCKET creation
     if ((conn_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
     {
         printf("No se ha podido crear el socket : %d", WSAGetLastError());
-        escribir_con_hora(file,"[Servidor] Fallo en la creacion del socket.\n");
+        escribir_con_hora(file, "[Servidor] Fallo en la creacion del socket.\n");
         WSACleanup();
         return -1;
     }
 
     printf("Socket creado.\n");
-    escribir_con_hora(file,"[Servidor] Socket creado.\n");
+    escribir_con_hora(file, "[Servidor] Socket creado.\n");
 
     server.sin_addr.s_addr = inet_addr(SERVER_IP);
     server.sin_family = AF_INET;
@@ -532,20 +534,20 @@ int main(int argc, char *argv[])
              sizeof(server)) == SOCKET_ERROR)
     {
         printf("Error de enlace con el codigo de error: %d", WSAGetLastError());
-        escribir_con_hora(file,"[Servidor] Error de enlace.\n");
+        escribir_con_hora(file, "[Servidor] Error de enlace.\n");
         closesocket(conn_socket);
         WSACleanup();
         return -1;
     }
 
     printf("Enlace realizado.\n");
-    escribir_con_hora(file,"[Servidor] Enlace realizado.\n");
+    escribir_con_hora(file, "[Servidor] Enlace realizado.\n");
 
     // LISTEN to incoming connections (socket server moves to listening mode)
     if (listen(conn_socket, 1) == SOCKET_ERROR)
     {
         printf("Escucha fallida con código de error: %d", WSAGetLastError());
-        escribir_con_hora(file,"[Servidor] Escucha fallida.\n");
+        escribir_con_hora(file, "[Servidor] Escucha fallida.\n");
         closesocket(conn_socket);
         WSACleanup();
         return -1;
@@ -559,16 +561,16 @@ int main(int argc, char *argv[])
     if (comm_socket == INVALID_SOCKET)
     {
         printf("Falló de aceptacion con código de error : %d", WSAGetLastError());
-        escribir_con_hora(file,"[Servidor] Falló de aceptacion.\n");
+        escribir_con_hora(file, "[Servidor] Falló de aceptacion.\n");
         closesocket(conn_socket);
         WSACleanup();
         return -1;
     }
     printf("Conexion entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
-    
+
     char frase[512];
     sprintf(frase, "[Servidor] Conexion entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
-    escribir_con_hora(file,frase);
+    escribir_con_hora(file, frase);
 
     // Closing the listening sockets (is not going to be used anymore)
     closesocket(conn_socket);
@@ -583,12 +585,12 @@ int main(int argc, char *argv[])
     if (existe != SQLITE_OK)
     {
         printf("Error al abrir la base de datos\n");
-        escribir_con_hora(file,"[Servidor] Error al abrir la base de datos.\n");
+        escribir_con_hora(file, "[Servidor] Error al abrir la base de datos.\n");
         // logger con el error
     }
 
     printf("Base de datos abierta\n");
-    escribir_con_hora(file,"[Servidor] Base de datos abierta.\n");
+    escribir_con_hora(file, "[Servidor] Base de datos abierta.\n");
 
     // SEND and RECEIVE data
     printf("Esperando mensajes entrantes del cliente... \n");
@@ -602,29 +604,29 @@ int main(int argc, char *argv[])
             if (strcmp(recvBuff, "Visualizar test.") == 0)
             {
                 char frase[512];
-                sprintf(frase, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase);
+                sprintf(frase, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase);
                 visualizado = visualizar_tests(DB);
                 printf("Enviando respuesta... \n");
                 strcpy(sendBuff, visualizado);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Datos enviados: %s.\n",sendBuff);
-                escribir_con_hora(file,frase2);
+                sprintf(frase2, "[Servidor] Datos enviados: %s.\n", sendBuff);
+                escribir_con_hora(file, frase2);
                 printf("Datos enviados: %s \n", sendBuff);
             }
             else if (strcmp(recvBuff, "Realizar test.") == 0)
             {
                 char frase1[512];
-                sprintf(frase1, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase1);
+                sprintf(frase1, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase1);
                 printf("Solicitando test...\n");
 
                 // Recibir nombre del test del cliente
                 recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Nombre del test elegido: %s\n",recvBuff);
-                escribir_con_hora(file,frase2);
+                sprintf(frase2, "[Servidor] Nombre del test elegido: %s\n", recvBuff);
+                escribir_con_hora(file, frase2);
 
                 int num_ids;
                 int *ids = realizarTest(DB, errMsg, recvBuff, &num_ids);
@@ -677,16 +679,16 @@ int main(int argc, char *argv[])
                         send(comm_socket, frase, strlen(frase) + 1, 0);
                         printf("Frase enviada: %s \n", frase);
                         char frase4[512];
-                        sprintf(frase4, "[Servidor] Frase enviada: %s\n",frase);
-                        escribir_con_hora(file,frase4);
+                        sprintf(frase4, "[Servidor] Frase enviada: %s\n", frase);
+                        escribir_con_hora(file, frase4);
 
                         free(pregunta);
 
                         recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
                         printf("Respuesta recibida: %s \n", recvBuff);
                         char frase5[512];
-                        sprintf(frase5, "[Servidor] Respuesta recibida: %s\n",recvBuff);
-                        escribir_con_hora(file,frase5);
+                        sprintf(frase5, "[Servidor] Respuesta recibida: %s\n", recvBuff);
+                        escribir_con_hora(file, frase5);
 
                         char *respuesta_correcta = obtenerRespuesta(DB, errMsg, ids[i]);
                         if (respuesta_correcta == NULL)
@@ -699,13 +701,13 @@ int main(int argc, char *argv[])
                         {
                             send(comm_socket, "Correcto", strlen("Correcto") + 1, 0);
                             printf("Respuesta enviada: Correcto\n");
-                            escribir_con_hora(file,"[Servidor] Respuesta enviada: Correcto\n");
+                            escribir_con_hora(file, "[Servidor] Respuesta enviada: Correcto\n");
                         }
                         else
                         {
                             send(comm_socket, "Incorrecto", strlen("Incorrecto") + 1, 0);
                             printf("Respuesta enviada: Incorrecto\n");
-                            escribir_con_hora(file,"[Servidor] Respuesta enviada: Incorrecto\n");
+                            escribir_con_hora(file, "[Servidor] Respuesta enviada: Incorrecto\n");
                         }
 
                         free(respuesta_correcta);
@@ -713,7 +715,7 @@ int main(int argc, char *argv[])
 
                     strcpy(sendBuff, "No hay más preguntas disponibles.");
                     send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
-                    escribir_con_hora(file,"[Servidor] No hay más preguntas disponibles\n");
+                    escribir_con_hora(file, "[Servidor] No hay más preguntas disponibles\n");
 
                     free(ids);
                 }
@@ -723,8 +725,8 @@ int main(int argc, char *argv[])
                     strcpy(respuesta, "El test no existe");
                     send(comm_socket, respuesta, strlen(respuesta) + 1, 0);
                     char frase3[512];
-                    sprintf(frase3, "[Servidor] Datos enviados: %s\n",respuesta);
-                    escribir_con_hora(file,frase3);
+                    sprintf(frase3, "[Servidor] Datos enviados: %s\n", respuesta);
+                    escribir_con_hora(file, frase3);
                     printf("Datos enviados: %s \n", respuesta);
                 }
             }
@@ -732,44 +734,44 @@ int main(int argc, char *argv[])
             else if (strcmp(recvBuff, "Agregar Pregunta.") == 0)
             {
                 char frase[512];
-                sprintf(frase, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase);
+                sprintf(frase, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase);
                 char test[100];
-                char tipo[20];
+                char tipo[100];
                 char pregunta[512];
                 char opciones[512];
                 char respuesta[512];
 
                 recv(comm_socket, tipo, sizeof(tipo), 0);
                 char frase1[512];
-                sprintf(frase1, "[Servidor] Datos recibidos: %s\n",tipo);
-                escribir_con_hora(file,frase1);
-                printf("tipo: %s\n",tipo);
-                recv(comm_socket, pregunta, sizeof(pregunta), 0);
-                char frase2[512];
-                sprintf(frase2, "[Servidor] Datos recibidos: %s\n",pregunta);
-                escribir_con_hora(file,frase2);
-                printf("pregunta: %s\n", pregunta);
-                recv(comm_socket, opciones, sizeof(opciones), 0);
-                char frase3[512];
-                sprintf(frase3, "[Servidor] Datos recibidos: %s\n",opciones);
-                escribir_con_hora(file,frase3);
-                printf("opciones: %s\n", opciones);
-                recv(comm_socket, respuesta, sizeof(respuesta), 0);
-                char frase4[512];
-                sprintf(frase4, "[Servidor] Datos recibidos: %s\n",respuesta);
-                escribir_con_hora(file,frase4);
-                printf("respuesta: %s\n", respuesta);
+                sprintf(frase1, "[Servidor] Datos recibidos: %s\n", tipo);
+                escribir_con_hora(file, frase1);
+                printf("tipo: %s\n", tipo);
+                
 
-                recv(comm_socket, test, sizeof(test), 0);
-                char frase5[512];
-                sprintf(frase5, "[Servidor] Datos recibidos: %s\n",test);
-                escribir_con_hora(file,frase5);
-                printf("test: %s\n",test);
-
-
-                if (strcmp(tipo, "Retroceder.") != 0)
+                if (strcmp(tipo, "0") != 0)
                 {
+                    recv(comm_socket, pregunta, sizeof(pregunta), 0);
+                    char frase2[512];
+                    sprintf(frase2, "[Servidor] Datos recibidos: %s\n", pregunta);
+                    escribir_con_hora(file, frase2);
+                    printf("pregunta: %s\n", pregunta);
+                    recv(comm_socket, opciones, sizeof(opciones), 0);
+                    char frase3[512];
+                    sprintf(frase3, "[Servidor] Datos recibidos: %s\n", opciones);
+                    escribir_con_hora(file, frase3);
+                    printf("opciones: %s\n", opciones);
+                    recv(comm_socket, respuesta, sizeof(respuesta), 0);
+                    char frase4[512];
+                    sprintf(frase4, "[Servidor] Datos recibidos: %s\n", respuesta);
+                    escribir_con_hora(file, frase4);
+                    printf("respuesta: %s\n", respuesta);
+
+                    recv(comm_socket, test, sizeof(test), 0);
+                    char frase5[512];
+                    sprintf(frase5, "[Servidor] Datos recibidos: %s\n", test);
+                    escribir_con_hora(file, frase5);
+                    printf("test: %s\n", test);
 
                     anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
                     printf("Pregunta creada");
@@ -777,8 +779,8 @@ int main(int argc, char *argv[])
                     strcpy(sendBuff, "Pregunta agregada exitosamente.");
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     char frase6[512];
-                    sprintf(frase6, "[Servidor] Datos enviados: %s\n",sendBuff);
-                    escribir_con_hora(file,frase6);
+                    sprintf(frase6, "[Servidor] Datos enviados: %s\n", sendBuff);
+                    escribir_con_hora(file, frase6);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
                 else
@@ -786,8 +788,8 @@ int main(int argc, char *argv[])
                     strcpy(sendBuff, "Retroceder.");
                     send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     char frase6[512];
-                    sprintf(frase6, "[Servidor] Datos enviados: %s\n",sendBuff);
-                    escribir_con_hora(file,frase6);
+                    sprintf(frase6, "[Servidor] Datos enviados: %s\n", sendBuff);
+                    escribir_con_hora(file, frase6);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
@@ -795,16 +797,16 @@ int main(int argc, char *argv[])
             else if (strcmp(recvBuff, "Eliminar test.") == 0)
             {
                 char frase1[512];
-                sprintf(frase1, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase1);
+                sprintf(frase1, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase1);
                 visualizado = visualizar_tests(DB);
                 size_t visualizado_len = strlen(visualizado);
 
                 // Envía solo la cantidad de datos necesarios
                 send(comm_socket, visualizado, visualizado_len, 0);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Datos enviados: %s\n",visualizado);
-                escribir_con_hora(file,frase2);
+                sprintf(frase2, "[Servidor] Datos enviados: %s\n", visualizado);
+                escribir_con_hora(file, frase2);
                 printf("Datos enviados: %s \n", visualizado);
 
                 memset(recvBuff, 0, sizeof(recvBuff));
@@ -813,22 +815,22 @@ int main(int argc, char *argv[])
                 if (strcmp(recvBuff, "0") == 0)
                 {
                     char frase3[512];
-                    sprintf(frase3, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                    escribir_con_hora(file,frase3);
+                    sprintf(frase3, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                    escribir_con_hora(file, frase3);
                     printf("Datos recibidos: %s \n", recvBuff);
                     strcpy(sendBuff, "No se desea eliminar ningun test.");
                     strcat(sendBuff, "\0");
                     send(comm_socket, sendBuff, strlen(sendBuff), 0);
                     char frase4[512];
-                    sprintf(frase4, "[Servidor] Datos enviados: %s\n",sendBuff);
-                    escribir_con_hora(file,frase4);
+                    sprintf(frase4, "[Servidor] Datos enviados: %s\n", sendBuff);
+                    escribir_con_hora(file, frase4);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
                 else
                 {
                     char frase3[512];
-                    sprintf(frase3, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                    escribir_con_hora(file,frase3);
+                    sprintf(frase3, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                    escribir_con_hora(file, frase3);
                     printf("Datos recibidos: %s \n", recvBuff);
 
                     eliminar_test(recvBuff, DB, errMsg);
@@ -839,38 +841,38 @@ int main(int argc, char *argv[])
                     // Envía solo la cantidad de datos necesarios
                     send(comm_socket, sendBuff, strlen(sendBuff), 0);
                     char frase4[512];
-                    sprintf(frase4, "[Servidor] Datos enviados: %s\n",sendBuff);
-                    escribir_con_hora(file,frase4);
+                    sprintf(frase4, "[Servidor] Datos enviados: %s\n", sendBuff);
+                    escribir_con_hora(file, frase4);
                     printf("Datos enviados: %s \n", sendBuff);
                 }
             }
             else if (strcmp(recvBuff, "resultado teses") == 0)
             {
                 char frase1[512];
-                sprintf(frase1, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase1);
+                sprintf(frase1, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase1);
                 resultados = resultado_teses(DB);
                 memset(sendBuff, 0, sizeof(sendBuff));
                 send(comm_socket, resultados, sizeof(sendBuff), 0);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Datos enviados: %s\n",resultados);
-                escribir_con_hora(file,frase2);
+                sprintf(frase2, "[Servidor] Datos enviados: %s\n", resultados);
+                escribir_con_hora(file, frase2);
                 printf("Datos enviados: %s \n", resultados);
             }
             else if (strcmp(recvBuff, "Fin") == 0)
             {
                 char frase1[512];
-                sprintf(frase1, "[Servidor] Datos recibidos: %s\n",recvBuff);
-                escribir_con_hora(file,frase1);
+                sprintf(frase1, "[Servidor] Datos recibidos: %s\n", recvBuff);
+                escribir_con_hora(file, frase1);
                 memset(sendBuff, 0, sizeof(sendBuff));
                 strcpy(sendBuff, recvBuff);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Datos enviados: %s\n",sendBuff);
-                escribir_con_hora(file,frase2);
+                sprintf(frase2, "[Servidor] Datos enviados: %s\n", sendBuff);
+                escribir_con_hora(file, frase2);
                 printf("Datos enviados: %s \n", sendBuff);
                 sqlite3_close(DB);
-                escribir_con_hora(file,"[Servidor] Cierre de la base de datos.\n");
+                escribir_con_hora(file, "[Servidor] Cierre de la base de datos.\n");
                 break;
             }
         }
@@ -878,9 +880,9 @@ int main(int argc, char *argv[])
 
     free(visualizado);
     closesocket(comm_socket);
-    escribir_con_hora(file,"[Servidor] Cierre del socket.\n");
+    escribir_con_hora(file, "[Servidor] Cierre del socket.\n");
     WSACleanup();
-    escribir_con_hora(file,"[Servidor] Limpieza del Winsock.\n");
+    escribir_con_hora(file, "[Servidor] Limpieza del Winsock.\n");
     fclose(file);
     return 0;
 }

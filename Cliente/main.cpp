@@ -407,8 +407,6 @@ int main(int argc, char *argv[])
 			else
 			{
 				cout << "No se van a añadir preguntas." << endl;
-				strcpy(sendBuff, "Retroceder.");
-				send(s, sendBuff, strlen(sendBuff) + 1, 0);
 				break;
 			}
 
