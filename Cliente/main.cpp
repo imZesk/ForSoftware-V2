@@ -189,7 +189,7 @@ case '1':
         int tipoPregunta;
         cout << "Elige el tipo de pregunta (1: Abierta, 2: Opción Múltiple, 3: Verdadero/Falso): ";
         cin >> tipoPregunta;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
 
         if (tipoPregunta == 1)
         {
@@ -238,14 +238,14 @@ case '1':
                 cin >> respuesta;
                 respuesta = toupper(respuesta);
             } while (respuesta != 'V' && respuesta != 'F');
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
             PreguntaVerdaderoFalso *p = new PreguntaVerdaderoFalso(i, textoPregunta, respuesta);
             nuevaEncuesta.agregarPregunta(*p);
         }
         else
         {
             cout << "Tipo de pregunta no válido. Intente nuevamente." << endl;
-            --i; // Decrementa el contador para repetir la iteración
+            --i; 
         }
     }
 
