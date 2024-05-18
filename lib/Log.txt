@@ -1,33 +1,22 @@
-[14:1:26] [Servidor] Winsock inicializado.
-[14:1:26] [Servidor] Socket creado.
-[14:1:26] [Servidor] Enlace realizado.
-[14:1:26] [Servidor] Conexion entrante desde: 127.0.0.1 (50090).
-[14:1:26] [Servidor] Base de datos abierta.
-[14:11:12] [Servidor] Winsock inicializado.
-[14:11:12] [Servidor] Socket creado.
-[14:11:12] [Servidor] Enlace realizado.
-[14:11:12] [Servidor] Conexion entrante desde: 127.0.0.1 (50221).
-[14:11:12] [Servidor] Base de datos abierta.
-[14:11:12] [Servidor] Datos obtenidos para visualizar los teses.
-[14:11:12] [Servidor] Datos enviados: €s.
-[14:12:4] [Servidor] Winsock inicializado.
-[14:12:4] [Servidor] Socket creado.
-[14:12:4] [Servidor] Enlace realizado.
-[14:12:4] [Servidor] Conexion entrante desde: 127.0.0.1 (50228).
-[14:12:4] [Servidor] Base de datos abierta.
-[14:12:4] [Servidor] Datos obtenidos para visualizar los teses.
-[14:12:4] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
-[14:12:35] [Servidor] Winsock inicializado.
-[14:12:35] [Servidor] Socket creado.
-[14:12:35] [Servidor] Enlace realizado.
-[14:12:35] [Servidor] Conexion entrante desde: 127.0.0.1 (50229).
-[14:12:35] [Servidor] Base de datos abierta.
-[14:12:35] [Servidor] Datos obtenidos para visualizar los teses.
-[14:12:35] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
-[14:13:14] [Servidor] Winsock inicializado.
-[14:13:14] [Servidor] Socket creado.
-[14:13:14] [Servidor] Enlace realizado.
-[14:13:14] [Servidor] Conexion entrante desde: 127.0.0.1 (50230).
-[14:13:14] [Servidor] Base de datos abierta.
-[14:13:14] [Servidor] Datos obtenidos para visualizar los teses.
-[14:13:14] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
+[18:41:25] [Servidor] Winsock inicializado.
+
+[18:41:25] [Servidor] Socket creado.
+
+[18:41:25] [Servidor] Enlace realizado.
+
+[18:41:28] [Servidor] Conexion entrante desde: 127.0.0.1 (59039)
+
+[18:41:28] [Servidor] Base de datos abierta.
+
+[18:41:33] [Servidor] Datos recibidos: Eliminar test.
+
+[18:41:33] [Servidor] Datos enviados: 3,geo,13;4,mate,5
+
+[18:41:35] [Servidor] Datos recibidos: 0
+
+[18:41:35] [Servidor] Datos enviados: No se desea eliminar ningun test.
+
+[18:41:36] [Servidor] Datos recibidos: Fin
+
+[18:41:36] [Servidor] Datos enviados: Fin
+
