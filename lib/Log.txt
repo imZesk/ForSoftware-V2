@@ -1,10 +1,10 @@
-[19:47:29] [Servidor] Winsock inicializado.
+[22:09:20] [Servidor] Winsock inicializado.
 
-[19:47:29] [Servidor] Socket creado.
+[22:09:20] [Servidor] Socket creado.
 
-[19:47:29] [Servidor] Enlace realizado.
+[22:09:20] [Servidor] Enlace realizado.
 
-[19:47:34] [Servidor] Conexion entrante desde: 127.0.0.1 (60935)
+[22:09:22] [Servidor] Conexion entrante desde: 127.0.0.1 (57937)
 
-[19:47:34] [Servidor] Base de datos abierta.
+[22:09:22] [Servidor] Base de datos abierta.
 

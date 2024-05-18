@@ -7,6 +7,10 @@
 #include <sstream>
 #include <string>
 #include <list>
+#include "Pregunta/PreguntaOpcionMultiple.h"
+#include "Pregunta/PreguntaAbierta.h"
+#include "Pregunta/PreguntaVerdaderoFalso.h"
+#include "Pregunta/Pregunta.h"
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -159,35 +163,95 @@ int main(int argc, char *argv[])
 	char test[100];
 	list<string> nombresEncuestas;
 	bool encontrado = false;
-	do
-	{
-		opcion = menuPrincipal();
 
-		switch (opcion)
-		{
-		case '1':
+	Encuesta nuevaEncuesta;
+    do
+    {
+        opcion = menuPrincipal();
 
-			char nombreEncuesta[100];
-			cout << "Envio del mensaje 1..." << endl;
-			strcpy(sendBuff, "Crear test.");
-			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+        switch (opcion)
+        {
+        case '1':
+        {
+            char nombreEncuesta[100];
+            int cantidadPreguntas;
+            cout << "Introduce el nombre de la encuesta: ";
+            cin.ignore();
+            cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
+            cout << "Introduce la cantidad de preguntas: ";
+            cin >> cantidadPreguntas;
 
-			cout << "Recepcion del mensaje 1..." << endl;
-			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
-			fflush(stdout);
-			fflush(stdin);
-			cout << "Introduce el nombre de la encuesta: ";
-			fflush(stdout);
-			fflush(stdin);
-			cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
-			fflush(stdout);
-			fflush(stdin);
-			cout << "Ingresaste: " << nombreEncuesta << endl;
-			fflush(stdout);
-			fflush(stdin);
+            Encuesta nuevaEncuesta(cantidadPreguntas);
+            nuevaEncuesta.setNombre(nombreEncuesta);
 
-			break;
+            for (int i = 0; i < cantidadPreguntas; ++i)
+            {
+                int tipoPregunta;
+                cout << "Elige el tipo de pregunta (1: Abierta, 2: Opción Múltiple, 3: Verdadero/Falso): ";
+                cin >> tipoPregunta;
+                cin.ignore();
+
+                if (tipoPregunta == 1)
+                {
+                    char textoPregunta[512];
+                    char respuesta[512];
+                    cout << "Introduce la pregunta: ";
+                    cin.getline(textoPregunta, sizeof(textoPregunta));
+                    cout << "Introduce la respuesta: ";
+                    cin.getline(respuesta, sizeof(respuesta));
+                    PreguntaAbierta p(i, textoPregunta, respuesta);
+                    nuevaEncuesta = nuevaEncuesta.agregarPregunta(nuevaEncuesta, p);
+                }
+                else if (tipoPregunta == 2)
+                {
+                    char textoPregunta[512];
+                    char opcion1[512], opcion2[512], opcion3[512];
+                    char respuesta[512];
+                    cout << "Introduce la pregunta: ";
+                    cin.getline(textoPregunta, sizeof(textoPregunta));
+                    cout << "Introduce la primera opción: ";
+                    cin.getline(opcion1, sizeof(opcion1));
+                    cout << "Introduce la segunda opción: ";
+                    cin.getline(opcion2, sizeof(opcion2));
+                    cout << "Introduce la tercera opción: ";
+                    cin.getline(opcion3, sizeof(opcion3));
+                    cout << "Introduce la opción correcta: ";
+                    cin.getline(respuesta, sizeof(respuesta));
+                    PreguntaOpcionMultiple p;
+                    p.setId(i);
+                    p.setNom(textoPregunta);
+                    p.anyadirOpcion(opcion1, 0);
+                    p.anyadirOpcion(opcion2, 1);
+                    p.anyadirOpcion(opcion3, 2);
+                    p.setRespuesta(respuesta);
+                    nuevaEncuesta = nuevaEncuesta.agregarPregunta(nuevaEncuesta, p);
+                }
+                else if (tipoPregunta == 3)
+                {
+                    char textoPregunta[512];
+                    char respuesta;
+                    cout << "Introduce la pregunta: ";
+                    cin.getline(textoPregunta, sizeof(textoPregunta));
+                    do
+                    {
+                        cout << "Introduce la respuesta (V/F): ";
+                        cin >> respuesta;
+                        respuesta = toupper(respuesta);
+                    } while (respuesta != 'V' && respuesta != 'F');
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
+                    PreguntaVerdaderoFalso p(i, textoPregunta, respuesta);
+                    nuevaEncuesta = nuevaEncuesta.agregarPregunta(nuevaEncuesta, p);
+                }
+                else
+                {
+                    cout << "Tipo de pregunta no válido. Intente nuevamente." << endl;
+                    --i; // Decrementa el contador para repetir la iteración
+                }
+            }
+
+            cout << "Encuesta '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
+            break;
+        }
 
 		case '2':
 			cout << "Realizando test..." << endl;
