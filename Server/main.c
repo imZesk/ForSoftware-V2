@@ -311,7 +311,7 @@ int obtenerTipo(sqlite3 *DB, char *errMsg, int id_p, int *tipo)
 char **obtenerRespuestas(sqlite3 *DB, char *errMsg, int id_p, int *num_respuestas)
 {
     char sql[512];
-    sprintf(sql, "SELECT respuesta FROM respuesta WHERE id_p = %d", id_p);
+    sprintf(sql, "SELECT respuesta FROM opciones WHERE id_p = %d", id_p);
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK)
@@ -658,6 +658,7 @@ int main(int argc, char *argv[])
                         {
                             int num_respuestas;
                             char **respuestas = obtenerRespuestas(DB, errMsg, ids[i], &num_respuestas);
+                            printf("respuestas: %s\n",respuestas);
                             if (respuestas != NULL)
                             {
                                 for (int j = 0; j < num_respuestas; j++)
@@ -723,8 +724,8 @@ int main(int argc, char *argv[])
                     recv(comm_socket, recvBuff,sizeof(recvBuff), 0);
                     printf("Enviando nota al cliente, que esta %s \n", recvBuff);
 
-                    char nota[100];
-                    sprintf(nota, "Nota: %d/%d", pCorrect, num_ids);
+                    char nota[100] = "Prueba";
+                    //sprintf(nota, "%d de %d", pCorrect, num_ids);
                     printf("Nota: %s", nota);
                     send(comm_socket, nota, sizeof(nota), 0);
 

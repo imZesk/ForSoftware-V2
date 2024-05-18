@@ -270,7 +270,7 @@ case '1':
 
 				if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
 				{
-					cout << "No hay más preguntas disponibles." << endl;
+					cout << "No hay mas preguntas disponibles." << endl;
 					break;
 				}
 				else if (strcmp(recvBuff, "El test no existe") == 0)
@@ -365,7 +365,7 @@ case '1':
 
 			do
 			{
-				cout << "Ingrese el tipo de pregunta\n1: pregunta con 3 opciones\n2: Verdadero o Falso\n3: Pregunta abierta\n0 si no quieres añadir ninguna pregunta: ";
+				cout << "Ingrese el tipo de pregunta\n1: pregunta con opcion multiple\n2: Verdadero o Falso\n3: Pregunta abierta\n0: Si no quieres añadir ninguna pregunta: ";
 				cin>>tipo;
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 
@@ -466,11 +466,6 @@ case '1':
 
 				cout << "Ingrese el test para agregar la pregunta: ";
 				cin>>test;
-				cout << "test: " << test << endl;
-				cout << "pregunta: " << pregunta << endl;
-				cout << "respuesta: " << respuesta << endl;
-				cout << "tipo: " << tipo << endl;
-				cout << "opciones: " << opciones << endl;
 
 				send(s, test, strlen(test) + 1, 0);
 				

@@ -1,10 +1,23 @@
-[22:24:58] [Servidor] Winsock inicializado.
+[23:08:45] [Servidor] Winsock inicializado.
 
-[22:24:58] [Servidor] Socket creado.
+[23:08:45] [Servidor] Socket creado.
 
-[22:24:58] [Servidor] Enlace realizado.
+[23:08:45] [Servidor] Enlace realizado.
 
-[22:25:00] [Servidor] Conexion entrante desde: 127.0.0.1 (58453)
+[23:08:46] [Servidor] Conexion entrante desde: 127.0.0.1 (54980)
 
-[22:25:00] [Servidor] Base de datos abierta.
+[23:08:46] [Servidor] Base de datos abierta.
+
+[23:08:48] [Servidor] Datos recibidos: Realizar test.
+
+[23:08:50] [Servidor] Nombre del test elegido: mate
+
+[23:08:50] [Servidor] Frase enviada: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
+
+
+[23:09:17] [Servidor] Respuesta recibida: ¸÷a
+
+[23:09:17] [Servidor] Respuesta enviada: Incorrecto
+
+[23:09:17] [Servidor] No hay mÃ¡s preguntas disponibles
 
