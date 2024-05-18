@@ -9,7 +9,7 @@ private:
 
 public:
     PreguntaVerdaderoFalso();
-    PreguntaVerdaderoFalso(char *i, char *nom, char r);
+    PreguntaVerdaderoFalso(int i, char *nom, char r);
     PreguntaVerdaderoFalso(const PreguntaVerdaderoFalso &other);
 
     char getRespuesta() const;

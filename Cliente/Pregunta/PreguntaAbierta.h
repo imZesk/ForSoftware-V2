@@ -9,7 +9,7 @@ private:
 
 public:
     PreguntaAbierta();
-    PreguntaAbierta(char *i, char *nom, char *r);
+    PreguntaAbierta(int i, char *nom, char *r);
     PreguntaAbierta(const PreguntaAbierta &other);
 
     char* getRespuesta() const;

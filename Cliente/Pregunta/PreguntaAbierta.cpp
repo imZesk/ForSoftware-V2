@@ -6,7 +6,7 @@ using namespace std;
     PreguntaAbierta::PreguntaAbierta() :Pregunta(){
         respuesta = new char[512];
     }
-    PreguntaAbierta::PreguntaAbierta(char *i, char *nom, char *r) :Pregunta(i,nom){
+    PreguntaAbierta::PreguntaAbierta(int i, char *nom, char *r) :Pregunta(i,nom){
         respuesta = r;
     }
     PreguntaAbierta::PreguntaAbierta(const PreguntaAbierta &other): Pregunta(other){
