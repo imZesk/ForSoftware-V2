@@ -5,17 +5,17 @@
 #include <vector>
 
 class Pregunta {
-    char id[5];
+    int id;
     char *nombre;
 
 public:
     Pregunta();
-    Pregunta(char *id, char *nom);
+    Pregunta(int id, char *nom);
     Pregunta(const Pregunta &other);
 
-    const char *getId() const;
+    const int getId() const;
     char *getNom() const;
-    void setId(char *Id);
+    void setId(int Id);
     void setNom(char *nom);
 
     virtual ~Pregunta();
