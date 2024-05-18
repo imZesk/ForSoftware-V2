@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
 #include <string.h>
 #include "sqlite3.h"
+#include <time.h>
 
 #include <winsock2.h>
 
@@ -483,25 +483,38 @@ int main(int argc, char *argv[])
     struct sockaddr_in server;
     struct sockaddr_in client;
     char sendBuff[1000], recvBuff[1000];
+    FILE *file;
+    file = fopen("../lib/Log.txt", "a");
+    if (file == NULL) {
+        perror("Error al abrir el fichero");
+        return 1;
+    }
+
+    time_t hora = time(NULL);
+    struct tm tm = *localtime(&hora);
 
     printf("\nInicializando Winsock...\n");
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
         printf("Fallo. Codigo de error : %d", WSAGetLastError());
+        fprintf(file, "[%d:%d:%d] [Servidor] Fallo al inicializar Winsock.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         return -1;
     }
 
     printf("Inicializado.\n");
+    fprintf(file, "[%d:%d:%d] [Servidor] Winsock inicializado.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
 
     // SOCKET creation
     if ((conn_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
     {
         printf("No se ha podido crear el socket : %d", WSAGetLastError());
+        fprintf(file, "[%d:%d:%d] [Servidor] Fallo en la creacion del socket.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         WSACleanup();
         return -1;
     }
 
     printf("Socket creado.\n");
+    fprintf(file, "[%d:%d:%d] [Servidor] Socket creado.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
 
     server.sin_addr.s_addr = inet_addr(SERVER_IP);
     server.sin_family = AF_INET;
@@ -512,17 +525,20 @@ int main(int argc, char *argv[])
              sizeof(server)) == SOCKET_ERROR)
     {
         printf("Error de enlace con el codigo de error: %d", WSAGetLastError());
+        fprintf(file, "[%d:%d:%d] [Servidor] Error de enlace.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         closesocket(conn_socket);
         WSACleanup();
         return -1;
     }
 
     printf("Enlace realizado.\n");
+    fprintf(file, "[%d:%d:%d] [Servidor] Enlace realizado.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
 
     // LISTEN to incoming connections (socket server moves to listening mode)
     if (listen(conn_socket, 1) == SOCKET_ERROR)
     {
         printf("Escucha fallida con código de error: %d", WSAGetLastError());
+        fprintf(file, "[%d:%d:%d] [Servidor] Escucha fallida.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         closesocket(conn_socket);
         WSACleanup();
         return -1;
@@ -536,11 +552,13 @@ int main(int argc, char *argv[])
     if (comm_socket == INVALID_SOCKET)
     {
         printf("Falló de aceptacion con código de error : %d", WSAGetLastError());
+        fprintf(file, "[%d:%d:%d] [Servidor] Falló de aceptacion.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         closesocket(conn_socket);
         WSACleanup();
         return -1;
     }
     printf("Conexion entrante desde: %s (%d)\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
+    fprintf(file, "[%d:%d:%d] [Servidor] Conexion entrante desde: %s (%d).\n",tm.tm_hour,tm.tm_min,tm.tm_sec,inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 
     // Closing the listening sockets (is not going to be used anymore)
     closesocket(conn_socket);
@@ -555,10 +573,12 @@ int main(int argc, char *argv[])
     if (existe != SQLITE_OK)
     {
         printf("Error al abrir la base de datos\n");
+        fprintf(file, "[%d:%d:%d] [Servidor] Error al abrir la base de datos.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
         // logger con el error
     }
 
-    printf("base de datos abierta\n");
+    printf("Base de datos abierta\n");
+    fprintf(file, "[%d:%d:%d] [Servidor] Base de datos abierta.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
 
     // SEND and RECEIVE data
     printf("Esperando mensajes entrantes del cliente... \n");
@@ -572,9 +592,11 @@ int main(int argc, char *argv[])
             if (strcmp(recvBuff, "Visualizar test.") == 0)
             {
                 visualizado = visualizar_tests(DB);
+                fprintf(file, "[%d:%d:%d] [Servidor] Datos obtenidos para visualizar los teses.\n",tm.tm_hour,tm.tm_min,tm.tm_sec);
                 printf("Enviando respuesta... \n");
                 strcpy(sendBuff, visualizado);
                 send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+                fprintf(file, "[%d:%d:%d] [Servidor] Datos enviados: %s.\n",tm.tm_hour,tm.tm_min,tm.tm_sec,sendBuff);
                 printf("Datos enviados: %s \n", sendBuff);
             }
             else if (strcmp(recvBuff, "Realizar test.") == 0)
@@ -816,5 +838,6 @@ int main(int argc, char *argv[])
     free(visualizado);
     closesocket(comm_socket);
     WSACleanup();
+    fclose(file);
     return 0;
 }

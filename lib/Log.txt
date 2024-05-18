@@ -1,15 +1,33 @@
-[16:23:48] Nombre de la encuesta: 8P°w ı°w(x@. 
-atos abierta. 
-[16:23:23] Test creado. 
-[16:23:23] Teses visualizadas. 
-[16:23:23] Test eliminado correctamente. 
-[16:23:23] Programa finalizado. 
-[16:23:23] Base de datos cerrada. 
-[16:23:30] Nombre de la encuesta: amen. 
-[16:23:30] Pregunta ingresada: dos
-. 
-[16:23:30] Tipo de la pregunta ingresada: $. 
-[16:23:30] Base de datos abierta. 
-[16:23:30] Pregunta a√±adida correctamente.
-[16:23:30] Base de datos cerrada.
-[16:23:48] Preguntas mostradas.
+[14:1:26] [Servidor] Winsock inicializado.
+[14:1:26] [Servidor] Socket creado.
+[14:1:26] [Servidor] Enlace realizado.
+[14:1:26] [Servidor] Conexion entrante desde: 127.0.0.1 (50090).
+[14:1:26] [Servidor] Base de datos abierta.
+[14:11:12] [Servidor] Winsock inicializado.
+[14:11:12] [Servidor] Socket creado.
+[14:11:12] [Servidor] Enlace realizado.
+[14:11:12] [Servidor] Conexion entrante desde: 127.0.0.1 (50221).
+[14:11:12] [Servidor] Base de datos abierta.
+[14:11:12] [Servidor] Datos obtenidos para visualizar los teses.
+[14:11:12] [Servidor] Datos enviados: ‚Ç¨s.
+[14:12:4] [Servidor] Winsock inicializado.
+[14:12:4] [Servidor] Socket creado.
+[14:12:4] [Servidor] Enlace realizado.
+[14:12:4] [Servidor] Conexion entrante desde: 127.0.0.1 (50228).
+[14:12:4] [Servidor] Base de datos abierta.
+[14:12:4] [Servidor] Datos obtenidos para visualizar los teses.
+[14:12:4] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
+[14:12:35] [Servidor] Winsock inicializado.
+[14:12:35] [Servidor] Socket creado.
+[14:12:35] [Servidor] Enlace realizado.
+[14:12:35] [Servidor] Conexion entrante desde: 127.0.0.1 (50229).
+[14:12:35] [Servidor] Base de datos abierta.
+[14:12:35] [Servidor] Datos obtenidos para visualizar los teses.
+[14:12:35] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
+[14:13:14] [Servidor] Winsock inicializado.
+[14:13:14] [Servidor] Socket creado.
+[14:13:14] [Servidor] Enlace realizado.
+[14:13:14] [Servidor] Conexion entrante desde: 127.0.0.1 (50230).
+[14:13:14] [Servidor] Base de datos abierta.
+[14:13:14] [Servidor] Datos obtenidos para visualizar los teses.
+[14:13:14] [Servidor] Datos enviados: 3,geo,12;4,mate,5.
