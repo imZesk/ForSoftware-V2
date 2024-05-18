@@ -51,7 +51,7 @@ list<string> separarPalabras(const char *cadena)
 		Encuesta nueva_encuesta(cantidad_preguntas);
 		nueva_encuesta.setNombre(nombre);
 		nueva_encuesta.setId(id_encuesta);
-		// nombresEncuestas.push_back(nueva_encuesta.nombre);
+		nombresEncuestas.push_back(nueva_encuesta.getNombre());
 		cout << "Nombre: " << nueva_encuesta.getNombre() << endl;
 		cout << "Cantidad de preguntas: " << nueva_encuesta.getCantidadPreguntas() << endl;
 		cout << endl;

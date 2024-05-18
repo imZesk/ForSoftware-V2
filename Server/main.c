@@ -870,22 +870,17 @@ int main(int argc, char *argv[])
                 escribir_con_hora(file,frase2);
                 printf("Datos enviados: %s \n", sendBuff);
                 sqlite3_close(DB);
+                escribir_con_hora(file,"[Servidor] Cierre de la base de datos.\n");
                 break;
-            }
-            else
-            {
-                printf("Enviando respuesta... \n");
-                strcpy(sendBuff, "ACK -> ");
-                strcat(sendBuff, recvBuff);
-                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-                printf("Datos enviados: %s \n", sendBuff);
             }
         }
     } while (1);
 
     free(visualizado);
     closesocket(comm_socket);
+    escribir_con_hora(file,"[Servidor] Cierre del socket.\n");
     WSACleanup();
+    escribir_con_hora(file,"[Servidor] Limpieza del Winsock.\n");
     fclose(file);
     return 0;
 }
