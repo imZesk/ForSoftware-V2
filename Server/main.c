@@ -622,15 +622,18 @@ int main(int argc, char *argv[])
                 printf("Solicitando test...\n");
 
                 // Recibir nombre del test del cliente
-                recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+                char test[100];
+                recv(comm_socket, test, sizeof(test), 0);
+                printf("Test recibido: %s\n", test);
                 char frase2[512];
-                sprintf(frase2, "[Servidor] Nombre del test elegido: %s\n", recvBuff);
+                sprintf(frase2, "[Servidor] Nombre del test elegido: %s\n", test);
                 escribir_con_hora(file, frase2);
 
                 int num_ids;
-                int *ids = realizarTest(DB, errMsg, recvBuff, &num_ids);
+                int *ids = realizarTest(DB, errMsg, test, &num_ids);
                 if (ids != NULL)
                 {
+                    int pCorrect = 0;
                     for (int i = 0; i < num_ids; i++)
                     {
                         char *pregunta = obtenerPregunta(DB, errMsg, ids[i]);
@@ -698,6 +701,7 @@ int main(int argc, char *argv[])
 
                         if (strcmp(recvBuff, respuesta_correcta) == 0)
                         {
+                            pCorrect++;
                             send(comm_socket, "Correcto", strlen("Correcto") + 1, 0);
                             printf("Respuesta enviada: Correcto\n");
                             escribir_con_hora(file, "[Servidor] Respuesta enviada: Correcto\n");
@@ -716,12 +720,20 @@ int main(int argc, char *argv[])
                     send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
                     escribir_con_hora(file, "[Servidor] No hay más preguntas disponibles\n");
 
+                    recv(comm_socket, recvBuff,sizeof(recvBuff), 0);
+                    printf("Enviando nota al cliente, que esta %s \n", recvBuff);
+
+                    char nota[100];
+                    sprintf(nota, "Nota: %d/%d", pCorrect, num_ids);
+                    printf("Nota: %s", nota);
+                    send(comm_socket, nota, sizeof(nota), 0);
+
                     free(ids);
                 }
                 else
                 {
                     char respuesta[100];
-                    strcpy(respuesta, "El test no existe");
+                    strcpy(respuesta, "El test no existe\n");
                     send(comm_socket, respuesta, strlen(respuesta) + 1, 0);
                     char frase3[512];
                     sprintf(frase3, "[Servidor] Datos enviados: %s\n", respuesta);

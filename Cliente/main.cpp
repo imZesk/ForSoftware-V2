@@ -227,6 +227,12 @@ int main(int argc, char *argv[])
 					cout << "Resultado: " << recvBuff << endl;
 				}
 			}
+			send(s, "Listo", strlen("Listo") + 1, 0);
+
+			char nota[100];
+
+			recv(s, nota, sizeof(nota), 0);
+			cout << "Tu nota es: " << nota << endl;
 			break;
 
 		case '3':
