@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 
 		case '5':
 			cout << "Envio del mensaje 1..." << endl;
-			strcpy(sendBuff, "Crear Pregunta.");
+			strcpy(sendBuff, "Agregar Pregunta.");
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			do

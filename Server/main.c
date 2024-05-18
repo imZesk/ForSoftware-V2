@@ -697,7 +697,7 @@ int main(int argc, char *argv[])
                 }
             }
 
-            else if (strcmp(recvBuff, "Crear Pregunta.") == 0)
+            else if (strcmp(recvBuff, "Agregar Pregunta.") == 0)
             {
                 char test[100];
                 char tipo[20];
@@ -712,7 +712,7 @@ int main(int argc, char *argv[])
                 recv(comm_socket, opciones, sizeof(opciones), 0);
                 printf("opciones: %s\n", opciones);
                 recv(comm_socket, respuesta, sizeof(respuesta), 0);
-                printf("pregunta: %s, respuesta: %s, opciones: %s\n", pregunta, respuesta, opciones);
+                printf("respuesta: %s\n", respuesta);
 
                 recv(comm_socket, test, sizeof(test), 0);
                 printf("test: %s\n",test);
@@ -720,7 +720,6 @@ int main(int argc, char *argv[])
 
                 if (strcmp(tipo, "Retroceder.") != 0)
                 {
-                    printf("LLega\n");
 
                     anadirPregunta(DB, errMsg, test, tipo, pregunta, opciones, respuesta);
                     printf("Pregunta creada");

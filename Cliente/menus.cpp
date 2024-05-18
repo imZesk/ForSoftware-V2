@@ -10,7 +10,7 @@ char menuPrincipal()
     cout << "2. Realizar Test"<<endl;
     cout << "3. Visualizar Teses"<<endl;
     cout << "4. Eliminar Test"<<endl;
-    cout << "5. Crear Pregunta"<<endl;
+    cout << "5. Agregar Pregunta"<<endl;
     cout << "6. Resultado teses"<<endl;
     cout << "0. Salir"<<endl;
     cout << "Elige una opcion: ";
