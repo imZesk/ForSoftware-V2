@@ -109,16 +109,27 @@ void separarResultado(const char *cadena)
 	}
 }
 
+void escribirConTiempo(ofstream &archivo, const string &frase) {
+    if (!archivo.is_open()) {
+        cerr << "Error: el archivo no está abierto." << endl;
+        return;
+    }
+
+    // Obtener la hora actual
+    time_t t = time(nullptr);
+    tm tm = *localtime(&t);
+
+    // Escribir la hora y la frase en el archivo
+    archivo << "[" << put_time(&tm, "%H:%M:%S") << "] " << frase << endl;
+}
+
 int main(int argc, char *argv[])
 {
 	WSADATA wsaData;
 	SOCKET s;
 	struct sockaddr_in server;
 	char sendBuff[512], recvBuff[512];
-	ofstream archivo("../lib/Log.txt",ios::app);
-	auto ahora = chrono::system_clock::now();
-    time_t tiempo_actual = chrono::system_clock::to_time_t(ahora);
-    tm* local_time = localtime(&tiempo_actual);
+	ofstream archivo("../lib/LogCliente.txt",ios::trunc);
 
 	if (!archivo.is_open()) {
         cerr << "Error al abrir el archivo." << endl;
@@ -127,25 +138,28 @@ int main(int argc, char *argv[])
 
 	cout << endl
 		 << "Inicializando Winsock..." << endl;
-	archivo << put_time(local_time, "[%H:%M:%S] ")<< "[Cliente] Inicializando Winsock..." <<  endl;
+	escribirConTiempo(archivo,"[Cliente] Inicializando Winsock...\n");
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
 		cout << "Fallo. Codigo de error : " << WSAGetLastError() << endl;
+		escribirConTiempo(archivo,"[Cliente] Fallo Inicializando Winsock.\n");
 		return -1;
 	}
 
 	cout << "Inicializado." << endl;
-	archivo << put_time(local_time, "[%H:%M:%S] ") << "[Cliente] Winsock Inicializado." <<  endl;
+	escribirConTiempo(archivo,"[Cliente] Winsock Inicializado.\n");
 
 	// SOCKET creation
 	if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
 	{
 		cout << "No se ha podido crear el socket :" << WSAGetLastError() << endl;
+		escribirConTiempo(archivo,"[Cliente] No se ha podido crear el socket.\n");
 		WSACleanup();
 		return -1;
 	}
 
 	cout << "Socket creado." << endl;
+	escribirConTiempo(archivo,"[Cliente] Socket creado.\n");
 
 	server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	server.sin_family = AF_INET;
@@ -155,12 +169,17 @@ int main(int argc, char *argv[])
 	if (connect(s, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 	{
 		cout << "Error de conexion: " << WSAGetLastError() << endl;
+		escribirConTiempo(archivo,"[Cliente] Error de conexion.\n");
 		closesocket(s);
 		WSACleanup();
 		return -1;
 	}
 	cout << "Conexion establecida con: " << inet_ntoa(server.sin_addr) << " ("
 		 << ntohs(server.sin_port) << ")" << endl;
+	ostringstream oss;
+    oss << "[Cliente] Conexion establecida con: " << inet_ntoa(server.sin_addr) << " (" << ntohs(server.sin_port) << ")";
+    string texto = oss.str();
+	escribirConTiempo(archivo,texto);
 
 
 	// Menu:
@@ -526,6 +545,7 @@ case '1':
 			cout << "Datos recibidos: " << recvBuff << endl;
 
 			cout << "Fin del programa" << endl;
+			escribirConTiempo(archivo,"[Cliente] Fin del programa.\n");
 			break;
 
 		default:

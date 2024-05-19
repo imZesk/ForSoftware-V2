@@ -657,7 +657,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in client;
     char sendBuff[1000], recvBuff[1000];
     FILE *file;
-    file = fopen("../lib/Log.txt", "w");
+    file = fopen("../lib/LogServer.txt", "w");
     if (file == NULL)
     {
         perror("Error al abrir el fichero");
