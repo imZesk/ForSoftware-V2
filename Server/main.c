@@ -480,6 +480,44 @@ void escribir_con_hora(FILE *file, const char *mensaje)
     fflush(file); // Asegura que se escriba al archivo inmediatamente
 }
 
+int guardarResultado(sqlite3 *db, char *errMsg, const char *nombre_test, int respuestas_correctas, int preguntas_realizadas) {
+    int id_test;
+    
+    // Obtener el id_t basado en el nombre del test
+    char sql[256];
+    sprintf(sql, "SELECT id_t FROM test WHERE nombre = '%s';", nombre_test);
+    
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+    
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+        id_test = sqlite3_column_int(stmt, 0);
+        sqlite3_finalize(stmt);
+    } else {
+        fprintf(stderr, "No se encontró el test con nombre: %s\n", nombre_test);
+        sqlite3_finalize(stmt);
+        return SQLITE_ERROR;
+    }
+    
+    // Insertar el resultado en la tabla resultado
+    sprintf(sql, "INSERT INTO resultado (id_t, respuestas_c, pregs_realiz) VALUES (%d, %d, %d);",
+            id_test, respuestas_correctas, preguntas_realizadas);
+    
+    rc = sqlite3_exec(db, sql, 0, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", errMsg);
+        sqlite3_free(errMsg);
+        return rc;
+    }
+    
+    return SQLITE_OK;
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -728,6 +766,12 @@ int main(int argc, char *argv[])
                     //sprintf(nota, "%d de %d", pCorrect, num_ids);
                     printf("Nota: %s", nota);
                     send(comm_socket, nota, sizeof(nota), 0);
+
+                    if (guardarResultado(DB, errMsg, test, pCorrect, num_ids) != SQLITE_OK) {
+                        printf("Error al guardar el resultado en la base de datos\n");
+                    } else {
+                        printf("Resultado guardado exitosamente\n");
+                    }
 
                     free(ids);
                 }
