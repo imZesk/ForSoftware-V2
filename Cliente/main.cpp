@@ -7,6 +7,10 @@
 #include <sstream>
 #include <string>
 #include <list>
+#include <fstream> 
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include "Pregunta/PreguntaOpcionMultiple.h"
 #include "Pregunta/PreguntaAbierta.h"
 #include "Pregunta/PreguntaVerdaderoFalso.h"
@@ -111,9 +115,19 @@ int main(int argc, char *argv[])
 	SOCKET s;
 	struct sockaddr_in server;
 	char sendBuff[512], recvBuff[512];
+	ofstream archivo("../lib/Log.txt",ios::app);
+	auto ahora = chrono::system_clock::now();
+    time_t tiempo_actual = chrono::system_clock::to_time_t(ahora);
+    tm* local_time = localtime(&tiempo_actual);
+
+	if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo." << endl;
+        return 1; // Salir del programa con un código de error
+    }
 
 	cout << endl
 		 << "Inicializando Winsock..." << endl;
+	archivo << put_time(local_time, "[%H:%M:%S] ")<< "[Cliente] Inicializando Winsock..." <<  endl;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 	{
 		cout << "Fallo. Codigo de error : " << WSAGetLastError() << endl;
@@ -121,6 +135,7 @@ int main(int argc, char *argv[])
 	}
 
 	cout << "Inicializado." << endl;
+	archivo << put_time(local_time, "[%H:%M:%S] ") << "[Cliente] Winsock Inicializado." <<  endl;
 
 	// SOCKET creation
 	if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
@@ -516,6 +531,7 @@ case '1':
 	// CLOSING the socket and cleaning Winsock...
 	closesocket(s);
 	WSACleanup();
+	archivo.close();
 
 	return 0;
 }

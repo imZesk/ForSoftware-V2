@@ -108,6 +108,8 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "cinttypes": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "iomanip": "cpp",
+    "chrono": "cpp"
   }
 }
