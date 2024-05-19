@@ -328,17 +328,23 @@ case '1':
 					send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 					// Recibir resultado del servidor
-					recv(s, recvBuff, sizeof(recvBuff), 0);
+					recv(s, recvBuff, sizeof(recvBuff)+1, 0);
 					cout << "Resultado: " << recvBuff << endl;
 				}
 			}
-			send(s, "Listo", strlen("Listo") + 1, 0);
-
-			char nota[100];
-
-			recv(s, nota, sizeof(nota), 0);
-			cout << "Tu nota es: " << nota << endl;
-			break;
+			char visN[10];
+			do{
+				cout<<"Quieres visualizar la nota(1 si, 0 no): ";
+				cin.ignore();
+				cin>>visN;
+			}while (strcmp(visN, "1") != 0 && strcmp(visN, "0") != 0);
+			if (strcmp(visN, "1") == 0)
+			{
+				send(s, "Ver", strlen("Ver") + 1, 0);
+				recv(s, recvBuff, sizeof(recvBuff), 0);
+				cout << "Tu nota es: " << recvBuff << endl;
+				break;
+			}	
 
 		case '3':
 			cout << "Envio del mensaje 1..." << endl;

@@ -867,13 +867,17 @@ int main(int argc, char *argv[])
                     send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
                     escribir_con_hora(file, "[Servidor] No hay más preguntas disponibles\n");
 
-                    recv(comm_socket, recvBuff,sizeof(recvBuff), 0);
-                    printf("Enviando nota al cliente, que esta %s \n", recvBuff);
+                    printf("Preguntado al cliente si quiere ver la nota.\n");
 
-                    char nota[100] = "Prueba";
-                    //sprintf(nota, "%d de %d", pCorrect, num_ids);
-                    printf("Nota: %s", nota);
-                    send(comm_socket, nota, sizeof(nota), 0);
+                    recv(comm_socket, recvBuff,sizeof(recvBuff), 0);
+
+                    if(strcmp(recvBuff, "Ver")){
+                        char nota[100];
+                        sprintf(nota, "%d/%d", pCorrect, num_ids);
+                        printf("Nota: %s\n", nota);
+                        send(comm_socket, nota, sizeof(nota), 0);
+                    }
+                    
 
                     if (guardarResultado(DB, errMsg, test, pCorrect, num_ids) != SQLITE_OK) {
                         printf("Error al guardar el resultado en la base de datos\n");
