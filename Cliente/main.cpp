@@ -188,6 +188,18 @@ int main(int argc, char *argv[])
         {
 case '1':
 {
+    cout << "Envio del mensaje 1..." << endl;
+    strcpy(sendBuff, "Crear test.");
+    send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+    cout << "Recepcion del mensaje 1..." << endl;
+    recv(s, recvBuff, sizeof(recvBuff), 0);
+    if (strcmp(recvBuff, "Recibido.") != 0) {
+        cout << "Error: No se recibió confirmación del servidor." << endl;
+        break;
+    }
+    cout << "Datos recibidos: " << recvBuff << endl;
+
     char nombreEncuesta[100];
     int cantidadPreguntas;
     cout << "Introduce el nombre de la encuesta: ";
@@ -196,34 +208,31 @@ case '1':
     cout << "Introduce la cantidad de preguntas: ";
     cin >> cantidadPreguntas;
 
-    Encuesta nuevaEncuesta(cantidadPreguntas);
-    nuevaEncuesta.setNombre(nombreEncuesta);
+    stringstream data;
+    data << nombreEncuesta << "," << cantidadPreguntas;
 
     for (int i = 0; i < cantidadPreguntas; ++i)
     {
         int tipoPregunta;
         cout << "Elige el tipo de pregunta (1: Abierta, 2: Opción Múltiple, 3: Verdadero/Falso): ";
         cin >> tipoPregunta;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        char textoPregunta[512];
+        cout << "Introduce la pregunta: ";
+        cin.getline(textoPregunta, sizeof(textoPregunta));
 
         if (tipoPregunta == 1)
         {
-            char textoPregunta[512];
             char respuesta[512];
-            cout << "Introduce la pregunta: ";
-            cin.getline(textoPregunta, sizeof(textoPregunta));
             cout << "Introduce la respuesta: ";
             cin.getline(respuesta, sizeof(respuesta));
-            PreguntaAbierta *p = new PreguntaAbierta(i, textoPregunta, respuesta);
-            nuevaEncuesta.agregarPregunta(*p);
+            data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
         }
         else if (tipoPregunta == 2)
         {
-            char textoPregunta[512];
             char opcion1[512], opcion2[512], opcion3[512];
             char respuesta[512];
-            cout << "Introduce la pregunta: ";
-            cin.getline(textoPregunta, sizeof(textoPregunta));
             cout << "Introduce la primera opción: ";
             cin.getline(opcion1, sizeof(opcion1));
             cout << "Introduce la segunda opción: ";
@@ -232,37 +241,34 @@ case '1':
             cin.getline(opcion3, sizeof(opcion3));
             cout << "Introduce la opción correcta: ";
             cin.getline(respuesta, sizeof(respuesta));
-            PreguntaOpcionMultiple *p = new PreguntaOpcionMultiple();
-            p->setId(i);
-            p->setNom(textoPregunta);
-            p->anyadirOpcion(opcion1, 0);
-            p->anyadirOpcion(opcion2, 1);
-            p->anyadirOpcion(opcion3, 2);
-            p->setRespuesta(respuesta);
-            nuevaEncuesta.agregarPregunta(*p);
+            data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << respuesta;
         }
         else if (tipoPregunta == 3)
         {
-            char textoPregunta[512];
             char respuesta;
-            cout << "Introduce la pregunta: ";
-            cin.getline(textoPregunta, sizeof(textoPregunta));
             do
             {
                 cout << "Introduce la respuesta (V/F): ";
                 cin >> respuesta;
                 respuesta = toupper(respuesta);
             } while (respuesta != 'V' && respuesta != 'F');
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-            PreguntaVerdaderoFalso *p = new PreguntaVerdaderoFalso(i, textoPregunta, respuesta);
-            nuevaEncuesta.agregarPregunta(*p);
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
         }
         else
         {
             cout << "Tipo de pregunta no válido. Intente nuevamente." << endl;
-            --i; 
+            --i;
         }
     }
+
+    string dataStr = data.str();
+    strcpy(sendBuff, dataStr.c_str());
+    send(s, sendBuff, strlen(sendBuff) + 1, 0);
+
+    // Recibir confirmación de que el test y las preguntas fueron creadas
+    recv(s, recvBuff, sizeof(recvBuff), 0);
+    cout << "Datos recibidos: " << recvBuff << endl;
 
     cout << "Encuesta '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
     break;
