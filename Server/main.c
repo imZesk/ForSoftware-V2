@@ -864,7 +864,7 @@ int main(int argc, char *argv[])
                     }
 
                     strcpy(sendBuff, "No hay mas preguntas disponibles.");
-                    send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
+                    send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                     escribir_con_hora(file, "[Servidor] No hay más preguntas disponibles\n");
 
                     printf("Preguntado al cliente si quiere ver la nota.\n");

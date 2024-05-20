@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
 					send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 					// Recibir resultado del servidor
-					recv(s, recvBuff, sizeof(recvBuff) + 1, 0);
+					recv(s, recvBuff, sizeof(recvBuff), 0);
 					cout << "Resultado: " << recvBuff << endl;
 					oss5 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 					texto5 = oss5.str();
@@ -445,13 +445,15 @@ int main(int argc, char *argv[])
 				if (strcmp(visN, "1") == 0)
 				{
 					escribirConTiempo(archivo, "[Cliente] Datos enviados: Ver\n");
+					
+					recv(s, recvBuff, sizeof(recvBuff) + 1, 0);
 					recv(s, recvBuff, sizeof(recvBuff), 0);
 					cout << "Tu nota es: " << recvBuff << endl;
 					oss6 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 					texto6 = oss6.str();
 					escribirConTiempo(archivo, texto6);
-					break;
 				}
+				break;
 			}
 
 		case '3':
