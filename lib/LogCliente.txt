@@ -1,7 +1,67 @@
-[12:13:52] [Cliente] Inicializando Winsock...
+[13:52:33] [Cliente] Inicializando Winsock...
 
-[12:13:52] [Cliente] Winsock Inicializado.
+[13:52:33] [Cliente] Winsock Inicializado.
 
-[12:13:52] [Cliente] Socket creado.
+[13:52:33] [Cliente] Socket creado.
 
-[12:13:52] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[13:52:33] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[13:52:33] [Cliente] Llegue
+
+[13:52:35] [Cliente] Opcion elegida: Realizar test.
+
+[13:52:38] [Cliente] Datos enviados: mate
+
+[13:52:38] [Cliente] Datos recibidos: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
+ 10, 2, 3
+
+
+[13:52:43] [Cliente] Datos enviados: 10
+
+[13:52:43] [Cliente] Datos recibidos: Correcto
+
+[13:52:43] [Cliente] Datos recibidos: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
+ 10, 2, 3
+
+[Cliente] Datos recibidos: Pregunta: 2+2?, y sus opciones son:
+ Pregunta abierta sin opciones.
+
+
+
+[13:52:47] [Cliente] Datos enviados: 10
+[Cliente] Datos enviados: a
+
+[13:52:47] [Cliente] Datos recibidos: Correcto
+[Cliente] Datos recibidos: Incorrecto
+
+[13:52:47] [Cliente] Datos recibidos: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
+ 10, 2, 3
+
+[Cliente] Datos recibidos: Pregunta: 2+2?, y sus opciones son:
+ Pregunta abierta sin opciones.
+
+
+[Cliente] Datos recibidos: No hay mÃ¡s preguntas disponibles.
+
+[13:52:51] [Cliente] Datos enviados: 10
+[Cliente] Datos enviados: a
+[Cliente] Datos enviados: a
+
+[13:52:51] [Cliente] Datos recibidos: Correcto
+[Cliente] Datos recibidos: Incorrecto
+[Cliente] Datos recibidos: ÿÿÿ
+
+[13:52:51] [Cliente] Datos recibidos: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
+ 10, 2, 3
+
+[Cliente] Datos recibidos: Pregunta: 2+2?, y sus opciones son:
+ Pregunta abierta sin opciones.
+
+
+[Cliente] Datos recibidos: No hay mÃ¡s preguntas disponibles.
+[Cliente] Datos recibidos: 1/2
+
+[13:52:54] [Cliente] Datos enviados: 10
+[Cliente] Datos enviados: a
+[Cliente] Datos enviados: a
+[Cliente] Datos enviados: a
+
