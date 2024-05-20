@@ -338,7 +338,7 @@ int main(int argc, char *argv[])
 					while (true)
 					{
 						cout << "Introduce la opcion correcta (1, 2 o 3): ";
-						cin.getline(respuesta, sizeof(respuesta));
+						cin>>respuesta;
 						if (strlen(respuesta) != 1 || respuesta[0] < '1' || respuesta[0] > '3')
 						{
 							cout << "Error: Introduce un numero entre 1 y 3." << endl;
