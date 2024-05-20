@@ -114,7 +114,7 @@ void separarResultado(const char *cadena)
 
 		nombre = nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
-		if (respuestas_c != 0)
+		if (preg_realiza != 0)
 		{
 			hayAlgo = true;
 			Encuesta nueva_encuesta(preg_realiza);
@@ -564,7 +564,7 @@ int main(int argc, char *argv[])
 
 			do
 			{
-				cout << "Ingrese el tipo de pregunta\n1: pregunta con opcion multiple\n2: Verdadero o Falso\n3: Pregunta abierta\n0: Si no quieres añadir ninguna pregunta: ";
+				cout << "Ingrese el tipo de pregunta\n1: pregunta con opcion multiple\n2: Verdadero o Falso\n3: Pregunta abierta\n0: Si no quieres agregar ninguna pregunta: ";
 				cin >> tipo;
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 

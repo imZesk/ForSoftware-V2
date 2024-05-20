@@ -1,24 +1,24 @@
-[21:21:48] [Servidor] Winsock inicializado.
+[21:32:25] [Servidor] Winsock inicializado.
 
-[21:21:48] [Servidor] Socket creado.
+[21:32:25] [Servidor] Socket creado.
 
-[21:21:48] [Servidor] Enlace realizado.
+[21:32:25] [Servidor] Enlace realizado.
 
-[21:21:50] [Servidor] Conexion entrante desde: 127.0.0.1 (56091)
+[21:32:30] [Servidor] Conexion entrante desde: 127.0.0.1 (56307)
 
-[21:21:50] [Servidor] Base de datos abierta.
+[21:32:30] [Servidor] Base de datos abierta.
 
-[21:21:54] [Servidor] Datos recibidos: resultado teses
+[21:32:31] [Servidor] Datos recibidos: resultado teses
 
-[21:21:54] [Servidor] Datos enviados: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2
+[21:32:31] [Servidor] Datos enviados: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2;mate,24,4,0;mate,24,4,2;mate,24,4,0
 
-[21:24:59] [Servidor] Datos recibidos: Fin
+[21:32:37] [Servidor] Datos recibidos: Fin
 
-[21:24:59] [Servidor] Datos enviados: Fin
+[21:32:37] [Servidor] Datos enviados: Fin
 
-[21:24:59] [Servidor] Cierre de la base de datos.
+[21:32:37] [Servidor] Cierre de la base de datos.
 
-[21:24:59] [Servidor] Cierre del socket.
+[21:32:37] [Servidor] Cierre del socket.
 
-[21:24:59] [Servidor] Limpieza del Winsock.
+[21:32:37] [Servidor] Limpieza del Winsock.
 
