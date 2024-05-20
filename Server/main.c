@@ -826,7 +826,7 @@ int main(int argc, char *argv[])
                         {
                             opciones = "Pregunta abierta sin opciones.\n";
                         }
-                        sprintf(frase, "Pregunta: %s, y sus opciones son:\n %s\n", pregunta, opciones);
+                        sprintf(frase, "Pregunta: %s, y sus opciones son:\n%s\n", pregunta, opciones);
 
                         send(comm_socket, frase, strlen(frase) + 1, 0);
                         printf("Frase enviada: %s \n", frase);
