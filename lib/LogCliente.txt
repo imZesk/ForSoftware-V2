@@ -1,56 +1,25 @@
-[13:59:49] [Cliente] Inicializando Winsock...
+[14:49:27] [Cliente] Inicializando Winsock...
 
-[13:59:49] [Cliente] Winsock Inicializado.
+[14:49:27] [Cliente] Winsock Inicializado.
 
-[13:59:49] [Cliente] Socket creado.
+[14:49:27] [Cliente] Socket creado.
 
-[13:59:49] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[13:59:49] [Cliente] Llegue
+[14:49:27] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[14:49:27] [Cliente] Llegue
 
-[13:59:53] [Cliente] Datos enviados: resultado teses
+[14:49:29] [Cliente] Datos enviados: resultado teses
 
-[13:59:53] [Cliente] Datos recibidos: geo,3,0;mate,4,1;historia,8,0;Chen Chen,9,0;testtest,10,0;eeeeee,11,0;test,12,0;o,13,0;11,15,0;prueba,16,0
+[14:49:29] [Cliente] Datos recibidos: geo,3,12,0;mate,4,1,1;historia,8,0,0;Chen Chen,9,0,0;testtest,10,0,0;eeeeee,11,0,0;test,12,0,0;o,13,0,0;11,15,1,0;prueba,16,0,0
 
-[13:59:56] [Cliente] Datos enviados: resultado teses
-[Cliente] Opcion elegida: Realizar test.
+[14:49:35] [Cliente] Datos enviados: resultado teses
+[Cliente] Datos enviados: Fin
 
-[14:00:04] [Cliente] Datos recibidos: geo,3,0;mate,4,1;historia,8,0;Chen Chen,9,0;testtest,10,0;eeeeee,11,0;test,12,0;o,13,0;11,15,0;prueba,16,0
-[Cliente] Datos enviados: 11
-
-[14:00:04] [Cliente] Datos recibidos: 
-
-[14:00:05] [Cliente] Datos enviados: a
-
-[14:00:05] [Cliente] Datos recibidos: Pregunta: pb, y sus opciones son:
- Pregunta abierta sin opciones.
-
-
-
-[14:00:05] [Cliente] Datos recibidos: 
-[Cliente] Datos recibidos: Incorrecto
-
-[14:00:13] [Cliente] Datos enviados: a
-[Cliente] Datos enviados: a
-
-[14:00:13] [Cliente] Datos recibidos: Pregunta: pb, y sus opciones son:
- Pregunta abierta sin opciones.
-
-
-[Cliente] Datos recibidos: No hay más preguntas disponibles.
-
-[14:00:13] [Cliente] Datos recibidos: 
-[Cliente] Datos recibidos: Incorrecto
+[14:49:35] [Cliente] Datos recibidos: geo,3,12,0;mate,4,1,1;historia,8,0,0;Chen Chen,9,0,0;testtest,10,0,0;eeeeee,11,0,0;test,12,0,0;o,13,0,0;11,15,1,0;prueba,16,0,0
 [Cliente] Datos recibidos: 
 
-[14:00:15] [Cliente] Datos enviados: a
-[Cliente] Datos enviados: a
-[Cliente] Datos enviados: a
+[14:49:35] [Cliente] Fin del programa.
 
-[14:00:15] [Cliente] Datos recibidos: Pregunta: pb, y sus opciones son:
- Pregunta abierta sin opciones.
+[14:49:35] [Cliente] Socket cerrado.
 
-
-[Cliente] Datos recibidos: No hay más preguntas disponibles.
-[Cliente] Datos recibidos: bida: a
-
+[14:49:35] [Cliente] Winsock limpiado.
 

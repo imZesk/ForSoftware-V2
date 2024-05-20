@@ -1,29 +1,24 @@
-[13:59:46] [Servidor] Winsock inicializado.
+[14:49:25] [Servidor] Winsock inicializado.
 
-[13:59:46] [Servidor] Socket creado.
+[14:49:25] [Servidor] Socket creado.
 
-[13:59:46] [Servidor] Enlace realizado.
+[14:49:25] [Servidor] Enlace realizado.
 
-[13:59:49] [Servidor] Conexion entrante desde: 127.0.0.1 (55675)
+[14:49:27] [Servidor] Conexion entrante desde: 127.0.0.1 (49804)
 
-[13:59:49] [Servidor] Base de datos abierta.
+[14:49:27] [Servidor] Base de datos abierta.
 
-[13:59:53] [Servidor] Datos recibidos: resultado teses
+[14:49:29] [Servidor] Datos recibidos: resultado teses
 
-[13:59:53] [Servidor] Datos enviados: geo,3,0;mate,4,1;historia,8,0;Chen Chen,9,0;testtest,10,0;eeeeee,11,0;test,12,0;o,13,0;11,15,0;prueba,16,0
+[14:49:29] [Servidor] Datos enviados: geo,3,12,0;mate,4,1,1;historia,8,0,0;Chen Chen,9,0,0;testtest,10,0,0;eeeeee,11,0,0;test,12,0,0;o,13,0,0;11,15,1,0;prueba,16,0,0
 
-[13:59:56] [Servidor] Datos recibidos: Realizar test.
+[14:49:35] [Servidor] Datos recibidos: Fin
 
-[14:00:04] [Servidor] Nombre del test elegido: 11
+[14:49:35] [Servidor] Datos enviados: Fin
 
-[14:00:04] [Servidor] Frase enviada: Pregunta: pb, y sus opciones son:
- Pregunta abierta sin opciones.
+[14:49:35] [Servidor] Cierre de la base de datos.
 
+[14:49:35] [Servidor] Cierre del socket.
 
-
-[14:00:05] [Servidor] Respuesta recibida: a
-
-[14:00:05] [Servidor] Respuesta enviada: Incorrecto
-
-[14:00:05] [Servidor] No hay más preguntas disponibles
+[14:49:35] [Servidor] Limpieza del Winsock.
 

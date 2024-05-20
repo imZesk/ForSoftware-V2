@@ -212,7 +212,7 @@ char *resultado_teses(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
 
-    char sql[] = "SELECT test.nombre,test.id_t,(SELECT resultado.id_r FROM resultado WHERE resultado.id_t = test.id_t) AS id_r,(SELECT resultado.pregs_realiz FROM resultado WHERE resultado.id_t = test.id_t) AS pregs_realiz,(SELECT resultado.respuestas_c FROM resultado WHERE resultado.id_t = test.id_t) AS respuestas_c FROM test;";
+    char sql[] = "SELECT test.nombre,test.id_t,(SELECT resultado.pregs_realiz FROM resultado WHERE resultado.id_t = test.id_t) AS pregs_realiz,(SELECT resultado.respuestas_c FROM resultado WHERE resultado.id_t = test.id_t) AS respuestas_c FROM test;";
 
     int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (result != SQLITE_OK)
@@ -235,32 +235,30 @@ char *resultado_teses(sqlite3 *db)
     char nombre[100];
     int preg_reali;
     int respuestas_correct;
+    int id_t;
     int first_row = 1;
 
     printf("\n");
-    printf("\n");
-    printf("Mostrando tests:\n");
     do
     {
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW)
         {
             strcpy(nombre, (char *)sqlite3_column_text(stmt, 0));
-            preg_reali = sqlite3_column_int(stmt, 1);
-            respuestas_correct = sqlite3_column_int(stmt, 2);
+            id_t = sqlite3_column_int(stmt, 1);
+            preg_reali = sqlite3_column_int(stmt, 2);
+            respuestas_correct = sqlite3_column_int(stmt, 3);
             if (first_row)
             {
-                sprintf(resultado, "%s,%d,%d", nombre, preg_reali, respuestas_correct);
+                sprintf(resultado, "%s,%d,%d,%d", nombre,id_t, preg_reali, respuestas_correct);
                 first_row = 0;
             }
             else
             {
-                sprintf(resultado, "%s;%s,%d,%d", resultado, nombre, preg_reali, respuestas_correct);
+                sprintf(resultado, "%s;%s,%d,%d,%d", resultado, nombre, id_t, preg_reali, respuestas_correct);
             }
         }
     } while (result == SQLITE_ROW);
-
-    printf("Resultados: %s\n", resultado);
 
     result = sqlite3_finalize(stmt);
     if (result != SQLITE_OK)
