@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
 					}
 					if(strcmp(respuesta, "1")==0){
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << opcion1;
-					}else if(strcmp(respuesta, "1")==0){
+					}else if(strcmp(respuesta, "2")==0){
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << opcion2;
 					}else{
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << opcion3;
@@ -478,7 +478,6 @@ int main(int argc, char *argv[])
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto2 = oss2.str();
 			escribirConTiempo(archivo, texto2);
