@@ -169,10 +169,6 @@ char *visualizar_tests(sqlite3 *db)
     int cant_preg;
     int id;
     int first_row = 1;
-
-    printf("\n");
-    printf("\n");
-    printf("Mostrando tests:\n");
     do
     {
         result = sqlite3_step(stmt);
@@ -190,6 +186,9 @@ char *visualizar_tests(sqlite3 *db)
             {
                 sprintf(teses, "%s;%d,%s,%d", teses, id, nombre, cant_preg);
             }
+        }else{
+            strcpy(teses,"Vacio");
+            break;
         }
     } while (result == SQLITE_ROW);
 
