@@ -321,7 +321,7 @@ int main(int argc, char *argv[])
 				{
 					char respuesta[512];
 					cout << "Introduce la respuesta: ";
-					cin.getline(respuesta, sizeof(respuesta));
+					cin>>respuesta;
 					data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
 				}
 				else if (tipoPregunta == 1)
@@ -365,7 +365,6 @@ int main(int argc, char *argv[])
 						cin >> respuesta;
 						respuesta = toupper(respuesta);
 					} while (respuesta != 'V' && respuesta != 'F');
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
 				}
 				else
