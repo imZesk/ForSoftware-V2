@@ -249,14 +249,12 @@ int main(int argc, char *argv[])
 		{
 		case '1':
 		{
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Crear test.");
 			oss8 << "[Cliente] Opcion elegida: " << sendBuff << endl;
 			texto8 = oss8.str();
 			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			if (strcmp(recvBuff, "Recibido.") != 0)
 			{
@@ -264,7 +262,6 @@ int main(int argc, char *argv[])
 				escribirConTiempo(archivo, "[Cliente] Error: No se recibio confirmacion del servidor.\n");
 				break;
 			}
-			cout << "Datos recibidos: " << recvBuff << endl;
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto2 = oss2.str();
 			escribirConTiempo(archivo, texto2);
@@ -381,7 +378,6 @@ int main(int argc, char *argv[])
 
 			// Recibir confirmación de que el test y las preguntas fueron creadas
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			oss4 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto4 = oss4.str();
 			escribirConTiempo(archivo, texto4);
@@ -470,14 +466,12 @@ int main(int argc, char *argv[])
 			}
 
 		case '3':
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Visualizar test.");
 			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
 			texto8 = oss8.str();
 			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
@@ -489,19 +483,16 @@ int main(int argc, char *argv[])
 			break;
 
 		case '4':
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Eliminar test.");
 			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
 			texto8 = oss8.str();
 			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto2 = oss2.str();
 			escribirConTiempo(archivo, texto2);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
 			cout << "Teses: " << endl;
 			nombresEncuestas = separarPalabras(recvBuff);
@@ -544,9 +535,7 @@ int main(int argc, char *argv[])
 			texto3 = oss3.str();
 			escribirConTiempo(archivo, texto3);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
-			cout << "Recepcion del mensaje 2..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			oss4 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto4 = oss4.str();
 			escribirConTiempo(archivo, texto4);
@@ -555,7 +544,6 @@ int main(int argc, char *argv[])
 			
 
 		case '5':
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Agregar Pregunta.");
 			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
 			texto8 = oss8.str();
@@ -689,35 +677,29 @@ int main(int argc, char *argv[])
 				break;
 			}
 
-			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			oss7 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto7 = oss7.str();
 			escribirConTiempo(archivo, texto7);
 			break;
 
 		case '6':
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "resultado teses");
 			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
 			texto8 = oss8.str();
 			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto2 = oss2.str();
 			escribirConTiempo(archivo, texto2);
-			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
 			cout << "Resultados: " << endl;
 			separarResultado(recvBuff);
 			break;
 
 		case '0':
-			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Fin");
 
 			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
@@ -726,9 +708,7 @@ int main(int argc, char *argv[])
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			memset(recvBuff, 0, sizeof(recvBuff));
-			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
 
 			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
 			texto2 = oss2.str();

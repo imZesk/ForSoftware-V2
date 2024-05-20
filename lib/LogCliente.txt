@@ -1,25 +1,33 @@
-[21:32:30] [Cliente] Inicializando Winsock...
+[21:36:08] [Cliente] Inicializando Winsock...
 
-[21:32:30] [Cliente] Winsock Inicializado.
+[21:36:08] [Cliente] Winsock Inicializado.
 
-[21:32:30] [Cliente] Socket creado.
+[21:36:08] [Cliente] Socket creado.
 
-[21:32:30] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[21:32:30] [Cliente] Llegue
+[21:36:08] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[21:36:08] [Cliente] Llegue
 
-[21:32:31] [Cliente] Datos enviados: resultado teses
+[21:36:10] [Cliente] Datos enviados: Visualizar test.
 
-[21:32:31] [Cliente] Datos recibidos: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2;mate,24,4,0;mate,24,4,2;mate,24,4,0
+[21:36:10] [Cliente] Datos recibidos: 24,mate,4;25,geografia,2
 
-[21:32:37] [Cliente] Datos enviados: resultado teses
+[21:36:13] [Cliente] Datos enviados: Visualizar test.
+[Cliente] Datos enviados: resultado teses
+
+[21:36:13] [Cliente] Datos recibidos: 24,mate,4;25,geografia,2
+[Cliente] Datos recibidos: 
+
+[21:36:20] [Cliente] Datos enviados: Visualizar test.
+[Cliente] Datos enviados: resultado teses
 [Cliente] Datos enviados: Fin
 
-[21:32:37] [Cliente] Datos recibidos: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2;mate,24,4,0;mate,24,4,2;mate,24,4,0
-[Cliente] Datos recibidos: 
+[21:36:20] [Cliente] Datos recibidos: 24,mate,4;25,geografia,2
+[Cliente] Datos recibidos: 
+[Cliente] Datos recibidos: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2;mate,24,4,0;mate,24,4,2;mate,24,4,0
 
-[21:32:37] [Cliente] Fin del programa.
+[21:36:20] [Cliente] Fin del programa.
 
-[21:32:37] [Cliente] Socket cerrado.
+[21:36:20] [Cliente] Socket cerrado.
 
-[21:32:37] [Cliente] Winsock limpiado.
+[21:36:20] [Cliente] Winsock limpiado.
 
