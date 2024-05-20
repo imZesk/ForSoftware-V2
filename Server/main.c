@@ -865,7 +865,7 @@ int main(int argc, char *argv[])
                         free(respuesta_correcta);
                     }
 
-                    strcpy(sendBuff, "No hay más preguntas disponibles.");
+                    strcpy(sendBuff, "No hay mas preguntas disponibles.");
                     send(comm_socket, sendBuff, sizeof(sendBuff) + 1, 0);
                     escribir_con_hora(file, "[Servidor] No hay más preguntas disponibles\n");
 
