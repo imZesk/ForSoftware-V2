@@ -607,9 +607,9 @@ int main(int argc, char *argv[])
 					} while (strcmp(opcion3, "") == 0);
 
 					strcpy(opciones, opcion1);
-					strcat(opciones, ", ");
+					strcat(opciones, "| ");
 					strcat(opciones, opcion2);
-					strcat(opciones, ", ");
+					strcat(opciones, "| ");
 					strcat(opciones, opcion3);
 				}
 				else
