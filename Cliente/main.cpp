@@ -349,10 +349,13 @@ int main(int argc, char *argv[])
 						}
 					}
 					if(strcmp(respuesta, "1")==0){
+						cout<<opcion1<<endl;
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion1;
 					}else if(strcmp(respuesta, "2")==0){
+						cout<<opcion2<<endl;
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion2;
 					}else{
+						cout<<opcion3<<endl;
 						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion3;
 					}
 				}
