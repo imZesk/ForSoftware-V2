@@ -1,28 +1,18 @@
-[21:36:04] [Servidor] Winsock inicializado.
+[21:50:16] [Servidor] Winsock inicializado.
 
-[21:36:04] [Servidor] Socket creado.
+[21:50:16] [Servidor] Socket creado.
 
-[21:36:04] [Servidor] Enlace realizado.
+[21:50:16] [Servidor] Enlace realizado.
 
-[21:36:08] [Servidor] Conexion entrante desde: 127.0.0.1 (56376)
+[21:50:18] [Servidor] Conexion entrante desde: 127.0.0.1 (56706)
 
-[21:36:08] [Servidor] Base de datos abierta.
+[21:50:18] [Servidor] Base de datos abierta.
 
-[21:36:10] [Servidor] Datos recibidos: Visualizar test.
+[21:50:22] [Servidor] Datos recibidos: Visualizar test.
 
-[21:36:10] [Servidor] Datos enviados: 24,mate,4;25,geografia,2.
+[21:50:22] [Servidor] Datos enviados: 24,mate,4;25,geografia,2.
 
-[21:36:13] [Servidor] Datos recibidos: resultado teses
+[21:50:30] [Servidor] Datos recibidos: Visualizar test.
 
-[21:36:13] [Servidor] Datos enviados: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2;mate,24,4,0;mate,24,4,2;mate,24,4,0
-
-[21:36:20] [Servidor] Datos recibidos: Fin
-
-[21:36:20] [Servidor] Datos enviados: Fin
-
-[21:36:20] [Servidor] Cierre de la base de datos.
-
-[21:36:20] [Servidor] Cierre del socket.
-
-[21:36:20] [Servidor] Limpieza del Winsock.
+[21:50:30] [Servidor] Datos enviados: 24,mate,4;25,geografia,2.
 

@@ -1,16 +1,3 @@
-Para que el programa funcione tienes que tener la Sqlite3 descargado. 
-El programa esta en la carpeta "sqlite-tools-win-x64-3450200" del proyecto, en teoria no hace falta hacer nada, pero en caso de que no 
-funcione al terminar todos los pasos de acontinuacion tendra que instalarlo en su ordenador.
-
-Pasos para que sqlite3 funcione:
-1- En la carpeta del proyecto abrir la carpeta "Sqlite3" y copiar la ruta.
-2- Abrir "Editar las variables del entorno del sistema" en su ordenador.
-3- Entrar en "variables del entorno".
-4- En variables del usuario para... hacer doble click en "Path".
-5- hacer click en "Nuevo" y pegar la ruta copiuada anteriormente.
-6- Aceptar hasta salir.
-7- El proyecto compila y funciona.
-
 Para compilar el proyecto hay que escribir esto: 
 
 server: gcc *.c -o server.exe -lws2_32
