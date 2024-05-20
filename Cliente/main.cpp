@@ -214,7 +214,7 @@ case '1':
     cout << "Recepcion del mensaje 1..." << endl;
     recv(s, recvBuff, sizeof(recvBuff), 0);
     if (strcmp(recvBuff, "Recibido.") != 0) {
-        cout << "Error: No se recibió confirmación del servidor." << endl;
+        cout << "Error: No se recibio confirmacion del servidor." << endl;
         break;
     }
     cout << "Datos recibidos: " << recvBuff << endl;
@@ -224,8 +224,19 @@ case '1':
     cout << "Introduce el nombre de la encuesta: ";
     cin.ignore();
     cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
-    cout << "Introduce la cantidad de preguntas: ";
-    cin >> cantidadPreguntas;
+	
+        while (true) {
+        cout << "Introduce la cantidad de preguntas: ";
+        cin >> cantidadPreguntas;
+        if (cin.fail() || cantidadPreguntas < 1 || cantidadPreguntas > 30) {
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            cout << "Error: Introduce un numero entre 1 y 30." << endl;
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            break; 
+        }
+    }
 
     stringstream data;
     data << nombreEncuesta << "," << cantidadPreguntas;
@@ -233,9 +244,19 @@ case '1':
     for (int i = 0; i < cantidadPreguntas; ++i)
     {
         int tipoPregunta;
-        cout << "Elige el tipo de pregunta (1: Abierta, 2: Opción Múltiple, 3: Verdadero/Falso): ";
-        cin >> tipoPregunta;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        while (true) {
+            cout << "Elige el tipo de pregunta (1: Abierta, 2: Opcion Multiple, 3: Verdadero/Falso): ";
+            cin >> tipoPregunta;
+            if (cin.fail() || tipoPregunta < 1 || tipoPregunta > 3) {
+                cin.clear(); 
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                cout << "Error: Introduce un numero entre 1 y 3." << endl;
+            } else {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                break; 
+            }
+        }
 
         char textoPregunta[512];
         cout << "Introduce la pregunta: ";
@@ -252,14 +273,22 @@ case '1':
         {
             char opcion1[512], opcion2[512], opcion3[512];
             char respuesta[512];
-            cout << "Introduce la primera opción: ";
+            cout << "Introduce la primera opcion: ";
             cin.getline(opcion1, sizeof(opcion1));
-            cout << "Introduce la segunda opción: ";
+            cout << "Introduce la segunda opcion: ";
             cin.getline(opcion2, sizeof(opcion2));
-            cout << "Introduce la tercera opción: ";
+            cout << "Introduce la tercera opcion: ";
             cin.getline(opcion3, sizeof(opcion3));
-            cout << "Introduce la opción correcta: ";
-            cin.getline(respuesta, sizeof(respuesta));
+            
+			while (true) {
+                cout << "Introduce la opcion correcta (1, 2 o 3): ";
+                cin.getline(respuesta, sizeof(respuesta));
+                if (strlen(respuesta) != 1 || respuesta[0] < '1' || respuesta[0] > '3') {
+                    cout << "Error: Introduce un numero entre 1 y 3." << endl;
+                } else {
+                    break; 
+                }
+            }
             data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << respuesta;
         }
         else if (tipoPregunta == 3)
@@ -276,7 +305,7 @@ case '1':
         }
         else
         {
-            cout << "Tipo de pregunta no válido. Intente nuevamente." << endl;
+            cout << "Tipo de pregunta no valido. Intente nuevamente." << endl;
             --i;
         }
     }
@@ -308,7 +337,7 @@ case '1':
 				// Recibir pregunta y opciones del servidor
 				recv(s, recvBuff, sizeof(recvBuff) + 1, 0);
 
-				if (strcmp(recvBuff, "No hay más preguntas disponibles.") == 0)
+				if (strcmp(recvBuff, "No hay mas preguntas disponibles.") == 0)
 				{
 					cout << "No hay mas preguntas disponibles." << endl;
 					break;
@@ -518,7 +547,7 @@ case '1':
 			}
 			else
 			{
-				cout << "No se van a añadir preguntas." << endl;
+				cout << "No se van a agregar preguntas." << endl;
 				break;
 			}
 
