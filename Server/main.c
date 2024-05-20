@@ -43,11 +43,10 @@ char** split(const char* str, const char* delim, int* num_tokens) {
     *num_tokens = count;
     return result;
 }
-
 void crear_test_y_preguntas(sqlite3* DB, const char* recvBuff) {
     char* errMsg = 0;
 
-    // Parsear los datos recibidos
+    // Parsear los datos recibidos 
     int num_parts;
     char** parts = split(recvBuff, ";", &num_parts);
 
@@ -92,7 +91,14 @@ void crear_test_y_preguntas(sqlite3* DB, const char* recvBuff) {
         int tipo_preg = atoi(question_parts[0]);
         const char* pregunta = question_parts[1];
         const char* opciones = strcmp(question_parts[2], "NULL") == 0 ? NULL : question_parts[2];
-        const char* respuesta = question_parts[3];
+        char* respuesta = question_parts[3];
+
+        // Convertir respuesta 'V' a "Verdadero" y 'F' a "Falso"
+        if (strcmp(respuesta, "V") == 0) {
+            respuesta = "Verdadero";
+        } else if (strcmp(respuesta, "F") == 0) {
+            respuesta = "Falso";
+        }
 
         // Insertar la pregunta en la tabla 'pregunta'
         if (opciones == NULL) {
@@ -138,7 +144,6 @@ void crear_test_y_preguntas(sqlite3* DB, const char* recvBuff) {
 
     printf("Test y preguntas creadas exitosamente.\n");
 }
-
 
 
 char *visualizar_tests(sqlite3 *db)
