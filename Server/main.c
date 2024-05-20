@@ -11,129 +11,130 @@
 
 #define MAX_BUFFER_SIZE 1024
 
-void crear_test_y_preguntas(sqlite3 *DB, const char *data) {
-    char *errMsg = 0;
-    char test_sql[512];
-    char pregunta_sql[512];
-    char tiene_sql[512];
-    int id_t, id_p;
+// Función para dividir una cadena en subcadenas utilizando un delimitador
+char** split(const char* str, const char* delim, int* num_tokens) {
+    char* s = strdup(str);
+    int count = 0;
+    char* token;
+    char* rest = s;
 
-    printf("Iniciando la creación del test y las preguntas...\n");
+    // Contar el número de tokens
+    token = strtok(rest, delim);
+    while (token != NULL) {
+        count++;
+        token = strtok(NULL, delim);
+    }
 
-    // Hacer una copia de data porque strtok modifica la cadena
-    char data_copy[MAX_BUFFER_SIZE];
-    strncpy(data_copy, data, MAX_BUFFER_SIZE);
-    data_copy[MAX_BUFFER_SIZE - 1] = '\0'; // Asegurarse de que esté terminada en null
+    free(s);
 
-    // Extraer el nombre del test y la cantidad de preguntas
-    char *token = strtok(data_copy, ",");
-    if (token == NULL) {
-        printf("Error: no se pudo extraer el nombre del test.\n");
+    char** result = malloc(count * sizeof(char*));
+    s = strdup(str);
+    rest = s;
+    int i = 0;
+
+    // Almacenar los tokens en el resultado
+    token = strtok(rest, delim);
+    while (token != NULL) {
+        result[i++] = strdup(token);
+        token = strtok(NULL, delim);
+    }
+
+    free(s);
+    *num_tokens = count;
+    return result;
+}
+
+void crear_test_y_preguntas(sqlite3* DB, const char* recvBuff) {
+    char* errMsg = 0;
+
+    // Parsear los datos recibidos
+    int num_parts;
+    char** parts = split(recvBuff, ";", &num_parts);
+
+    if (num_parts < 2) {
+        printf("Datos insuficientes para crear el test y preguntas.\n");
         return;
     }
-    char nombre[100];
-    strcpy(nombre, token);
-    printf("Nombre del test: %s\n", nombre);
 
-    token = strtok(NULL, ",");
-    if (token == NULL) {
-        printf("Error: no se pudo extraer la cantidad de preguntas.\n");
+    // Extraer la información del test
+    int num_test_info_parts;
+    char** test_info = split(parts[0], ",", &num_test_info_parts);
+    if (num_test_info_parts != 2) {
+        printf("Formato incorrecto para los datos del test.\n");
         return;
     }
-    int cant_preg = atoi(token);
-    printf("Cantidad de preguntas: %d\n", cant_preg);
 
-    // Crear el test
-    sprintf(test_sql, "INSERT INTO test (nombre, cant_preg) VALUES ('%s', %d);", nombre, cant_preg);
-    printf("Ejecutando consulta SQL: %s\n", test_sql);
-    int rc = sqlite3_exec(DB, test_sql, NULL, NULL, &errMsg);
-    if (rc != SQLITE_OK) {
-        printf("Error al crear el test: %s\n", errMsg);
+    const char* test_name = test_info[0];
+    int test_preg_count = atoi(test_info[1]);
+
+    // Insertar el test en la tabla 'test'
+    char sql[512];
+    sprintf(sql, "INSERT INTO test (nombre, cant_preg) VALUES ('%s', %d);", test_name, test_preg_count);
+    if (sqlite3_exec(DB, sql, 0, 0, &errMsg) != SQLITE_OK) {
+        printf("Error al insertar el test: %s\n", errMsg);
         sqlite3_free(errMsg);
         return;
     }
-    printf("Test creado exitosamente.\n");
 
-    id_t = sqlite3_last_insert_rowid(DB);
-    printf("ID del test: %d\n", id_t);
+    // Obtener el ID del test recién insertado
+    int test_id = sqlite3_last_insert_rowid(DB);
 
-    // Crear las preguntas
-    char *pregunta_data = strtok(NULL, ";");
-    while (pregunta_data != NULL) {
-        printf("Procesando pregunta: %s\n", pregunta_data);
-        
-        char *preg_token = strtok(pregunta_data, ",");
-        if (preg_token == NULL) {
-            printf("Error: no se pudo extraer el tipo de pregunta.\n");
-            pregunta_data = strtok(NULL, ";");
+    // Insertar las preguntas y vincularlas con el test
+    for (int i = 1; i < num_parts; i++) {
+        int num_question_parts;
+        char** question_parts = split(parts[i], ",", &num_question_parts);
+
+        if (num_question_parts != 4) {
+            printf("Formato incorrecto para los datos de la pregunta.\n");
             continue;
         }
-        int tipo_preg = atoi(preg_token);
-        printf("Tipo de pregunta: %d\n", tipo_preg);
 
-        preg_token = strtok(NULL, ",");
-        if (preg_token == NULL) {
-            printf("Error: no se pudo extraer el texto de la pregunta.\n");
-            pregunta_data = strtok(NULL, ";");
-            continue;
-        }
-        char pregunta[512];
-        strcpy(pregunta, preg_token);
-        printf("Pregunta: %s\n", pregunta);
+        int tipo_preg = atoi(question_parts[0]);
+        const char* pregunta = question_parts[1];
+        const char* opciones = strcmp(question_parts[2], "NULL") == 0 ? NULL : question_parts[2];
+        const char* respuesta = question_parts[3];
 
-        preg_token = strtok(NULL, ",");
-        if (preg_token == NULL) {
-            printf("Error: no se pudo extraer las opciones.\n");
-            pregunta_data = strtok(NULL, ";");
-            continue;
-        }
-        char opciones[512];
-        if (strcmp(preg_token, "NULL") != 0) {
-            strcpy(opciones, preg_token);
+        // Insertar la pregunta en la tabla 'pregunta'
+        if (opciones == NULL) {
+            sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES (%d, '%s', NULL, '%s');", tipo_preg, pregunta, respuesta);
         } else {
-            strcpy(opciones, "");
+            sprintf(sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES (%d, '%s', '%s', '%s');", tipo_preg, pregunta, opciones, respuesta);
         }
-        printf("Opciones: %s\n", opciones);
 
-        // preg_token = strtok(NULL, ",");
-        // if (preg_token == NULL) {
-        //     printf("Error: no se pudo extraer la respuesta.\n");
-        //     pregunta_data = strtok(NULL, ";");
-        //     continue;
-        // }
-        char respuesta[512];
-        strcpy(respuesta, preg_token);
-        printf("Respuesta: %s\n", respuesta);
-
-        // Insertar la pregunta en la base de datos
-        sprintf(pregunta_sql, "INSERT INTO pregunta (tipo_preg, pregunta, opciones, respuesta) VALUES (%d, '%s', '%s', '%s');", tipo_preg, pregunta, opciones, respuesta);
-        printf("Ejecutando consulta SQL: %s\n", pregunta_sql);
-        rc = sqlite3_exec(DB, pregunta_sql, NULL, NULL, &errMsg);
-        if (rc != SQLITE_OK) {
-            printf("Error al crear la pregunta: %s\n", errMsg);
+        if (sqlite3_exec(DB, sql, 0, 0, &errMsg) != SQLITE_OK) {
+            printf("Error al insertar la pregunta: %s\n", errMsg);
             sqlite3_free(errMsg);
-            pregunta_data = strtok(NULL, ";");
             continue;
         }
-        printf("Pregunta creada exitosamente.\n");
 
-        id_p = sqlite3_last_insert_rowid(DB);
-        printf("ID de la pregunta: %d\n", id_p);
+        // Obtener el ID de la pregunta recién insertada
+        int pregunta_id = sqlite3_last_insert_rowid(DB);
 
-        // Insertar en la tabla tiene
-        sprintf(tiene_sql, "INSERT INTO tiene (id_t, id_p) VALUES (%d, %d);", id_t, id_p);
-        printf("Ejecutando consulta SQL: %s\n", tiene_sql);
-        rc = sqlite3_exec(DB, tiene_sql, NULL, NULL, &errMsg);
-        if (rc != SQLITE_OK) {
-            printf("Error al asociar la pregunta con el test: %s\n", errMsg);
+        // Vincular la pregunta con el test en la tabla 'tiene'
+        sprintf(sql, "INSERT INTO tiene (id_t, id_p) VALUES (%d, %d);", test_id, pregunta_id);
+        if (sqlite3_exec(DB, sql, 0, 0, &errMsg) != SQLITE_OK) {
+            printf("Error al vincular la pregunta con el test: %s\n", errMsg);
             sqlite3_free(errMsg);
-            pregunta_data = strtok(NULL, ";");
-            continue;
         }
-        printf("Pregunta asociada exitosamente con el test.\n");
 
-        pregunta_data = strtok(NULL, ";");
+        // Liberar memoria
+        for (int j = 0; j < num_question_parts; j++) {
+            free(question_parts[j]);
+        }
+        free(question_parts);
     }
+
+    // Liberar memoria
+    for (int i = 0; i < num_parts; i++) {
+        free(parts[i]);
+    }
+    free(parts);
+
+    // Liberar memoria para los datos del test
+    for (int i = 0; i < num_test_info_parts; i++) {
+        free(test_info[i]);
+    }
+    free(test_info);
 
     printf("Test y preguntas creadas exitosamente.\n");
 }
@@ -771,6 +772,7 @@ int main(int argc, char *argv[])
                     send(comm_socket, sendBuff, strlen(sendBuff) + 1, 0);
                 }
             }
+
             else if (strcmp(recvBuff, "Realizar test.") == 0)
             {
                 char frase1[512];

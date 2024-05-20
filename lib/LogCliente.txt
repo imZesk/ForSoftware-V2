@@ -1,9 +1,7 @@
-[17:47:45] [Cliente] Inicializando Winsock...
+[10:54:06] [Cliente] Inicializando Winsock...
 
-[17:47:45] [Cliente] Winsock Inicializado.
+[10:54:06] [Cliente] Winsock Inicializado.
 
-[17:47:45] [Cliente] Socket creado.
+[10:54:06] [Cliente] Socket creado.
 
-[17:47:45] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[17:47:48] [Cliente] Fin del programa.
-
+[10:54:06] [Cliente] Conexion establecida con: 127.0.0.1 (6000)

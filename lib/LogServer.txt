@@ -1,20 +1,10 @@
-[17:47:41] [Servidor] Winsock inicializado.
+[10:54:05] [Servidor] Winsock inicializado.
 
-[17:47:41] [Servidor] Socket creado.
+[10:54:05] [Servidor] Socket creado.
 
-[17:47:41] [Servidor] Enlace realizado.
+[10:54:05] [Servidor] Enlace realizado.
 
-[17:47:45] [Servidor] Conexion entrante desde: 127.0.0.1 (61335)
+[10:54:06] [Servidor] Conexion entrante desde: 127.0.0.1 (65199)
 
-[17:47:45] [Servidor] Base de datos abierta.
-
-[17:47:48] [Servidor] Datos recibidos: Fin
-
-[17:47:48] [Servidor] Datos enviados: Fin
-
-[17:47:48] [Servidor] Cierre de la base de datos.
-
-[17:47:48] [Servidor] Cierre del socket.
-
-[17:47:48] [Servidor] Limpieza del Winsock.
+[10:54:06] [Servidor] Base de datos abierta.
 
