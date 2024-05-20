@@ -234,148 +234,149 @@ int main(int argc, char *argv[])
 
 		switch (opcion)
 		{
-		case '1':
-		{
-			cout << "Envio del mensaje 1..." << endl;
-			strcpy(sendBuff, "Crear test.");
-			oss8 << "[Cliente] Opcion elegida: " << sendBuff << endl;
-			texto8 = oss8.str();
-			escribirConTiempo(archivo, texto8);
-			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+case '1':
+{
+    cout << "Envio del mensaje 1..." << endl;
+    strcpy(sendBuff, "Crear test.");
+    oss8 << "[Cliente] Opcion elegida: " << sendBuff << endl;
+    texto8 = oss8.str();
+    escribirConTiempo(archivo, texto8);
+    send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			cout << "Recepcion del mensaje 1..." << endl;
-			recv(s, recvBuff, sizeof(recvBuff), 0);
-			if (strcmp(recvBuff, "Recibido.") != 0)
-			{
-				cout << "Error: No se recibio confirmacion del servidor." << endl;
-				escribirConTiempo(archivo, "[Cliente] Error: No se recibio confirmacion del servidor.\n");
-				break;
-			}
-			cout << "Datos recibidos: " << recvBuff << endl;
-			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
-			texto2 = oss2.str();
-			escribirConTiempo(archivo, texto2);
+    cout << "Recepcion del mensaje 1..." << endl;
+    recv(s, recvBuff, sizeof(recvBuff), 0);
+    if (strcmp(recvBuff, "Recibido.") != 0)
+    {
+        cout << "Error: No se recibio confirmacion del servidor." << endl;
+        escribirConTiempo(archivo, "[Cliente] Error: No se recibio confirmacion del servidor.\n");
+        break;
+    }
+    cout << "Datos recibidos: " << recvBuff << endl;
+    oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+    texto2 = oss2.str();
+    escribirConTiempo(archivo, texto2);
 
-			char nombreEncuesta[100];
-			int cantidadPreguntas;
-			cout << "Introduce el nombre del test: ";
-			cin.ignore();
-			cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
+    char nombreEncuesta[100];
+    int cantidadPreguntas;
+    cout << "Introduce el nombre del test: ";
+    cin.ignore();
+    cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
 
-			while (true)
-			{
-				cout << "Introduce la cantidad de preguntas: ";
-				cin >> cantidadPreguntas;
-				if (cin.fail() || cantidadPreguntas < 1 || cantidadPreguntas > 30)
-				{
-					cin.clear();
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					cout << "Error: Introduce un numero entre 1 y 30." << endl;
-				}
-				else
-				{
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					break;
-				}
-			}
+    while (true)
+    {
+        cout << "Introduce la cantidad de preguntas: ";
+        cin >> cantidadPreguntas;
+        if (cin.fail() || cantidadPreguntas < 1 || cantidadPreguntas > 30)
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Error: Introduce un numero entre 1 y 30." << endl;
+        }
+        else
+        {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
+        }
+    }
 
-			stringstream data;
-			data << nombreEncuesta << "," << cantidadPreguntas;
+    stringstream data;
+    data << nombreEncuesta << "," << cantidadPreguntas;
 
-			for (int i = 0; i < cantidadPreguntas; ++i)
-			{
-				int tipoPregunta;
+    for (int i = 0; i < cantidadPreguntas; ++i)
+    {
+        int tipoPregunta;
 
-				while (true)
-				{
-					cout << "Elige el tipo de pregunta (1: Abierta, 2: Opcion Multiple, 3: Verdadero/Falso): ";
-					cin >> tipoPregunta;
-					if (cin.fail() || tipoPregunta < 1 || tipoPregunta > 3)
-					{
-						cin.clear();
-						cin.ignore(numeric_limits<streamsize>::max(), '\n');
-						cout << "Error: Introduce un numero entre 1 y 3." << endl;
-					}
-					else
-					{
-						cin.ignore(numeric_limits<streamsize>::max(), '\n');
-						break;
-					}
-				}
+        while (true)
+        {
+            cout << "Elige el tipo de pregunta (1: Opcion Multiple, 2: Verdadero/Falso, 3: Abierta): ";
+            cin >> tipoPregunta;
+            if (cin.fail() || tipoPregunta < 1 || tipoPregunta > 3)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Error: Introduce un numero entre 1 y 3." << endl;
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                break;
+            }
+        }
 
-				char textoPregunta[512];
-				cout << "Introduce la pregunta: ";
-				cin.getline(textoPregunta, sizeof(textoPregunta));
+        char textoPregunta[512];
+        cout << "Introduce la pregunta: ";
+        cin.getline(textoPregunta, sizeof(textoPregunta));
 
-				if (tipoPregunta == 1)
-				{
-					char respuesta[512];
-					cout << "Introduce la respuesta: ";
-					cin.getline(respuesta, sizeof(respuesta));
-					data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
-				}
-				else if (tipoPregunta == 2)
-				{
-					char opcion1[512], opcion2[512], opcion3[512];
-					char respuesta[512];
-					cout << "Introduce la primera opcion: ";
-					cin.getline(opcion1, sizeof(opcion1));
-					cout << "Introduce la segunda opcion: ";
-					cin.getline(opcion2, sizeof(opcion2));
-					cout << "Introduce la tercera opcion: ";
-					cin.getline(opcion3, sizeof(opcion3));
+        if (tipoPregunta == 3)
+        {
+            char respuesta[512];
+            cout << "Introduce la respuesta: ";
+            cin.getline(respuesta, sizeof(respuesta));
+            data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
+        }
+        else if (tipoPregunta == 1)
+        {
+            char opcion1[512], opcion2[512], opcion3[512];
+            char respuesta[512];
+            cout << "Introduce la primera opcion: ";
+            cin.getline(opcion1, sizeof(opcion1));
+            cout << "Introduce la segunda opcion: ";
+            cin.getline(opcion2, sizeof(opcion2));
+            cout << "Introduce la tercera opcion: ";
+            cin.getline(opcion3, sizeof(opcion3));
 
-					while (true)
-					{
-						cout << "Introduce la opcion correcta (1, 2 o 3): ";
-						cin.getline(respuesta, sizeof(respuesta));
-						if (strlen(respuesta) != 1 || respuesta[0] < '1' || respuesta[0] > '3')
-						{
-							cout << "Error: Introduce un numero entre 1 y 3." << endl;
-						}
-						else
-						{
-							break;
-						}
-					}
-					data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << respuesta;
-				}
-				else if (tipoPregunta == 3)
-				{
-					char respuesta;
-					do
-					{
-						cout << "Introduce la respuesta (V/F): ";
-						cin >> respuesta;
-						respuesta = toupper(respuesta);
-					} while (respuesta != 'V' && respuesta != 'F');
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
-				}
-				else
-				{
-					cout << "Tipo de pregunta no valido. Intente nuevamente." << endl;
-					--i;
-				}
-			}
+            while (true)
+            {
+                cout << "Introduce la opcion correcta (1, 2 o 3): ";
+                cin.getline(respuesta, sizeof(respuesta));
+                if (strlen(respuesta) != 1 || respuesta[0] < '1' || respuesta[0] > '3')
+                {
+                    cout << "Error: Introduce un numero entre 1 y 3." << endl;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << respuesta;
+        }
+        else if (tipoPregunta == 2)
+        {
+            char respuesta;
+            do
+            {
+                cout << "Introduce la respuesta (V/F): ";
+                cin >> respuesta;
+                respuesta = toupper(respuesta);
+            } while (respuesta != 'V' && respuesta != 'F');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            data << ";" << tipoPregunta << "," << textoPregunta << ",NULL," << respuesta;
+        }
+        else
+        {
+            cout << "Tipo de pregunta no valido. Intente nuevamente." << endl;
+            --i;
+        }
+    }
 
-			string dataStr = data.str();
-			strcpy(sendBuff, dataStr.c_str());
-			oss3 << "[Cliente] Datos enviados: " << sendBuff << endl;
-			texto3 = oss3.str();
-			escribirConTiempo(archivo, texto3);
-			send(s, sendBuff, strlen(sendBuff) + 1, 0);
+    string dataStr = data.str();
+    strcpy(sendBuff, dataStr.c_str());
+    oss3 << "[Cliente] Datos enviados: " << sendBuff << endl;
+    texto3 = oss3.str();
+    escribirConTiempo(archivo, texto3);
+    send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
-			// Recibir confirmación de que el test y las preguntas fueron creadas
-			recv(s, recvBuff, sizeof(recvBuff), 0);
-			cout << "Datos recibidos: " << recvBuff << endl;
-			oss4 << "[Cliente] Datos recibidos: " << recvBuff << endl;
-			texto4 = oss4.str();
-			escribirConTiempo(archivo, texto4);
+    // Recibir confirmación de que el test y las preguntas fueron creadas
+    recv(s, recvBuff, sizeof(recvBuff), 0);
+    cout << "Datos recibidos: " << recvBuff << endl;
+    oss4 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+    texto4 = oss4.str();
+    escribirConTiempo(archivo, texto4);
 
-			cout << "Test '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
-			break;
-		}
+    cout << "Test '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
+    break;
+}
+
 
 		case '2':
 			cout << "Realizando test..." << endl;

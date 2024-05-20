@@ -27,7 +27,7 @@ char** split(const char* str, const char* delim, int* num_tokens) {
 
     free(s);
 
-    char** result = malloc(count * sizeof(char*));
+    char** result = (char**)malloc(count * sizeof(char*));
     s = strdup(str);
     rest = s;
     int i = 0;
@@ -138,6 +138,7 @@ void crear_test_y_preguntas(sqlite3* DB, const char* recvBuff) {
 
     printf("Test y preguntas creadas exitosamente.\n");
 }
+
 
 
 char *visualizar_tests(sqlite3 *db)

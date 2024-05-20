@@ -1,25 +1,17 @@
-[14:49:27] [Cliente] Inicializando Winsock...
+[19:54:24] [Cliente] Inicializando Winsock...
 
-[14:49:27] [Cliente] Winsock Inicializado.
+[19:54:24] [Cliente] Winsock Inicializado.
 
-[14:49:27] [Cliente] Socket creado.
+[19:54:24] [Cliente] Socket creado.
 
-[14:49:27] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[14:49:27] [Cliente] Llegue
+[19:54:24] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[19:54:24] [Cliente] Llegue
 
-[14:49:29] [Cliente] Datos enviados: resultado teses
+[19:54:24] [Cliente] Opcion elegida: Crear test.
 
-[14:49:29] [Cliente] Datos recibidos: geo,3,12,0;mate,4,1,1;historia,8,0,0;Chen Chen,9,0,0;testtest,10,0,0;eeeeee,11,0,0;test,12,0,0;o,13,0,0;11,15,1,0;prueba,16,0,0
+[19:54:24] [Cliente] Datos recibidos: Recibido.
 
-[14:49:35] [Cliente] Datos enviados: resultado teses
-[Cliente] Datos enviados: Fin
+[19:54:49] [Cliente] Datos enviados: asdasd,3;1,asdasd,a|b|c,2;2,asdasd,NULL,V;3,eeeeeeeeeeeeeeeeeeeeeeeeee,NULL,fffffffffffffffffffffff
 
-[14:49:35] [Cliente] Datos recibidos: geo,3,12,0;mate,4,1,1;historia,8,0,0;Chen Chen,9,0,0;testtest,10,0,0;eeeeee,11,0,0;test,12,0,0;o,13,0,0;11,15,1,0;prueba,16,0,0
-[Cliente] Datos recibidos: 
-
-[14:49:35] [Cliente] Fin del programa.
-
-[14:49:35] [Cliente] Socket cerrado.
-
-[14:49:35] [Cliente] Winsock limpiado.
+[19:54:50] [Cliente] Datos recibidos: Test y preguntas creadas exitosamente.
 
