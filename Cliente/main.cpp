@@ -101,11 +101,13 @@ void separarResultado(const char *cadena)
 
 		nombre = nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
-		Encuesta nueva_encuesta(preg_realiza);
-		nueva_encuesta.setNombre(nombre);
-		nueva_encuesta.setNota(respuestas_c);
-		cout << "Nombre: " << nueva_encuesta.getNombre() << nueva_encuesta.getNota() << "/" << nueva_encuesta.getCantidadPreguntas() << endl;
-		cout << endl;
+		if(respuestas_c!=0){
+			Encuesta nueva_encuesta(preg_realiza);
+			nueva_encuesta.setNombre(nombre);
+			nueva_encuesta.setNota(respuestas_c);
+			cout << "Nombre: " << nueva_encuesta.getNombre()<<" " << nueva_encuesta.getNota() << "/" << nueva_encuesta.getCantidadPreguntas() << endl;
+			cout << endl;
+		}
 	}
 }
 

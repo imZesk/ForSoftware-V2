@@ -1,33 +1,29 @@
-[13:52:31] [Servidor] Winsock inicializado.
+[13:59:46] [Servidor] Winsock inicializado.
 
-[13:52:31] [Servidor] Socket creado.
+[13:59:46] [Servidor] Socket creado.
 
-[13:52:31] [Servidor] Enlace realizado.
+[13:59:46] [Servidor] Enlace realizado.
 
-[13:52:33] [Servidor] Conexion entrante desde: 127.0.0.1 (55588)
+[13:59:49] [Servidor] Conexion entrante desde: 127.0.0.1 (55675)
 
-[13:52:33] [Servidor] Base de datos abierta.
+[13:59:49] [Servidor] Base de datos abierta.
 
-[13:52:35] [Servidor] Datos recibidos: Realizar test.
+[13:59:53] [Servidor] Datos recibidos: resultado teses
 
-[13:52:38] [Servidor] Nombre del test elegido: mate
+[13:59:53] [Servidor] Datos enviados: geo,3,0;mate,4,1;historia,8,0;Chen Chen,9,0;testtest,10,0;eeeeee,11,0;test,12,0;o,13,0;11,15,0;prueba,16,0
 
-[13:52:38] [Servidor] Frase enviada: Pregunta: Cuanto es 5 + 5?, y sus opciones son:
- 10, 2, 3
+[13:59:56] [Servidor] Datos recibidos: Realizar test.
 
+[14:00:04] [Servidor] Nombre del test elegido: 11
 
-[13:52:43] [Servidor] Respuesta recibida: 10
-
-[13:52:43] [Servidor] Respuesta enviada: Correcto
-
-[13:52:43] [Servidor] Frase enviada: Pregunta: 2+2?, y sus opciones son:
+[14:00:04] [Servidor] Frase enviada: Pregunta: pb, y sus opciones son:
  Pregunta abierta sin opciones.
 
 
 
-[13:52:47] [Servidor] Respuesta recibida: a
+[14:00:05] [Servidor] Respuesta recibida: a
 
-[13:52:47] [Servidor] Respuesta enviada: Incorrecto
+[14:00:05] [Servidor] Respuesta enviada: Incorrecto
 
-[13:52:47] [Servidor] No hay más preguntas disponibles
+[14:00:05] [Servidor] No hay más preguntas disponibles
 
