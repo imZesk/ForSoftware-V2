@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 
 			char nombreEncuesta[100];
 			int cantidadPreguntas;
-			cout << "Introduce el nombre de la encuesta: ";
+			cout << "Introduce el nombre del test: ";
 			cin.ignore();
 			cin.getline(nombreEncuesta, sizeof(nombreEncuesta));
 
@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
 			texto4 = oss4.str();
 			escribirConTiempo(archivo, texto4);
 
-			cout << "Encuesta '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
+			cout << "Test '" << nombreEncuesta << "' creada con " << cantidadPreguntas << " preguntas." << endl;
 			break;
 		}
 
