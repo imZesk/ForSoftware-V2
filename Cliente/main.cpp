@@ -348,7 +348,13 @@ int main(int argc, char *argv[])
 							break;
 						}
 					}
-					data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "|" << opcion2 << "|" << opcion3 << "," << respuesta;
+					if(strcmp(respuesta, "1")==0){
+						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion1;
+					}else if(strcmp(respuesta, "2")==0){
+						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion2;
+					}else{
+						data << ";" << tipoPregunta << "," << textoPregunta << "," << opcion1 << "," << opcion2 << "," << opcion3 << "," << opcion3;
+					}
 				}
 				else if (tipoPregunta == 2)
 				{
