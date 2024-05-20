@@ -169,25 +169,23 @@ char *visualizar_tests(sqlite3 *db)
     int cant_preg;
     int id;
     int first_row = 1;
-    do
-    {
+    int contador=0;
+    do {
         result = sqlite3_step(stmt);
-        if (result == SQLITE_ROW)
-        {
+        if (result == SQLITE_ROW) {
             id = sqlite3_column_int(stmt, 0);
             strcpy(nombre, (char *)sqlite3_column_text(stmt, 1));
             cant_preg = sqlite3_column_int(stmt, 2);
-            if (first_row)
-            {
+            if (first_row) {
                 sprintf(teses, "%d,%s,%d", id, nombre, cant_preg);
                 first_row = 0;
-            }
-            else
-            {
+                contador++;
+            } else {
                 sprintf(teses, "%s;%d,%s,%d", teses, id, nombre, cant_preg);
+                contador++;
             }
-        }else{
-            strcpy(teses,"Vacio");
+        } else if (result != SQLITE_ROW && contador == 0) { // Corregir el signo de igualdad aquí
+            strcpy(teses, "Vacio");
             break;
         }
     } while (result == SQLITE_ROW);
@@ -969,10 +967,9 @@ int main(int argc, char *argv[])
                 sprintf(frase1, "[Servidor] Datos recibidos: %s\n", recvBuff);
                 escribir_con_hora(file, frase1);
                 visualizado = visualizar_tests(DB);
-                size_t visualizado_len = strlen(visualizado);
-
-                // Envía solo la cantidad de datos necesarios
-                send(comm_socket, visualizado, visualizado_len, 0);
+                printf("Enviando respuesta... \n");
+                strcpy(sendBuff, visualizado);
+                send(comm_socket, sendBuff, sizeof(sendBuff), 0);
                 char frase2[512];
                 sprintf(frase2, "[Servidor] Datos enviados: %s\n", visualizado);
                 escribir_con_hora(file, frase2);
@@ -994,6 +991,10 @@ int main(int argc, char *argv[])
                     sprintf(frase4, "[Servidor] Datos enviados: %s\n", sendBuff);
                     escribir_con_hora(file, frase4);
                     printf("Datos enviados: %s \n", sendBuff);
+                }else if(strcmp(recvBuff, "Vacio") == 0){
+                    strcpy(sendBuff, "No se a realizado ningun test hasta el momento.");
+                    strcat(sendBuff, "\0");
+                    send(comm_socket, sendBuff, strlen(sendBuff), 0);
                 }
                 else
                 {

@@ -1,17 +1,29 @@
-[19:54:24] [Cliente] Inicializando Winsock...
+[21:11:36] [Cliente] Inicializando Winsock...
 
-[19:54:24] [Cliente] Winsock Inicializado.
+[21:11:36] [Cliente] Winsock Inicializado.
 
-[19:54:24] [Cliente] Socket creado.
+[21:11:36] [Cliente] Socket creado.
 
-[19:54:24] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[19:54:24] [Cliente] Llegue
+[21:11:36] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[21:11:36] [Cliente] Llegue
 
-[19:54:24] [Cliente] Opcion elegida: Crear test.
+[21:11:38] [Cliente] Datos enviados: Eliminar test.
 
-[19:54:24] [Cliente] Datos recibidos: Recibido.
+[21:11:38] [Cliente] Datos recibidos: 23,mate,3
 
-[19:54:49] [Cliente] Datos enviados: asdasd,3;1,asdasd,a|b|c,2;2,asdasd,NULL,V;3,eeeeeeeeeeeeeeeeeeeeeeeeee,NULL,fffffffffffffffffffffff
+[21:11:40] [Cliente] Datos enviados: 0
 
-[19:54:50] [Cliente] Datos recibidos: Test y preguntas creadas exitosamente.
+[21:11:40] [Cliente] Datos recibidos: 
+
+[21:11:44] [Cliente] Datos enviados: Eliminar test.
+[Cliente] Datos enviados: Fin
+
+[21:11:44] [Cliente] Datos recibidos: 23,mate,3
+[Cliente] Datos recibidos: gun test.
+
+[21:11:44] [Cliente] Fin del programa.
+
+[21:11:44] [Cliente] Socket cerrado.
+
+[21:11:44] [Cliente] Winsock limpiado.
 

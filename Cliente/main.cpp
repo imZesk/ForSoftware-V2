@@ -72,7 +72,6 @@ list<string> separarPalabras(const char *cadena)
 		}
 		return nombresEncuestas;
 	}
-	return;
 }
 
 void separarResultado(const char *cadena)
@@ -128,7 +127,7 @@ void separarResultado(const char *cadena)
 	}
 	if (!hayAlgo)
 	{
-		cout << "No hay nada" << endl;
+		cout << "No se a realizado ningun test hasta el momento" << endl;
 	}
 }
 
@@ -506,7 +505,14 @@ int main(int argc, char *argv[])
 			cout << endl;
 			cout << "Teses: " << endl;
 			nombresEncuestas = separarPalabras(recvBuff);
-			do
+			if(nombresEncuestas.empty()){
+				strcpy(sendBuff, "Vacio");
+				send(s, sendBuff, strlen(sendBuff) + 1, 0);
+				recv(s, recvBuff, sizeof(recvBuff), 0);
+				cout<<"No hay ningun test creado, por lo que no se puede eliminar nada.\n"<<endl;
+				break;
+			}else{
+				do
 			{
 				cout << "Nombre del test a eliminar (0 si no quieres eliminar): ";
 				cin >> eliminar;
@@ -545,6 +551,8 @@ int main(int argc, char *argv[])
 			texto4 = oss4.str();
 			escribirConTiempo(archivo, texto4);
 			break;
+			}
+			
 
 		case '5':
 			cout << "Envio del mensaje 1..." << endl;
