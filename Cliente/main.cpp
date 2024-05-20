@@ -441,10 +441,10 @@ int main(int argc, char *argv[])
 					cin.ignore();
 					cin >> visN;
 				} while (strcmp(visN, "1") != 0 && strcmp(visN, "0") != 0);
+				send(s, visN, strlen(visN) + 1, 0);
 				if (strcmp(visN, "1") == 0)
 				{
 					escribirConTiempo(archivo, "[Cliente] Datos enviados: Ver\n");
-					send(s, "Ver", strlen("Ver") + 1, 0);
 					recv(s, recvBuff, sizeof(recvBuff), 0);
 					cout << "Tu nota es: " << recvBuff << endl;
 					oss6 << "[Cliente] Datos recibidos: " << recvBuff << endl;
