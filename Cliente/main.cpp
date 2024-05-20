@@ -81,7 +81,7 @@ void separarResultado(const char *cadena)
 		int preg_realiza = 0;
 		int respuestas_c = 0;
 		int contador = 0;
-		int id_t=0;
+		int id_t = 0;
 		const char *nombre;
 		while (getline(grupo_ss, palabra, ','))
 		{
@@ -97,7 +97,7 @@ void separarResultado(const char *cadena)
 			{
 				preg_realiza = stoi(palabra);
 			}
-			else if(contador==3)
+			else if (contador == 3)
 			{
 				respuestas_c = stoi(palabra);
 			}
@@ -106,12 +106,13 @@ void separarResultado(const char *cadena)
 
 		nombre = nombre_encuesta.c_str();
 		// Crear una nueva encuesta con los valores obtenidos
-		if(respuestas_c!=0){
+		if (respuestas_c != 0)
+		{
 			Encuesta nueva_encuesta(preg_realiza);
 			nueva_encuesta.setNombre(nombre);
 			nueva_encuesta.setNota(respuestas_c);
 			nueva_encuesta.setId(id_t);
-			cout << "Nombre: " << nueva_encuesta.getNombre()<<" " << nueva_encuesta.getNota() << "/" << nueva_encuesta.getCantidadPreguntas() << endl;
+			cout << "Nombre: " << nueva_encuesta.getNombre() << " " << nueva_encuesta.getNota() << "/" << nueva_encuesta.getCantidadPreguntas() << endl;
 			cout << endl;
 		}
 	}
@@ -379,16 +380,16 @@ int main(int argc, char *argv[])
 		case '2':
 			cout << "Realizando test..." << endl;
 			strcpy(sendBuff, "Realizar test.");
-			oss8 << "[Cliente] Opcion elegida: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+			oss8 << "[Cliente] Opcion elegida: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Que test desea realizar: ";
 			cin >> sendBuff;
-			oss2 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+			oss2 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			while (true)
@@ -399,71 +400,74 @@ int main(int argc, char *argv[])
 				if (strcmp(recvBuff, "No hay mas preguntas disponibles.") == 0)
 				{
 					cout << "No hay mas preguntas disponibles." << endl;
-					escribirConTiempo(archivo,"[Cliente] No hay mas preguntas disponibles.\n");
+					escribirConTiempo(archivo, "[Cliente] No hay mas preguntas disponibles.\n");
 					break;
 				}
 				else if (strcmp(recvBuff, "El test no existe") == 0)
 				{
 					cout << "El test no existe" << endl;
-					escribirConTiempo(archivo,"[Cliente] El test no existe.\n");
+					escribirConTiempo(archivo, "[Cliente] El test no existe.\n");
 					break;
 				}
 				else
 				{
-					oss3 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    				texto3 = oss3.str();
-					escribirConTiempo(archivo,texto3);
+					oss3 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+					texto3 = oss3.str();
+					escribirConTiempo(archivo, texto3);
 					cout << recvBuff << endl; // Mostrar la pregunta y las opciones
 
 					cout << "Ingrese su respuesta: ";
 					cin >> respuesta;
 					strcpy(sendBuff, respuesta);
-					oss4 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    				texto4 = oss4.str();
-					escribirConTiempo(archivo,texto4);
+					oss4 << "[Cliente] Datos enviados: " << sendBuff << endl;
+					texto4 = oss4.str();
+					escribirConTiempo(archivo, texto4);
 					send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 					// Recibir resultado del servidor
 					recv(s, recvBuff, sizeof(recvBuff) + 1, 0);
 					cout << "Resultado: " << recvBuff << endl;
-					oss5 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    				texto5 = oss5.str();
-					escribirConTiempo(archivo,texto5);
+					oss5 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+					texto5 = oss5.str();
+					escribirConTiempo(archivo, texto5);
 				}
 			}
-			char visN[10];
-			do
+			if (strcmp(recvBuff, "El test no existe") != 0)
 			{
-				cout << "Quieres visualizar la nota(1 si, 0 no): ";
-				cin.ignore();
-				cin >> visN;
-			} while (strcmp(visN, "1") != 0 && strcmp(visN, "0") != 0);
-			if (strcmp(visN, "1") == 0)
-			{
-				escribirConTiempo(archivo,"[Cliente] Datos enviados: Ver\n");
-				send(s, "Ver", strlen("Ver") + 1, 0);
-				recv(s, recvBuff, sizeof(recvBuff), 0);
-				cout << "Tu nota es: " << recvBuff << endl;
-				oss6 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    			texto6 = oss6.str();
-				escribirConTiempo(archivo,texto6);
-				break;
+				char visN[10];
+				do
+				{
+					cout << "Quieres visualizar la nota(1 si, 0 no): ";
+					cin.ignore();
+					cin >> visN;
+				} while (strcmp(visN, "1") != 0 && strcmp(visN, "0") != 0);
+				if (strcmp(visN, "1") == 0)
+				{
+					escribirConTiempo(archivo, "[Cliente] Datos enviados: Ver\n");
+					send(s, "Ver", strlen("Ver") + 1, 0);
+					recv(s, recvBuff, sizeof(recvBuff), 0);
+					cout << "Tu nota es: " << recvBuff << endl;
+					oss6 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+					texto6 = oss6.str();
+					escribirConTiempo(archivo, texto6);
+					break;
+				}
 			}
 
 		case '3':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Visualizar test.");
-			oss8 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
-			oss2 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 			cout << endl;
 			cout << "Teses: " << endl;
 			separarPalabras(recvBuff);
@@ -472,16 +476,16 @@ int main(int argc, char *argv[])
 		case '4':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Eliminar test.");
-			oss8 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			oss2 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
 			cout << "Teses: " << endl;
@@ -514,24 +518,24 @@ int main(int argc, char *argv[])
 
 			memset(recvBuff, 0, sizeof(recvBuff));
 			strcpy(sendBuff, eliminar);
-			oss3 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto3 = oss3.str();
-			escribirConTiempo(archivo,texto3);
+			oss3 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto3 = oss3.str();
+			escribirConTiempo(archivo, texto3);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 			cout << "Recepcion del mensaje 2..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
-			oss4 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto4 = oss4.str();
-			escribirConTiempo(archivo,texto4);
+			oss4 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto4 = oss4.str();
+			escribirConTiempo(archivo, texto4);
 			break;
 
 		case '5':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Agregar Pregunta.");
-			oss8 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			do
@@ -540,9 +544,9 @@ int main(int argc, char *argv[])
 				cin >> tipo;
 			} while (strcmp(tipo, "1") != 0 && strcmp(tipo, "2") != 0 && strcmp(tipo, "3") != 0 && strcmp(tipo, "0") != 0);
 
-			oss2 << "[Cliente] Datos enviados: " << tipo <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+			oss2 << "[Cliente] Datos enviados: " << tipo << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 			send(s, tipo, strlen(tipo) + 1, 0);
 
 			if (strcmp(tipo, "0") != 0)
@@ -557,9 +561,9 @@ int main(int argc, char *argv[])
 
 				cout << preg << endl;
 
-				oss3 << "[Cliente] Datos enviados: " << preg <<endl;
-    			texto3 = oss3.str();
-				escribirConTiempo(archivo,texto3);
+				oss3 << "[Cliente] Datos enviados: " << preg << endl;
+				texto3 = oss3.str();
+				escribirConTiempo(archivo, texto3);
 				send(s, preg, strlen(preg) + 1, 0);
 
 				if (strcmp(tipo, "2") == 0)
@@ -595,9 +599,9 @@ int main(int argc, char *argv[])
 					strcpy(opciones, "NULL");
 				}
 
-				oss4 << "[Cliente] Datos enviados: " << opciones <<endl;
-    			texto4 = oss4.str();
-				escribirConTiempo(archivo,texto4);
+				oss4 << "[Cliente] Datos enviados: " << opciones << endl;
+				texto4 = oss4.str();
+				escribirConTiempo(archivo, texto4);
 				send(s, opciones, strlen(opciones) + 1, 0);
 
 				if (strcmp(tipo, "3") == 0)
@@ -642,17 +646,17 @@ int main(int argc, char *argv[])
 					}
 				}
 
-				oss5 << "[Cliente] Datos enviados: " << respuesta <<endl;
-    			texto5 = oss5.str();
-				escribirConTiempo(archivo,texto5);
+				oss5 << "[Cliente] Datos enviados: " << respuesta << endl;
+				texto5 = oss5.str();
+				escribirConTiempo(archivo, texto5);
 				send(s, respuesta, strlen(respuesta) + 1, 0);
 
 				cout << "Ingrese el test para agregar la pregunta: ";
 				cin >> test;
-				
-				oss6 << "[Cliente] Datos enviados: " << test <<endl;
-    			texto6 = oss6.str();
-				escribirConTiempo(archivo,texto6);
+
+				oss6 << "[Cliente] Datos enviados: " << test << endl;
+				texto6 = oss6.str();
+				escribirConTiempo(archivo, texto6);
 				send(s, test, strlen(test) + 1, 0);
 			}
 			else
@@ -664,24 +668,24 @@ int main(int argc, char *argv[])
 			cout << "Recepcion del mensaje..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
-			oss7 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto7 = oss7.str();
-			escribirConTiempo(archivo,texto7);
+			oss7 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto7 = oss7.str();
+			escribirConTiempo(archivo, texto7);
 			break;
 
 		case '6':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "resultado teses");
-			oss8 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
-			oss2 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 			cout << "Datos recibidos: " << recvBuff << endl;
 			cout << endl;
 			cout << "Resultados: " << endl;
@@ -691,20 +695,20 @@ int main(int argc, char *argv[])
 		case '0':
 			cout << "Envio del mensaje 1..." << endl;
 			strcpy(sendBuff, "Fin");
-			
-			oss8 << "[Cliente] Datos enviados: " << sendBuff <<endl;
-    		texto8 = oss8.str();
-			escribirConTiempo(archivo,texto8);
+
+			oss8 << "[Cliente] Datos enviados: " << sendBuff << endl;
+			texto8 = oss8.str();
+			escribirConTiempo(archivo, texto8);
 			send(s, sendBuff, strlen(sendBuff) + 1, 0);
 
 			memset(recvBuff, 0, sizeof(recvBuff));
 			cout << "Recepcion del mensaje 1..." << endl;
 			recv(s, recvBuff, sizeof(recvBuff), 0);
 			cout << "Datos recibidos: " << recvBuff << endl;
-			
-			oss2 << "[Cliente] Datos recibidos: " << recvBuff <<endl;
-    		texto2 = oss2.str();
-			escribirConTiempo(archivo,texto2);
+
+			oss2 << "[Cliente] Datos recibidos: " << recvBuff << endl;
+			texto2 = oss2.str();
+			escribirConTiempo(archivo, texto2);
 
 			cout << "Fin del programa" << endl;
 			escribirConTiempo(archivo, "[Cliente] Fin del programa.\n");
@@ -712,16 +716,16 @@ int main(int argc, char *argv[])
 
 		default:
 			cout << "ERROR, introduce de nuevo" << endl;
-			escribirConTiempo(archivo,"[Cliente] ERROR, introduce de nuevo.\n");
+			escribirConTiempo(archivo, "[Cliente] ERROR, introduce de nuevo.\n");
 		}
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	} while (opcion != '0');
 
 	// CLOSING the socket and cleaning Winsock...
 	closesocket(s);
-	escribirConTiempo(archivo,"[Cliente] Socket cerrado.\n");
+	escribirConTiempo(archivo, "[Cliente] Socket cerrado.\n");
 	WSACleanup();
-	escribirConTiempo(archivo,"[Cliente] Winsock limpiado.\n");
+	escribirConTiempo(archivo, "[Cliente] Winsock limpiado.\n");
 	archivo.close();
 
 	return 0;

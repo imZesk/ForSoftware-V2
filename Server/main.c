@@ -890,8 +890,9 @@ int main(int argc, char *argv[])
                 else
                 {
                     char respuesta[100];
-                    strcpy(respuesta, "El test no existe\n");
+                    strcpy(respuesta, "El test no existe");
                     send(comm_socket, respuesta, strlen(respuesta) + 1, 0);
+                    strcat(respuesta,"\n");
                     char frase3[512];
                     sprintf(frase3, "[Servidor] Datos enviados: %s\n", respuesta);
                     escribir_con_hora(file, frase3);
