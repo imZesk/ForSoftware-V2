@@ -1,29 +1,25 @@
-[21:11:36] [Cliente] Inicializando Winsock...
+[21:21:50] [Cliente] Inicializando Winsock...
 
-[21:11:36] [Cliente] Winsock Inicializado.
+[21:21:50] [Cliente] Winsock Inicializado.
 
-[21:11:36] [Cliente] Socket creado.
+[21:21:50] [Cliente] Socket creado.
 
-[21:11:36] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
-[21:11:36] [Cliente] Llegue
+[21:21:50] [Cliente] Conexion establecida con: 127.0.0.1 (6000)
+[21:21:50] [Cliente] Llegue
 
-[21:11:38] [Cliente] Datos enviados: Eliminar test.
+[21:21:54] [Cliente] Datos enviados: resultado teses
 
-[21:11:38] [Cliente] Datos recibidos: 23,mate,3
+[21:21:54] [Cliente] Datos recibidos: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2
 
-[21:11:40] [Cliente] Datos enviados: 0
-
-[21:11:40] [Cliente] Datos recibidos: 
-
-[21:11:44] [Cliente] Datos enviados: Eliminar test.
+[21:24:59] [Cliente] Datos enviados: resultado teses
 [Cliente] Datos enviados: Fin
 
-[21:11:44] [Cliente] Datos recibidos: 23,mate,3
-[Cliente] Datos recibidos: gun test.
+[21:24:59] [Cliente] Datos recibidos: mate,24,3,1;mate,24,3,1;mate,24,3,1;mate,24,3,2
+[Cliente] Datos recibidos: 
 
-[21:11:44] [Cliente] Fin del programa.
+[21:24:59] [Cliente] Fin del programa.
 
-[21:11:44] [Cliente] Socket cerrado.
+[21:24:59] [Cliente] Socket cerrado.
 
-[21:11:44] [Cliente] Winsock limpiado.
+[21:24:59] [Cliente] Winsock limpiado.
 

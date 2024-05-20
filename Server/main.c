@@ -210,7 +210,7 @@ char *resultado_teses(sqlite3 *db)
 {
     sqlite3_stmt *stmt;
 
-    char sql[] = "SELECT test.nombre,test.id_t,(SELECT resultado.pregs_realiz FROM resultado WHERE resultado.id_t = test.id_t) AS pregs_realiz,(SELECT resultado.respuestas_c FROM resultado WHERE resultado.id_t = test.id_t) AS respuestas_c FROM test;";
+    char sql[] = "SELECT test.nombre,test.id_t,resultado.pregs_realiz,resultado.respuestas_c FROM test JOIN resultado ON test.id_t = resultado.id_t;";
 
     int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (result != SQLITE_OK)
