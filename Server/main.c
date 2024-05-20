@@ -874,7 +874,7 @@ int main(int argc, char *argv[])
                     if(strcmp(recvBuff, "Ver")==0){
                         char nota[100];
                         sprintf(nota, "%d/%d", pCorrect, num_ids);
-                        printf("Nota: %s\n", nota);
+                        printf("Nota enviada al cliente: %s\n", nota);
                         send(comm_socket, nota, sizeof(nota), 0);
                     }
                     
