@@ -576,8 +576,6 @@ int main(int argc, char *argv[])
 				char preg[512];
 				strcpy(preg, pregunta.c_str());
 
-				cout << preg << endl;
-
 				oss3 << "[Cliente] Datos enviados: " << preg << endl;
 				texto3 = oss3.str();
 				escribirConTiempo(archivo, texto3);
